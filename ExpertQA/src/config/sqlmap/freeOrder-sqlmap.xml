@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.izhong.expert.dao.FreeOrderDao">
+	
+	<cache/>
+	
+	<insert id="addFreeOrder" parameterType="UserTryInfos" flushCache="true">
+		INSERT INTO LABQA_USERTRYINFOS
+			(PREORDERNO,CONSIGNEENAME,PROVINCE,PREFECTURELEVELCITY,AREA,STREET,POSTCODE,MOBILE,TELEPHONE,EMAIL,APPLYTRYDATE,TRYPRODUCTNO,NOTES,VISITORIP,USERID,STATUS,TRYPRODUCTNAME)
+		VALUES
+			(#{preOrderNo},#{consigneeName},#{province},#{prefectureLevelCity},#{area},#{street},#{postCode},#{mobile},#{telephone,jdbcType=VARCHAR},#{email},#{applyTryDate},#{tryProductNo},#{notes,jdbcType=VARCHAR},#{visitorIP,jdbcType=VARCHAR},#{userId,jdbcType=VARCHAR},#{status},#{tryProductName})
+	</insert>
+	
+	<update id="updateFreeOrderStatus" parameterType="string" flushCache="true">
+		UPDATE LABQA_USERTRYINFOS SET STATUS = #{1} WHERE PREORDERNO = #{0}
+	</update>
+</mapper>

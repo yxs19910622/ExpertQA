@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="freeOrder" extends="struts-default">
+		<action name="freeOrder" class="freeOrder" method="init_freeOrder">
+			<result name="success">/webpages/free/free_order.jsp</result>
+		</action>
+		<action name="freeOrderSave" class="freeOrder" method="freeOrderSave">
+			<result name="success">/common/showinfo.jsp</result>
+		</action>
+	</package>
+</struts>

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="member" extends="struts-default">
+		<!-- user -->
+		<action name="download" class="member" method="download">
+			<result type="stream">
+                                <param name="contentType">application/octet-stream</param>
+                                <param name="inputName">inputStream</param>
+                                <param name="contentDisposition">attachment;filename="${fileName}"</param>
+                                <param name="bufferSize">4096</param>
+           </result>
+		</action>
+		<action name="userEdit" class="member" method="init_userEdit">
+			<result name="success">/webpages/member/member_userEdit.jsp</result>
+		</action>
+		<action name="userEditSave" class="member" method="userEditSave">
+			<result name="success" type="redirect">/member/userEdit</result>
+		</action>
+		<action name="userPass" class="member" method="init_userPass">
+			<result name="success">/webpages/member/member_password.jsp</result>
+		</action>
+		<action name="userPassSave" class="member" method="userPassSave">
+			<result name="success">/webpages/member/member_password.jsp</result>
+		</action>
+		<action name="password_alert" class="member" method="password_alert">
+			<result name="success">/haufe/user/password3.jsp</result>
+		</action>
+		<action name="showUser" class="member" method="showUser">
+			<result name="success">/webpages/member/member_showUser.jsp</result>
+		</action>
+		<action name="attestAccount" class="member" method="init_attestAccount">
+			<result name="success">/webpages/member/member_attestAccount.jsp</result>
+		</action>
+		<action name="attestAccountSave" class="member" method="attestAccountSave">
+			<result name="success" type="redirect">/member/attestAccount</result>
+			<result name="online" type="redirect">onlinepay</result>
+		</action>
+		<action name="activateUser" class="member" method="init_ActivateUser">
+			<result name="success">/webpages/member/member_activateUser.jsp</result>
+		</action>
+		<action name="activateUserSave" class="member" method="activateUserSave"/>
+		<!-- end -->
+		<action name="excel" class="member" method="excel"/>
+		<action name="question" class="member" method="init_question">
+			<result name="success">/webpages/member/member_question.jsp</result>
+		</action>
+		<action name="news" class="member" method="init_news">
+			<result name="success">/webpages/member/member_news.jsp</result>
+		</action>
+		<action name="favorites" class="member" method="init_favorites">
+			<result name="success">/webpages/member/member_favorites.jsp</result>
+		</action>
+		<action name="onlinePaymentRecords" class="member" method="init_onlinePaymentRecords">
+			<result name="success">/webpages/member/member_onlinepaymentrecords.jsp</result>
+		</action>
+		
+		<action name="reply" class="member" method="init_reply">
+			<result name="success">/webpages/member/member_reply.jsp</result>
+		</action>
+		<!-- userProficients -->
+		<action name="userProficients" class="member" method="init_userProficients">
+			<result name="success">/webpages/member/member_userProficients.jsp</result>
+		</action>
+		<action name="addUserProfiType" class="member" method="addUserProfiType">
+			<result name="success" type="redirect">/member/userProficients</result>
+		</action>
+		<action name="delUserProfiType" class="member" method="delUserProfiType">
+			<result name="success" type="redirect">/member/userProficients</result>
+		</action>
+		<!-- end -->
+		<action name="auditUser" class="member" method="init_auditUser">
+			<result name="success">/webpages/member/member_auditUser.jsp</result>
+		</action>
+		<action name="auditUserSave" class="member" method="auditUserSave">
+			<result name="success" type="redirect">/member/auditUser</result>
+		</action>
+		<action name="auditQuestion" class="member" method="init_auditQuestion">
+			<result name="success">/webpages/member/member_auditQuestion.jsp</result>
+		</action>
+		<action name="auditReply" class="member" method="init_auditReply">
+			<result name="success">/webpages/member/member_auditReply.jsp</result>
+		</action>
+		<action name="QAManage" class="member" method="init_QAManage">
+			<result name="success">/webpages/member/member_QAManage.jsp</result>
+		</action>
+		<action name="QAEdit" class="member" method="init_QAEdit">
+			<result name="success">/webpages/member/member_QAEdit.jsp</result>
+		</action>
+		<action name="PayHistory" class="member" method="init_PayHistory">
+			<result name="success">/webpages/member/member_payHistory.jsp</result>
+		</action>
+		<action name="Analyze" class="member" method="init_Analyze"> 
+			<result name="success">/webpages/member/member_Analyze.jsp</result>
+		</action>
+		<action name="Analyze_1" class="member" method="init_Analyze_1"> 
+			<result name="success">/webpages/member/member_Analyze_1.jsp</result>
+		</action>
+		<action name="Stat_1" class="member" method="init_Stat_1"> 
+			<result name="success">/webpages/member/member_Stat_1.jsp</result>
+		</action>
+		<action name="Stat_2" class="member" method="init_Stat_2"> 
+			<result name="success">/webpages/member/member_Stat_2.jsp</result>
+		</action>
+		<action name="Stat_3" class="member" method="init_Stat_3"> 
+			<result name="success">/webpages/member/member_Stat_3.jsp</result>
+		</action>
+		<action name="ajxAnalyzeTimer" class="member" method="ajxAnalyzeTimer"> 
+			<result name="success">/webpages/member/member_Analyze_2.jsp</result>
+		</action>
+		<action name="editReply" class="member" method="editReply">
+			<result name="success">/webpages/member/member_QAEdit_reply.jsp</result>
+		</action>
+		<action name="editReplySave" class="member" method="editReplySave">
+			<result name="success">/webpages/member/member_QAEdit_reply.jsp</result>
+		</action>
+		<action name="showReply" class="member" method="showReply">
+			<result name="success">/webpages/member/member_showReply.jsp</result>
+		</action>
+		<action name="optimalAnswer" class="member" method="optimalAnswer">
+			<result name="success" type="redirect">/member/QAManage</result>
+		</action>
+		<action name="delQuestion" class="member" method="delQuestion">
+			<result name="success" type="redirect">/member/QAManage</result>
+		</action>
+		<!-- 
+		<action name="addEditor" class="member" method="init_addEditor">
+			<result name="success">/webpages/member/member_addEditor.jsp</result>
+		</action>
+		<action name="addExpert" class="member" method="init_addExpert">
+			<result name="success">/webpages/member/member_addExpert.jsp</result>
+		</action> 
+		-->
+		<!-- Account start -->
+		<action name="addAccount" class="member" method="init_addAccount">
+			<result name="success">/webpages/member/member_addAccount.jsp</result>
+		</action>
+		<action name="addAccountSave" class="member" method="addAccountSave">
+			<result name="success" type="redirect">/member/addAccount</result>
+		</action>
+		<action name="accountManage" class="member" method="init_accountManage">
+			<result name="success">/webpages/member/member_accountManage.jsp</result>
+		</action>
+		<action name="accountManageSave" class="member" method="accountManageSave">
+			<result name="success" type="redirect">/member/accountManage</result>
+		</action>
+		<action name="updateUserTime" class="member" method="updateUserTime">
+			<result name="success" type="redirect">/member/accountManage</result>
+		</action>
+		<!-- Account end -->
+		<action name="functionManage" class="member" method="init_functionManage">
+			<result name="success">/webpages/member/member_functionManage.jsp</result>
+		</action>
+		<!-- role -->
+		<action name="roleManage" class="member" method="init_roleManage">
+			<result name="success">/webpages/member/member_roleManage.jsp</result>
+		</action>
+		<action name="initRoleAdd" class="member" method="init_roleAdd">
+			<result name="success">/webpages/member/member_role_add.jsp</result>
+		</action>
+		<action name="roleAdd" class="member" method="roleAddSave">
+			<result name="success" type="redirect">/member/roleManage</result>
+		</action>
+		<action name="keyword" class="member" method="init_keyword">
+			<result name="success">/webpages/member/member_keyword.jsp</result>
+		</action>
+		<action name="setHome" class="member" method="init_setHome">
+			<result name="success">/webpages/member/member_setHome.jsp</result>
+		</action>
+		<action name="hyper" class="member" method="init_hyper">
+			<result name="success">/webpages/member/member_hyper.jsp</result>
+		</action>
+		<action name="addCode" class="member" method="addCode">
+			<result name="success">/webpages/member/member_addCode.jsp</result>
+		</action>
+		<action name="toAddCode" class="member" method="toAddCode">
+			<result name="success">/webpages/member/member_addCode.jsp</result>
+		</action>
+		<action name="survey" class="member" method="survey">
+			<result name="success">/webpages/member/member_survey.jsp</result>
+		</action>
+	</package>
+</struts>

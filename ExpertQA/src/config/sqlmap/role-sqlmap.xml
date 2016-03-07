@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.izhong.expert.dao.RoleDao">
+
+	<cache/>
+	
+	<!-- Operations -->
+	
+	<select id="qryOperationAll" resultType="Operations">
+		SELECT * FROM SYS_OPERATIONS
+	</select>
+	
+	<select id="qryOperationValid" resultType="Operations">
+		SELECT * FROM SYS_OPERATIONS WHERE ACTIVESTATUS = 1
+	</select>
+	
+	<select id="qryOperationByRoleID" parameterType="int" resultType="Operations">
+		SELECT o.* FROM SYS_OPERATIONS o,SYS_ROLEOPERATIONS r WHERE o.Operationid=r.Operationid AND o.activestatus=1 AND o.type=1 AND r.roleid = #{roleId} ORDER BY o.operationid
+	</select>
+	
+	<select id="qryOperationGroupAll" parameterType="int" resultType="OperationGroup">
+		SELECT * FROM SYS_OPERATIONGROUPS ORDER BY INPARENTINDEXNO ASC
+	</select>
+	
+	<select id="qryOperationGroupByRoleID" parameterType="int" resultType="OperationGroup">
+		SELECT DISTINCT g.* FROM SYS_OPERATIONS o,SYS_ROLEOPERATIONS r,SYS_OPERATIONGROUPS g 
+			WHERE o.Operationid=r.Operationid AND o.operationgroupid=g.operationgroupid 
+			AND o.activestatus=1 AND r.roleid = #{roleId} ORDER BY INPARENTINDEXNO ASC
+	</select>
+	
+	<select id="qryOperation" parameterType="int" resultType="Operations">
+	
+	</select>
+	
+	<insert id="addOperation">
+		
+	</insert>
+	
+	<!-- Role -->
+	
+	<insert id="addRole" parameterType="Roles" useGeneratedKeys="true" flushCache="true">
+		<selectKey resultType="int" order="BEFORE" keyProperty="roleID">
+			SELECT SEQ_SYS_ROLES.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO SYS_ROLES
+			(ROLEID,ROLENAME,DESCRIPTION,ACTIVESTATUS)
+		VALUES
+			(#{roleID},#{roleName},#{description},1)
+	</insert>
+	
+	<insert id="addRoleOperation" parameterType="RoleOperations" flushCache="true">
+		INSERT INTO SYS_ROLEOPERATIONS
+			(TID,ROLEID,OPERATIONID)
+		VALUES
+			(SEQ_SYS_ROLEOPERATIONS.NEXTVAL,#{roleID},#{operationID})
+	</insert>
+
+	<select id="qryRoleAll" resultType="Roles">
+		SELECT * FROM SYS_ROLES
+	</select>
+	
+	<select id="qryRoleAllValid" resultType="Roles">
+		SELECT * FROM SYS_ROLES WHERE ACTIVESTATUS = 1
+	</select>
+	
+	<select id="qryUserRoleID" resultType="string" parameterType="string">
+		SELECT ROLEID FROM SYS_USERROLES WHERE USERID=#{userId}
+	</select>
+	
+	<insert id="addUserRole" parameterType="UserRoles" flushCache="true">
+		INSERT INTO SYS_USERROLES (TID,USERID,ROLEID) VALUES (SEQ_SYS_USERROLES.NEXTVAL,#{userID},#{roleID})
+	</insert>
+	
+	<update id="modUserRole" parameterType="UserRoles" flushCache="true">
+		UPDATE SYS_USERROLES SET ROLEID=#{roleID} WHERE USERID=#{userID}
+	</update>
+	
+	<select id="getUserRoleByUserId" parameterType="string" resultType="hashmap">
+	    select * from sys_users us,sys_userroles usro,sys_roles rol where us.userid = usro.userid and usro.roleid = rol.roleid
+        and us.userid = #{userId}
+        and (SYSDATE between us.trystartdate and us.tryenddate 
+        or SYSDATE between us.servicestartdate and us.serviceenddate)
+	</select>
+	<select id="getOperationByRoleId" parameterType="string" resultType = "hashmap">
+	
+	   select oper.url from sys_roles rol,sys_roleoperations roloper,sys_operations oper where rol.roleid = roloper.roleid and roloper.operationid = oper.operationid
+        and oper.type='2'
+        and rol.roleid = #{roleId}
+	</select>
+	<select id="getUserRoleOperationByUserId"  parameterType="string" resultType = "hashmap">
+	     select oper.url from sys_users us,sys_userroles usro,sys_roles rol,sys_roleoperations roloper,sys_operations oper 
+         where us.userid = usro.userid and usro.roleid = rol.roleid
+         and rol.roleid = roloper.roleid and roloper.operationid = oper.operationid
+         and us.userid = #{userId}
+         and oper.type='2'
+         and (SYSDATE between us.trystartdate and us.tryenddate 
+         or SYSDATE between us.servicestartdate and us.serviceenddate)
+	</select>
+	<select id="qryRoleDefault" resultType="Roles">
+		SELECT * FROM SYS_ROLES WHERE ISDEFAULT=1
+	</select>
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="online" extends="struts-default">
+	   <!-- 以下是订单信息 -->
+	    <action name="onlinepayment" class="shoppingcart" method="onlinePayment">
+			<result name="success">/webpages/onlinepay/shoppingStepOne.jsp</result>
+			<result name="login">/webpages/user/user_login.jsp</result>
+		</action>
+		<action name="initOnline" class="shoppingcart" method="initOnline">
+			<result name="success">/webpages/onlinepay/shoppingStepTwo.jsp</result>
+		</action>
+		
+		<!-- 以下是支付信息 -->
+		<action name="saveonlinepay" class="onlinepay" method="saveOnlinePay">
+			<result name="success">/webpages/onlinepay/shoppingStepThree.jsp</result>
+		</action>
+		<action name="alipaycallback" class="onlinepay" method="alipayCallBack">
+			<result name="success">/webpages/onlinepay/shoppingStepThree.jsp</result>
+			<result name="error" type="redirect">initOnline</result>
+		</action>
+		
+	</package>
+</struts>

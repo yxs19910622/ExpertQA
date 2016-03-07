@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.izhong.expert.dao.UserRegisterDao">
+	<cache/>
+	<insert id="addSysUser" parameterType="SysUsers" flushCache="true">
+		INSERT INTO SYS_Users
+			(USERID,USERNAME,LOGINNAME,PASSWORD,PASSWORDSALT,EMAIL,MOBILE,TRYSTARTDATE,TRYENDDATE,ACTIVESTATUS,CUSTOMERID)
+		VALUES
+			(#{userID},#{userName,jdbcType=VARCHAR},#{loginName,jdbcType=VARCHAR},#{password},#{passwordSalt},#{email},#{mobile,jdbcType=VARCHAR},#{tryStartDate,jdbcType=DATE},#{tryEndDate,jdbcType=DATE},#{activeStatus},#{customerID,jdbcType=VARCHAR})
+	</insert>
+	
+	<insert id="addCasualUser" parameterType="SYS_CasualUser" flushCache="true">
+		INSERT INTO SYS_CasualUser
+			(USERNAME,LOGINNAME,PASSWORD,PASSWORDSALT,EMAIL,MOBILE,STATUS,CODE,ALIASNAME)
+		VALUES
+			(#{userName,jdbcType=VARCHAR},#{loginName,jdbcType=VARCHAR},#{password},#{passwordSalt},#{email},#{mobile,jdbcType=VARCHAR},#{status},#{code},#{aliasName,jdbcType=VARCHAR})
+	</insert>
+	
+	<insert id="addCompany" parameterType="Companys" flushCache="true">
+		INSERT INTO LABQA_Companys
+			(COMPANYID,COMPANYNAME,INCORPORATOR,PROVINCE,PREFECTURELEVELCITY,AREA,STREET,POSTCODE,TELEPHONE,FAX,NOTES,STATUS)
+		VALUES
+			(#{companyID},#{companyName,jdbcType=VARCHAR},#{incorporator,jdbcType=VARCHAR},#{province,jdbcType=VARCHAR},#{prefecturelevelCity,jdbcType=VARCHAR},#{area,jdbcType=VARCHAR},#{street,jdbcType=VARCHAR},#{postcode,jdbcType=VARCHAR},#{telephone,jdbcType=VARCHAR},#{fax,jdbcType=VARCHAR},#{notes,jdbcType=VARCHAR},#{status})
+	</insert>
+	
+	<insert id="addLabUser" parameterType="LabUsers" flushCache="true">
+		INSERT INTO LABQA_Users
+			(TID,USERID,ALIASNAME,COMPANYID,POSITION,MOBILE,TELEPHONE,EMAIL,REGISTERDATE,ACTIVESTATUS)
+		VALUES
+			(SEQ_LABQA_USERS.NEXTVAL,#{userID},#{aliasName,jdbcType=VARCHAR},#{companyID,jdbcType=VARCHAR},#{position,jdbcType=VARCHAR},#{mobile},#{telephone,jdbcType=VARCHAR},#{email},#{registerDate},1)
+	</insert>
+	<select id="verifiEmail" resultType="int" parameterType="string">
+		<!-- SELECT COUNT(*) FROM SYS_USERS u,SYS_CASUALUSER c WHERE u.EMAIL = #{email} OR c.Email = #{email} -->
+		SELECT COUNT(*) FROM SYS_USERS WHERE EMAIL = #{email}
+	</select>
+	
+	<select id="verifiMobile" resultType="int" parameterType="string">
+		SELECT COUNT(*) FROM SYS_USERS WHERE MOBILE = #{mobile}
+	</select>
+	
+	<select id="email_reg" resultType="int" parameterType="string">
+		SELECT COUNT(*) FROM SYS_CASUALUSER WHERE EMAIL = #{email} AND CODE = #{code}
+	</select>
+	
+	<select id="getCode" resultType="string" parameterType="string">
+		SELECT SYS_CASUALUSER.CODE FROM SYS_CASUALUSER WHERE EMAIL = #{email}
+	</select>
+	
+	<select id="getCasual" resultType="SYS_CasualUser" parameterType="string">
+		SELECT * FROM SYS_CASUALUSER WHERE EMAIL = #{email}
+	</select>
+	
+	<delete id="delCasual" parameterType="string" flushCache="true">
+		DELETE FROM SYS_CASUALUSER WHERE EMAIL = #{email}
+	</delete>
+	
+	<insert id="addUserAnnouncements" parameterType="UserAnnouncements" flushCache="true">
+		INSERT INTO RES_USERANNOUNCEMENTS
+			(TID,MESSAGETEXT,EXTENSIONLINK,USERID,USERGROUPID,INDEXNO,MESSAGETYPE,PROJECTNAME)
+		VALUES
+			(SEQ_RES_USERANNOUNCEMENTS.Nextval,#{messageText},#{extensionLink,jdbcType=VARCHAR},#{userId},#{userGroupId,jdbcType=VARCHAR},#{indexNo},#{messageType,jdbcType=VARCHAR},#{projectName,jdbcType=VARCHAR})
+	</insert>
+</mapper>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean name="indexAbs" class="org.izhong.expert.abs.IndexAbsImpl">
+		<property name="qatypeService" ref="qatypeService"/>
+		<property name="keyWordService" ref="keyWordService"/>
+		<property name="expertService" ref="expertService"/>
+		<property name="logsService" ref="logsService"/>
+		<property name="userInfoService" ref="userInfoService"/>
+	</bean>
+</beans>

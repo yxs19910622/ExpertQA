@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.izhong.expert.dao.MessageDao">
+	
+	<cache/>
+	
+	<!--##########################################MessageDao sql######################################## -->
+	<select id="getAllMessageRecord" resultType="hashmap">
+	 select * from SYS_MESSAGES where STATUS = 1
+	</select>
+	
+	<insert id="addMessage" parameterType="Messages" flushCache="true">
+		INSERT INTO SYS_MESSAGES
+			(TID,CONTENT,STATUS)
+		VALUES
+			(SEQ_SYS_MESSAGES.NEXTVAL,#{content},#{status})
+	</insert>
+	
+	<delete id="delMessage" parameterType="int" flushCache="true">
+		DELETE SYS_MESSAGES WHERE TID=#{tid}
+	</delete>
+	
+	<update id="modMessageStatus" parameterType="int" flushCache="true">
+		UPDATE SYS_MESSAGES SET STATUS=#{1} WHERE TID=#{0}
+	</update>
+	
+	<select id="getAllMessage" resultType="Messages">
+		SELECT * FROM SYS_MESSAGES
+	</select>
+	
+</mapper>

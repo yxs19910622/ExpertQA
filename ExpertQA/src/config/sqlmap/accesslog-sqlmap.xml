@@ -1,0 +1,662 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.izhong.expert.dao.AccessLogServiceDao">
+	<!--<cache/>-->
+	
+	<!-- 添加 SYS_ACCESSLOGS -->	
+	<insert id="addSYS_AccessLog" parameterType="SYS_AccessLog" useGeneratedKeys="true" flushCache="true">
+		<selectKey resultType="int" order="BEFORE" keyProperty="tid">
+			SELECT SEQ_SYS_ACCESSLOGS.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO SYS_ACCESSLOGS (TID,CURRENTUSERSTATE,OPERATUSERSTATE,LOGINNAME,USERNAME,DEVICESERIAL,OPERATIONTYPE,OPERATIONAREA,OPERATIONDATE,CREATETIME,PROJECTNAME)
+			VALUES (#{tid},#{currentuserstate,,jdbcType=VARCHAR},#{operatuserstate,jdbcType=VARCHAR},#{loginname,jdbcType=VARCHAR},#{username,jdbcType=VARCHAR},
+					#{deviceserial,jdbcType=VARCHAR},#{operationtype,jdbcType=VARCHAR},#{operationarea,jdbcType=VARCHAR},#{operationdate,jdbcType=TIMESTAMP},#{createtime,jdbcType=TIMESTAMP},#{projectname})
+	</insert>
+	
+	<!-- 查询所有的SYS_ACCESSLOGS -->
+	<select id="getAccessLog" resultType="org.izhong.expert.model.SYS_AccessLog">
+		SELECT TID,CURRENTUSERSTATE,OPERATUSERSTATE,NVL(LOGINNAME,' ') LOGINNAME,NVL(USERNAME,'0') USERNAME,DEVICESERIAL,OPERATIONTYPE,OPERATIONAREA,OPERATIONDATE,CREATETIME,PROJECTNAME FROM SYS_ACCESSLOGS
+	</select>
+	
+	<!-- 查询1天的SYS_ACCESSLOGS -->
+	<select id="getAccessLogOneDay" parameterType="java.sql.Timestamp" resultType="org.izhong.expert.model.SYS_AccessLog">
+		SELECT TID,CURRENTUSERSTATE,OPERATUSERSTATE,NVL(LOGINNAME,' ') LOGINNAME,NVL(USERNAME,'') USERNAME,DEVICESERIAL,OPERATIONTYPE,OPERATIONAREA,OPERATIONDATE,CREATETIME,PROJECTNAME FROM SYS_ACCESSLOGS where CREATETIME > #{date}
+	</select>
+	
+	<!-- 根据时间查询分析记录 -->
+	<select id="getAccessLogByTime" parameterType="java.util.Date" resultType="org.izhong.expert.model.SYS_AccessLog">
+		 SELECT TID,CURRENTUSERSTATE,OPERATUSERSTATE,NVL(LOGINNAME,' ') LOGINNAME,NVL(USERNAME,'') USERNAME,DEVICESERIAL,OPERATIONTYPE,OPERATIONAREA,OPERATIONDATE,CREATETIME,PROJECTNAME FROM SYS_ACCESSLOGS where CREATETIME>=#{date}
+	</select>
+	
+	<!-- 查询分析记录 -->
+	<select id="getAnalyze" resultType="org.izhong.expert.model.Analyze">
+		SELECT tid,currentuserstate,operatuserstate,loginname,deviceserial,operationtype,operationarea,createtime,time,oid,projectname FROM SYS_ANALYZE 
+	</select>
+	
+	<!-- 多条件查询分析记录 -->
+	<select id="getAnalyze_s" parameterType="java.util.Map" resultType="org.izhong.expert.model.Analyze">
+		SELECT * FROM SYS_ANALYZE
+		where 1=1
+		<if test="zt=='02'">
+			<![CDATA[  
+              AND ISTEST = '1'  
+            ]]>  
+		</if>
+		<if test="zt=='03'">
+			<![CDATA[  
+              AND ISTEST = '0'  
+            ]]>  
+		</if>
+		<if test="cs != null and cs != '' and cs != '08' and cs != '05'">
+			<![CDATA[  
+              AND CURRENTUSERSTATE LIKE #{cs}
+            ]]>  
+		</if>
+		<if test="cs=='08'">
+			<![CDATA[  
+              AND CURRENTUSERSTATE in('未付费','已付费','待续费')  
+            ]]>  
+		</if>
+		<if test="cs=='05'">
+			<![CDATA[  
+              AND CURRENTUSERSTATE in('已付费','待续费')  
+            ]]>  
+		</if>
+		<if test="os != null and os != ''">
+			<![CDATA[  
+              AND OPERATUSERSTATE LIKE #{os}  
+            ]]>  
+		</if>
+		<if test="ln != null and ln != ''">
+		     <![CDATA[  
+              AND LOGINNAME LIKE #{ln}
+            ]]> 
+		</if>
+		<if test="ds != null and ds != ''">
+		     <![CDATA[  
+              AND DEVICESERIAL LIKE #{ds}
+            ]]> 
+		</if>
+		<if test="ot != null and ot != ''">
+			<![CDATA[  
+				AND OPERATIONTYPE LIKE #{ot}
+           	]]>
+		</if>
+		<if test="oa != null and oa != ''">
+		     <![CDATA[  
+              AND OPERATIONAREA LIKE #{oa}
+            ]]> 
+		</if>
+		<if test="t1 != null and t1 != '' and t2 != null and t2 != ''">
+			<if test="t1==31">
+				<![CDATA[  
+              		AND TIME > #{t2}
+            	]]>
+            </if>
+            <if test="t1==32">
+				<![CDATA[  
+              		AND TIME >= #{t2}
+            	]]>
+            </if>
+            <if test="t1==33">
+				<![CDATA[  
+              		AND TIME = #{t2}
+            	]]>
+            </if>
+            <if test="t1==34">
+				<![CDATA[  
+              		AND TIME < #{t2}
+            	]]>
+            </if>
+            <if test="t1==35">
+				<![CDATA[  
+              		AND TIME <= #{t2}
+            	]]>
+            </if>
+		</if>
+		<if test="sd != null and sd != '' and ed != null and ed != ''">
+				<![CDATA[  
+              		AND CREATETIME >= #{sd}
+              		AND CREATETIME <= #{ed}
+            	]]>
+        </if>
+        <if test="oid!= null and oid!= ''">
+		     <![CDATA[  
+              AND OID = #{oid}
+            ]]> 
+		</if>
+	</select>
+	
+	<!-- 根据邮箱查询用户的服务到期时间 -->
+	<select id="getOverTime" parameterType="java.lang.String" resultType="java.util.Date">
+		SELECT SERVICEENDDATE FROM SYS_USERPRODUCTS WHERE OWNERUSERID=(SELECT USERID FROM SYS_USERS WHERE EMAIL=#{email})
+	</select>
+	
+	<!-- 根据邮箱查询用户是否有缴费记录 -->
+	<select id="isPay" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT COUNT(*) FROM SYS_USERPRODUCTS WHERE OWNERUSERID=(SELECT USERID FROM SYS_USERS WHERE EMAIL=#{email})
+	</select>
+	
+	<!-- 查询分析记录 -->
+	<select id="getAnalyze_1" resultType="org.izhong.expert.model.AnalyzeTimes">
+		SELECT * FROM SYS_ANALYZE_1 WHERE 1=1
+		<if test="zt=='02'">
+			<![CDATA[  
+              AND ISTEST = '1'  
+            ]]>  
+		</if>
+		<if test="zt=='03'">
+			<![CDATA[  
+              AND ISTEST = '0'  
+            ]]>  
+		</if>
+	</select>
+	
+	<!-- 多条件查询分析记录_1 -->
+	<select id="getAnalyze_1s" parameterType="java.util.Map" resultType="org.izhong.expert.model.AnalyzeTimes">
+		SELECT * FROM SYS_ANALYZE_1 
+		where 1=1
+		<!-- <if test="cs != null and cs != '' and cs!='08' and cs!='05'">
+			<![CDATA[  
+              AND STATUS LIKE #{cs}  
+            ]]>  
+		</if> -->
+		<if test="zt=='02'">
+			<![CDATA[  
+              AND ISTEST = '1'  
+            ]]>  
+		</if>
+		<if test="zt=='03'">
+			<![CDATA[  
+              AND ISTEST = '0'  
+            ]]>  
+		</if>
+		<if test="cs=='08'">
+			<![CDATA[  
+              AND OID IN(SELECT OID FROM SYS_ANALYZE WHERE CURRENTUSERSTATE in('未付费','已付费','待续费') AND OPERATUSERSTATE LIKE #{os}) 
+            ]]>  
+		</if>
+		<if test="cs=='05'">
+			<![CDATA[  
+              AND OID IN(SELECT OID FROM SYS_ANALYZE WHERE CURRENTUSERSTATE in('已付费','待续费') AND OPERATUSERSTATE LIKE #{os})
+            ]]>  
+		</if>
+		<if test="os != null and os != '' and cs == ''">
+			<![CDATA[  
+              AND OID IN(SELECT OID FROM SYS_ANALYZE WHERE OPERATUSERSTATE LIKE #{os})
+            ]]>  
+		</if>
+		<if test="os != null and os != '' and cs == null">
+			<![CDATA[  
+              AND OID IN(SELECT OID FROM SYS_ANALYZE WHERE OPERATUSERSTATE LIKE #{os})
+            ]]>  
+		</if>
+		<if test="cs != null and cs != '' and os == ''">
+			<![CDATA[  
+              AND OID IN(SELECT OID FROM SYS_ANALYZE WHERE CURRENTUSERSTATE LIKE #{cs})
+            ]]>  
+		</if>
+		<if test="os != null and os != '' and cs != null and cs != '' and cs!='08' and cs!='05'">
+			<![CDATA[  
+              AND OID IN(SELECT OID FROM SYS_ANALYZE WHERE CURRENTUSERSTATE LIKE #{cs} AND OPERATUSERSTATE LIKE #{os})
+            ]]>  
+		</if>
+		<if test="ln != null and ln != ''">
+		     <![CDATA[  
+              AND LOGINNAME LIKE #{ln}
+            ]]> 
+		</if>
+		<if test="ds != null and ds != ''">
+		     <![CDATA[  
+              AND DEV LIKE #{ds}
+            ]]> 
+		</if>
+		<if test="t1 != null and t1 != '' and t2 != null and t2 != ''">
+			<if test="t1=='day'">
+				<![CDATA[  
+              		AND TIME > #{t2}
+            	]]>
+            </if>
+            <if test="t1=='dad'">
+				<![CDATA[  
+              		AND TIME >= #{t2}
+            	]]>
+            </if>
+            <if test="t1=='dey'">
+				<![CDATA[  
+              		AND TIME = #{t2}
+            	]]>
+            </if>
+            <if test="t1=='xay'">
+				<![CDATA[  
+              		AND TIME < #{t2}
+            	]]>
+            </if>
+            <if test="t1=='xad'">
+				<![CDATA[  
+              		AND TIME <= #{t2}
+            	]]>
+            </if>
+		</if>
+	</select>
+	
+	<!-- 查询该用户名的使用次数 -->
+	<select id="getAnalyzeSum" parameterType="java.lang.String" resultType="java.lang.Long">
+		<![CDATA[ 
+			SELECT COUNT(*) FROM (SELECT COUNT(*) FROM SYS_ANALYZE WHERE LOGINNAME=#{LOGINNAME} 
+	 	]]>  	
+		<if test="zt=='02'">
+			<![CDATA[  
+              AND ISTEST = '1'  
+            ]]>  
+		</if>
+		<if test="zt=='03'">
+			<![CDATA[  
+              AND ISTEST = '0'  
+            ]]>  
+		</if>
+		<![CDATA[  
+              GROUP BY OID )  
+         ]]>  
+	</select>
+	
+	<!-- 查询该用户名的使用次数,用设备号 -->
+	<select id="getAnalyzeSum_1" parameterType="java.lang.String" resultType="java.lang.Long">
+		select count(*) from (select count(*) from sys_analyze where deviceserial=#{dev} group by oid )
+	</select>
+	
+	<!-- 根据时间查询分析记录 -->
+	<select id="getAnalyzeByTime" parameterType="java.util.Date" resultType="org.izhong.expert.model.Analyze">
+		SELECT * FROM SYS_ANALYZE WHERE WRITETIME>=#{date}
+	</select>
+	
+	<insert id="addAnaylze" parameterType="org.izhong.expert.model.Analyze" >
+		INSERT INTO SYS_ANALYZE 
+			(tid,currentuserstate,operatuserstate,loginname,deviceserial,operationtype,operationarea,createtime,time,oid,projectname,writetime,istest)
+		VALUES
+			(#{tid},#{currentuserstate},#{operatuserstate},#{loginname,jdbcType=VARCHAR},#{deviceserial},#{operationtype},#{operationarea,jdbcType=VARCHAR},#{createtime},#{time,jdbcType=VARCHAR},#{oid},#{projectname},#{writetime},#{istest,jdbcType=VARCHAR})
+	</insert>
+	
+	<insert id="addAnalyzeTimes" parameterType="org.izhong.expert.model.AnalyzeTimes" >
+		INSERT INTO SYS_ANALYZE_1
+			(tid,loginname,oid,time,sum,status,dev,createtime,istest)
+		VALUES
+			(#{tid},#{loginname,jdbcType=VARCHAR},#{oid,jdbcType=VARCHAR},#{time,jdbcType=VARCHAR},#{sum,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR},#{dev,jdbcType=VARCHAR},#{createtime},#{istest,jdbcType=VARCHAR})
+	</insert>
+	
+	<!-- 各类用户的总人数 -->
+	<select id="stat_1_headcount" parameterType="java.util.Map" resultType="java.lang.Long">
+		<![CDATA[
+			SELECT COUNT(*) FROM(SELECT COUNT(*) FROM SYS_ANALYZE 
+			WHERE 1=1
+			
+		]]>
+		<if test="zt=='02'">
+			<![CDATA[  
+              AND ISTEST = '1'  
+            ]]>  
+		</if>
+		<if test="zt=='03'">
+			<![CDATA[  
+              AND ISTEST = '0'  
+            ]]>  
+		</if>
+		<if test="cs != null and cs != '' and cs!='08' and cs!='05'">
+			<![CDATA[  
+              AND CURRENTUSERSTATE LIKE (#{cs})
+            ]]>  
+		</if>
+		<if test="cs == '05'">
+			<![CDATA[  
+              AND CURRENTUSERSTATE IN ('已付费','待续费')
+            ]]>  
+		</if>
+		<if test="cs == '08'">
+			<![CDATA[  
+              AND CURRENTUSERSTATE IN ('已付费','未付费','待续费')
+            ]]>  
+		</if>
+		<if test="os != null and os != ''">
+			<![CDATA[  
+              AND OPERATUSERSTATE LIKE #{os}  
+            ]]>  
+		</if>
+		<if test="ot != null and ot != ''">
+				<![CDATA[  
+              		AND OPERATIONTYPE = #{ot}
+            	]]>
+        </if>
+        <if test="oa != null and oa != ''">
+				<![CDATA[  
+              		AND OPERATIONAREA = #{oa}
+            	]]>
+        </if>
+		<if test="sd != null and sd != '' and ed != null and ed != ''">
+				<![CDATA[  
+              		AND CREATETIME >= #{sd}
+              		AND CREATETIME <= #{ed}
+            	]]>
+        </if>
+        <if test="yk != null and yk != ''">
+				<![CDATA[  
+              		GROUP BY DEVICESERIAL)
+            	]]>
+        </if>
+        <if test="yk == null">
+				<![CDATA[  
+              		GROUP BY LOGINNAME)
+            	]]>
+        </if>
+	</select>
+	<!-- 各类用户的分类 -->
+	<select id="stat_1_headcount_new1" parameterType="java.util.Map" resultType="java.util.Map">
+		<![CDATA[
+			SELECT distinct LOGINNAME,DEVICESERIAL,CURRENTUSERSTATE FROM SYS_ANALYZE 
+			WHERE 1=1
+			
+		]]>
+		
+		<if test="cs != null and cs != '' and cs != '08' and cs != '05'">
+			<![CDATA[  
+              AND CURRENTUSERSTATE LIKE #{cs}
+            ]]>  
+		</if>
+		<if test="cs=='08'">
+			<![CDATA[  
+              AND CURRENTUSERSTATE in('未付费','已付费','待续费')  
+            ]]>  
+		</if>
+		<if test="cs=='05'">
+			<![CDATA[  
+              AND CURRENTUSERSTATE in('已付费','待续费')  
+            ]]>  
+		</if>
+		<if test="os != null and os != ''">
+			<![CDATA[  
+              AND OPERATUSERSTATE LIKE #{os}  
+            ]]>  
+		</if>
+		<if test="oa != null and oa != ''">
+		    <![CDATA[
+              AND OPERATIONAREA LIKE ('%'||#{oa}||'%')
+            ]]> 
+		</if>
+		<if test="type != null and type != ''">
+		    <![CDATA[
+              AND OPERATIONTYPE LIKE #{type}
+            ]]> 
+		</if>
+		<if test="zt=='02'">
+			<![CDATA[  
+              AND ISTEST = '1'  
+            ]]>  
+		</if>
+		<if test="zt=='03'">
+			<![CDATA[  
+              AND ISTEST = '0'  
+            ]]>  
+		</if>
+	</select>
+	
+	
+	<select id="stat_1_durationcount" parameterType="java.util.Map" resultType="java.lang.Long">
+		<![CDATA[
+			SELECT SUM(TIME) FROM SYS_ANALYZE_1 
+			WHERE OID IN(SELECT OID FROM SYS_ANALYZE WHERE 1=1
+		]]>
+		<if test="zt=='02'">
+			<![CDATA[  
+              AND ISTEST = '1'  
+            ]]>  
+		</if>
+		<if test="zt=='03'">
+			<![CDATA[  
+              AND ISTEST = '0'  
+            ]]>  
+		</if>
+		<if test="cs != null and cs != '' and cs!='08' and cs!='05'">
+			<![CDATA[  
+              AND CURRENTUSERSTATE LIKE (#{cs})
+            ]]>  
+		</if>
+		<if test="cs == '05'">
+			<![CDATA[  
+              AND CURRENTUSERSTATE IN ('已付费','待续费')
+            ]]>  
+		</if>
+		<if test="cs == '08'">
+			<![CDATA[  
+              AND CURRENTUSERSTATE IN ('已付费','未付费','待续费')
+            ]]>  
+		</if>
+		<if test="os != null and os != ''">
+			<![CDATA[  
+              AND OPERATUSERSTATE LIKE #{os}  
+            ]]>  
+		</if>
+		<if test="sd != null and sd != '' and ed != null and ed != ''">
+				<![CDATA[  
+              		AND CREATETIME >= #{sd}
+              		AND CREATETIME <= #{ed}
+            	]]>
+        </if>
+        <if test="loginname != null and loginname != '' and loginname != 'snake' ">
+				<![CDATA[  
+              		AND LOGINNAME = #{loginname}
+            	]]>
+        </if>
+        <if test="loginname == 'snake'">
+				<![CDATA[  
+              		AND DEVICESERIAL = #{deviceserial}
+            	]]>
+        </if>
+        <![CDATA[ 
+            )
+        ]]>
+	</select>
+	<select id="stat_1_timescount" parameterType="java.util.Map" resultType="java.lang.Long">
+		<![CDATA[
+			SELECT COUNT(OID) FROM SYS_ANALYZE 
+			WHERE 1=1
+		]]>
+		<if test="zt=='02'">
+			<![CDATA[  
+              AND ISTEST = '1'  
+            ]]>  
+		</if>
+		<if test="zt=='03'">
+			<![CDATA[  
+              AND ISTEST = '0'  
+            ]]>  
+		</if>
+		<if test="cs != null and cs != '' and cs!='08' and cs!='05'">
+			<![CDATA[  
+              AND CURRENTUSERSTATE LIKE (#{cs})
+            ]]>  
+		</if>
+		<if test="cs == '05'">
+			<![CDATA[  
+              AND CURRENTUSERSTATE IN ('已付费','待续费')
+            ]]>  
+		</if>
+		<if test="cs == '08'">
+			<![CDATA[  
+              AND CURRENTUSERSTATE IN ('已付费','未付费','待续费')
+            ]]>  
+		</if>
+		<if test="os != null and os != ''">
+			<![CDATA[  
+              AND OPERATUSERSTATE LIKE #{os}  
+            ]]>  
+		</if>
+		<if test="ot != null and ot != ''">
+				<![CDATA[  
+              		AND OPERATIONTYPE = #{ot}
+            	]]>
+        </if>
+        <if test="oa != null and oa != ''">
+				<![CDATA[  
+              		AND OPERATIONAREA = #{oa}
+            	]]>
+        </if>
+		<if test="sd != null and sd != '' and ed != null and ed != ''">
+				<![CDATA[  
+              		AND CREATETIME >= #{sd}
+              		AND CREATETIME <= #{ed}
+            	]]>
+        </if>
+        <if test="loginname != null and loginname != '' and loginname != 'snake' ">
+				<![CDATA[  
+              		AND LOGINNAME = #{loginname}
+            	]]>
+        </if>
+        <if test="loginname == 'snake'">
+				<![CDATA[  
+              		AND DEVICESERIAL = #{deviceserial}
+            	]]>
+        </if>
+	</select>
+	
+	<!-- 时长操作统计中的各类总使用次数查询 -->
+	<select id="stat_1_usecount" parameterType="java.util.Map" resultType="java.lang.Long">
+		<![CDATA[ 
+			SELECT COUNT(*) FROM (SELECT OID FROM SYS_ANALYZE WHERE 1=1
+		]]>	
+		<if test="zt=='02'">
+			<![CDATA[  
+              AND ISTEST = '1'  
+            ]]>  
+		</if>
+		<if test="zt=='03'">
+			<![CDATA[  
+              AND ISTEST = '0'  
+            ]]>  
+		</if>
+		<if test="cs != null and cs != '' and cs!='08' and cs!='05'">
+			<![CDATA[  
+              AND CURRENTUSERSTATE LIKE (#{cs})
+            ]]>  
+		</if>
+		<if test="cs == '05'">
+			<![CDATA[  
+              AND CURRENTUSERSTATE IN ('已付费','待续费')
+            ]]>  
+		</if>
+		<if test="cs == '08'">
+			<![CDATA[  
+              AND CURRENTUSERSTATE IN ('已付费','未付费','待续费')
+            ]]>  
+		</if>
+		<if test="os != null and os != ''">
+			<![CDATA[  
+              AND OPERATUSERSTATE LIKE #{os}  
+            ]]>  
+		</if>
+		<if test="loginname != null and loginname != '' and loginname != 'snake' ">
+				<![CDATA[  
+              		AND LOGINNAME = #{loginname}
+            	]]>
+        </if>
+        <if test="loginname == 'snake'">
+				<![CDATA[  
+              		AND DEVICESERIAL = #{deviceserial}
+            	]]>
+        </if>
+		<![CDATA[  
+             GROUP BY OID ) 
+            ]]>  
+	</select>
+	
+	
+	<!-- 在分析记录里查询出现的学习内容 -->
+	<select id="getLearningContent" resultType="java.lang.String">
+		<![CDATA[ 
+			SELECT DISTINCT OPERATIONAREA FROM SYS_ANALYZE WHERE OPERATIONTYPE = '阅读' AND OPERATIONAREA LIKE '%\%' 
+		]]>	
+		<if test="zt=='02'">
+			<![CDATA[  
+              AND ISTEST = '1'  
+            ]]>  
+		</if>
+		<if test="zt=='03'">
+			<![CDATA[  
+              AND ISTEST = '0'  
+            ]]>  
+		</if>
+	</select>
+	
+	<!-- 在分析记录里查询某一学习内容下各类用户学习时长 -->
+	<select id="getTimeByLearning" parameterType="java.util.Map" resultType="java.lang.Long">
+		<![CDATA[
+			SELECT SUM(TIME) FROM SYS_ANALYZE 
+			WHERE OPERATIONAREA = #{oa}
+		]]>
+		<if test="zt=='02'">
+			<![CDATA[  
+              AND ISTEST = '1'  
+            ]]>  
+		</if>
+		<if test="zt=='03'">
+			<![CDATA[  
+              AND ISTEST = '0'  
+            ]]>  
+		</if>
+		<if test="cs != null and cs != '' and cs!='08' and cs!='05'">
+			<![CDATA[  
+              AND CURRENTUSERSTATE LIKE (#{cs})
+            ]]>  
+		</if>
+		<if test="cs == '05'">
+			<![CDATA[  
+              AND CURRENTUSERSTATE IN ('已付费','待续费')
+            ]]>  
+		</if>
+		<if test="cs == '08'">
+			<![CDATA[  
+              AND CURRENTUSERSTATE IN ('已付费','未付费','待续费')
+            ]]>  
+		</if>
+		<if test="os != null and os != ''">
+			<![CDATA[  
+              AND OPERATUSERSTATE LIKE #{os}  
+            ]]>  
+		</if>
+		<if test="sd != null and sd != '' and ed != null and ed != ''">
+				<![CDATA[  
+              		AND CREATETIME >= #{sd}
+              		AND CREATETIME <= #{ed}
+            	]]>
+        </if>
+	</select>
+	
+	<!-- 查询anaylze表中的所有出现的用户名 -->
+	<select id="getLoginnameAnalyze" resultType="java.lang.String">
+		<![CDATA[
+			SELECT LOGINNAME FROM SYS_ANALYZE GROUP BY LOGINNAME
+		]]>
+	</select>
+	
+	<!-- 更改当前状态 -->
+	<update id="userState" parameterType="java.util.Map">
+		<![CDATA[
+			UPDATE SYS_ANALYZE SET CURRENTUSERSTATE = #{state} WHERE LOGINNAME = #{name}
+		]]>
+	</update>
+	
+	<!-- 查询该设备编号下是否存在空用户名记录 -->
+	<select id="isLoginNull" resultType="java.lang.String" parameterType="java.lang.String">
+		<![CDATA[
+			SELECT TID FROM SYS_ANALYZE WHERE DEVICESERIAL=#{deviceSerial} AND LOGINNAME=' '
+		]]>
+	</select>
+	
+	<!-- 更改游客状态 -->
+	<update id="changeLogin" parameterType="java.util.Map">
+		<![CDATA[
+			UPDATE SYS_ANALYZE SET CURRENTUSERSTATE=#{state},LOGINNAME =#{name} ,ISTEST=#{istest} WHERE TID = #{tid}
+		]]>
+	</update>
+	
+	
+</mapper>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<import resource="classpath:config/springabs/IndexAbs.xml"/>
+	<import resource="classpath:config/springabs/MemberAbs.xml"/>
+	<import resource="classpath:config/springabs/QAAbs.xml"/>
+	<import resource="classpath:config/springabs/RoleAbs.xml"/>
+	<import resource="classpath:config/springabs/SearchAbs.xml"/>
+	<import resource="classpath:config/springabs/UserLoginAbs.xml"/>
+	<import resource="classpath:config/springabs/UserRegisterAbs.xml"/>
+	<import resource="classpath:config/springabs/HyperAbs.xml"/>
+	<import resource="classpath:config/springabs/UserAbs.xml"/>
+	<import resource="classpath:config/springabs/MessageAbs.xml"/>
+	<import resource="classpath:config/springabs/FreeOrderAbs.xml"/>
+	<import resource="classpath:config/springabs/OnlinePaymentAbs.xml"/>
+	<import resource="classpath:config/springabs/BuyOnlineAbs.xml"/>
+</beans>

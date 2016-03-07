@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<constant name="struts.devMode" value="false" />
+
+	<constant name="struts.custom.i18n.resources" value="applicationResource"></constant>
+
+	<constant name="struts.objectFactory" value="spring"></constant>
+	
+	<constant name="struts.ognl.allowStaticMethodAccess" value="true"></constant>
+
+	<!-- 加载模块 -->
+	<include file="config/page/UserLoginPage.xml"/>
+	<include file="config/page/UserRegisterPage.xml"/>
+	<include file="config/page/UserSuggestionPage.xml"/>
+	<include file="config/page/RolePage.xml"/>
+	<include file="config/page/QAPage.xml"/>
+	<include file="config/page/SearchPage.xml"/>
+	<include file="config/page/MemberPage.xml"/>
+	<include file="config/page/IndexPage.xml"/>
+	<include file="config/page/UserPage.xml"/>
+	<include file="config/page/FreeOrderPage.xml"/>
+	<include file="config/page/OnlinePaymentPage.xml"/>
+	<include file="config/page/BuyOnlinePage.xml"/>
+	
+	<!-- 设置全局页面 -->
+	<package name="default" extends="struts-default,jasperreports-default">
+		<global-results>
+			<result name="error" type="redirect">/error.jsp</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping exception="org.springframework.dao.DataAccessException"
+				result="dataAccessFailure" />
+		</global-exception-mappings>
+	</package>
+</struts>

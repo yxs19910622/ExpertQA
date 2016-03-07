@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id="clientExpertServiceDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="org.izhong.expert.dao.ClientExpertServiceDao"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<bean name="clientExpertService" class="org.izhong.expert.service.ClientExpertServiceImpl">
+		<property name="clientExpertServiceDao" ref="clientExpertServiceDao"/>
+	</bean>
+</beans>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<!DOCTYPE dwr PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 2.0//EN"    
+"http://www.getahead.ltd.uk/dwr/dwr20.dtd">  
+<dwr>
+    <allow>
+	    <create creator="spring" javascript="questionAbs">
+	     <include method = "getQuestionsList"/>;
+	     <include method = "addQuestion"/>
+	     <include method = "getOneQuestion"/>
+	     <include method = "getOneReply"/>
+	     <include method = "getAllReplysByQuestionId"/>
+	     <include method = "addFavorite"/>
+	     <include method = "addReplyContent"/>
+	      <include method = "updatePollCount"/>
+	      <include method = "getActiveUser"/>
+	      <include method = "getQuestionListByTypeId"/>
+	      <include method = "getQuestionListByTypeIdCopy"/>
+	      <include method = "getQaTypeParent"/>
+	      <include method = "getQaTypeChild"/>
+	      
+	      <include method = "upateQuestion"/>
+	      <include method = "updateReply"/>
+	      <include method = "getReplyContentByUserIdAndQuestionId"/>
+	     <param name="beanName" value="qaAbs"/>
+	    </create>
+	    
+	    <create creator="spring" javascript="msgAbs">
+	     <include method = "getAllMessageRecord"/>;
+	     
+	     <param name="beanName" value="messageAbs"/>
+	    </create>
+	    
+	    <create creator="spring" javascript="hyper">
+	     <include method = "getAllHyperRecord"/>;
+	     <include method = "addHyperRecord"/>
+	     <include method = "updateHyperRecord"/>;
+	     <include method = "deleteHyperRecord"/>;
+	     <param name="beanName" value="hyperAbs"/>
+	    </create>
+	    
+    </allow>
+<signatures>
+<![CDATA[ 
+
+]]>
+</signatures>
+</dwr>  
+

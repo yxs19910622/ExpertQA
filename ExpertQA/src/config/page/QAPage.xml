@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="qa" extends="struts-default">
+		<action name="initQuestion" class="qa" method="initQuestion">
+			<!-- <result name="success">/webpages/question/question.jsp</result> -->
+			<result name="success">/webpages/question/question_ask.jsp</result>
+		</action>
+		<action name="initQuestion_mirror" class="qa" method="initQuestion_mirror">
+			<result name="success">/webpages/question/question_ask_mirror.jsp</result>
+		</action>
+		<action name="addQuestion" class="qa" method="addQuestionSave">
+			<result name="success" type="redirect">index</result>
+		</action>
+
+        <action name="searchAnswer_mirror" class="qa" method="searchAnswer_mirror">
+			<result name="success">/webpages/question/problem_detial_mirror.jsp</result>
+		</action>
+        <action name="searchAnswer" class="qa" method="searchAnswer">
+			<result name="success">/webpages/question/problem_detial.jsp</result>
+		</action>
+        <action name="expertAnswer_mirror" class="qa" method="expertAnswer_mirror">
+			<result name="success">/webpages/question/problem_detial_mirror.jsp</result>
+		</action>
+        <action name="expertAnswer" class="qa" method="expertAnswer">
+			<result name="success">/webpages/question/problem_detial.jsp</result>
+		</action>
+		 <action name="answerQuestion" class="qa" method="answerQuestion">
+			<result name="success">/webpages/question/problem.jsp</result>
+		</action>
+		 <action name="answerQuestion_mirror" class="qa" method="answerQuestion_mirror">
+			<result name="success">/webpages/question/problem_mirror.jsp</result>
+		</action>
+			<action name="checkQuestion" class="qa" method="checkQuestion">
+			<result name="success">/webpages/question/checkProblem.jsp</result>
+		</action>
+		<action name="checkQuestionReply" class="qa" method="checkQuestionReply">
+			<result name="success">/webpages/question/checkProblemReply.jsp</result>
+		</action>
+		
+		<!-- 
+		<action name="popAdvertising" class="qa" method="popAdvertising">
+			<result name="success">/webpages/question/pop-up.jsp</result>
+		</action>
+		<action name="bestellen" class="qa" method="bestellen">
+			<result name="success">/webpages/question/bestellen.jsp</result>
+		</action>
+		 -->
+	</package>
+</struts>

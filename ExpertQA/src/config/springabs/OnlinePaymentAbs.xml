@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean name="onlinePaymentAbs" class="org.izhong.expert.abs.OnlinePaymentAbsImpl">
+		<property name="onlinePaymentService" ref="onlinePaymentService"/>
+		<property name="onlinePaymentRemoteWS" ref="onlinePaymentRemoteWS"/>
+	</bean>
+	<bean name="onlinePaymentRemoteWS" class="org.izhong.expert.abs.OnlinePaymentRemoteWSImpl"></bean>
+</beans>

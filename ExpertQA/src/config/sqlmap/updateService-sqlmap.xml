@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.izhong.expert.dao.UpdateServiceDao">
+
+	<cache />
+	
+	<!-- 查询数据方法 -->
+	<select id="qryRES_UpdateTableInfos" parameterType="hashmap" resultType="RES_UpdateTableInfo">
+		SELECT * FROM RES_UPDATETABLEINFOS
+	    <if test="whereClause != null and whereClause != ''">WHERE ${whereClause}</if>
+	    <if test="orderbyClause != null and orderbyClause != ''">ORDER BY ${orderbyClause}</if>
+	</select>
+	<select id="qryRES_UseTechniqueinfos" parameterType="hashmap" resultType="RES_UseTechniqueinfo">
+		SELECT * FROM RES_USETECHNIQUEINFOS
+	    <if test="whereClause != null and whereClause != ''">WHERE ${whereClause}</if>
+	    <if test="orderbyClause != null and orderbyClause != ''">ORDER BY ${orderbyClause}</if>
+	</select>
+	<select id="qryRESUDP_Catalogs" parameterType="hashmap" resultType="RESUDP_Catalog">
+		SELECT * FROM RESUDP_CATALOGS
+	    <if test="whereClause != null and whereClause != ''">WHERE ${whereClause}</if>
+	    <if test="orderbyClause != null and orderbyClause != ''">ORDER BY ${orderbyClause}</if>
+	</select>
+	<select id="qryRESUDP_CatalogFullTree" parameterType="hashmap" resultType="RESUDP_CatalogFullTree">
+		SELECT * FROM RESUDP_CATALOGFULLTREE
+	    <if test="whereClause != null and whereClause != ''">WHERE ${whereClause}</if>
+	    <if test="orderbyClause != null and orderbyClause != ''">ORDER BY ${orderbyClause}</if>
+	</select>
+	<select id="qryRESUDP_DocumentInfos" parameterType="hashmap" resultType="RESUDP_DocumentInfo">
+		SELECT * FROM RESUDP_DOCUMENTINFOS
+	    <if test="whereClause != null and whereClause != ''">WHERE ${whereClause}</if>
+	    <if test="orderbyClause != null and orderbyClause != ''">ORDER BY ${orderbyClause}</if>
+	</select>
+	<select id="qryRESUDP_SystemInfos" parameterType="hashmap" resultType="RESUDP_SystemInfo">
+		SELECT * FROM RESUDP_SYSTEMINFOS
+	    <if test="whereClause != null and whereClause != ''">WHERE ${whereClause}</if>
+	    <if test="orderbyClause != null and orderbyClause != ''">ORDER BY ${orderbyClause}</if>
+	</select>
+	<select id="qryRESUDP_Questions" parameterType="hashmap" resultType="RESUDP_Question">
+		SELECT * FROM RESUDP_QUESTIONS
+	    <if test="whereClause != null and whereClause != ''">WHERE ${whereClause}</if>
+	    <if test="orderbyClause != null and orderbyClause != ''">ORDER BY ${orderbyClause}</if>
+	</select>
+	<select id="qryRESUDP_QuestionLawRefs" parameterType="hashmap" resultType="RESUDP_QuestionLawRef">
+		SELECT * FROM RESUDP_QUESTIONLAWREFS
+	    <if test="whereClause != null and whereClause != ''">WHERE ${whereClause}</if>
+	    <if test="orderbyClause != null and orderbyClause != ''">ORDER BY ${orderbyClause}</if>
+	</select>
+	<select id="qryRESUDP_QuestionExamples" parameterType="hashmap" resultType="RESUDP_QuestionExample">
+		SELECT * FROM RESUDP_QUESTIONEXAMPLES
+	    <if test="whereClause != null and whereClause != ''">WHERE ${whereClause}</if>
+	    <if test="orderbyClause != null and orderbyClause != ''">ORDER BY ${orderbyClause}</if>
+	</select>
+	<select id="qryRESUDP_LawExamples" parameterType="hashmap" resultType="RESUDP_LawExample">
+		SELECT * FROM RESUDP_LAWEXAMPLES
+	    <if test="whereClause != null and whereClause != ''">WHERE ${whereClause}</if>
+	    <if test="orderbyClause != null and orderbyClause != ''">ORDER BY ${orderbyClause}</if>
+	</select>
+	<select id="qryRESUDP_UserInfos" parameterType="hashmap" resultType="RESUDP_UserInfo">
+		SELECT USERID,USERNAME,EMAIL as LOGINNAME FROM SYS_USERS
+	    <if test="whereClause != null and whereClause != ''">WHERE ${whereClause}</if>
+	    <if test="orderbyClause != null and orderbyClause != ''">ORDER BY ${orderbyClause}</if>
+	</select>
+	
+	<!-- 添加数据、修改、删除操作 -->
+	<update id="updateRES_UpdateTableInfo" parameterType="RES_UpdateTableInfo" flushCache="true">
+		UPDATE RES_UPDATETABLEINFOS
+			SET TABLENAME=#{tablename},LASTDATE=#{lastdate},EXTENSIONFIELD1=#{extensionfield1,jdbcType=VARCHAR},EXTENSIONFIELD2=#{extensionfield2,jdbcType=VARCHAR},PROJECTNAME=#{projectname}
+			WHERE TID=#{tid}
+	</update>
+	<insert id="addRES_UseTechniqueinfo" parameterType="RES_UseTechniqueinfo" useGeneratedKeys="true" flushCache="true">
+		<selectKey resultType="int" order="BEFORE" keyProperty="tid">
+			SELECT SEQ_RES_USETECHNIQUEINFOS.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO RES_USETECHNIQUEINFOS (TID,TECHNAME,TECHTEXT,INDEXNO,EXTENSIONFIELD1,EXTENSIONFIELD2,PROJECTNAME)
+			VALUES (#{tid},#{techname},#{techtext,jdbcType=VARCHAR},#{indexno},#{extensionfield1,jdbcType=VARCHAR},#{extensionfield2,jdbcType=VARCHAR},#{projectname})
+	</insert>
+	<update id="updateRES_UseTechniqueinfo" parameterType="RES_UseTechniqueinfo" flushCache="true">
+		UPDATE RES_USETECHNIQUEINFOS
+			SET TECHNAME=#{techname},TECHTEXT=#{techtext,jdbcType=VARCHAR},INDEXNO=#{indexno},EXTENSIONFIELD1=#{extensionfield1,jdbcType=VARCHAR},EXTENSIONFIELD2=#{extensionfield2,jdbcType=VARCHAR},PROJECTNAME=#{projectname}
+			WHERE TID=#{tid}
+	</update>
+	<delete id="deleteRES_UseTechniqueinfoAll" flushCache="true">
+		DELETE FROM RES_USETECHNIQUEINFOS
+	</delete>
+	<insert id="addRESUDP_Catalog" parameterType="RESUDP_Catalog" useGeneratedKeys="false" flushCache="true">
+	    <selectKey keyProperty="catalogid" resultType="String" order="BEFORE">
+	        select CONCAT('LC',substr('000'||cast(substr(MAX(CATALOGID),3,4)+1 as varchar2(10)),length('000'||cast(substr(MAX(CATALOGID),3,4)+1 as varchar2(10)))-4+1,4)) from RESUDP_CATALOGS
+	    </selectKey>
+	    insert into RESUDP_CATALOGS(CATALOGID,CATALOGNAME,FULLCATALOGNAME,PARENTCATALOGID,INPARENTINDEXNO,LEVELNAME,NODETYPE,EXTENSIONFIELD1,EXTENSIONFIELD2,PROJECTNAME)
+	    values(#{catalogid},#{catalogname},#{fullcatalogname},#{parentcatalogid},#{inparentindexno},#{levelname},#{nodetype,jdbcType=VARCHAR},#{extensionfield1,jdbcType=VARCHAR},#{extensionfield2,jdbcType=VARCHAR},#{projectname})
+	</insert>
+	<update id="updateRESUDP_Catalog" parameterType="RESUDP_Catalog" flushCache="true">
+		UPDATE RESUDP_CATALOGS
+			SET CATALOGNAME=#{catalogname},FULLCATALOGNAME=#{fullcatalogname},PARENTCATALOGID=#{parentcatalogid},INPARENTINDEXNO=#{inparentindexno},LEVELNAME=#{levelname},
+				NODETYPE=#{nodetype,jdbcType=VARCHAR},EXTENSIONFIELD1=#{extensionfield1,jdbcType=VARCHAR},EXTENSIONFIELD2=#{extensionfield2,jdbcType=VARCHAR},PROJECTNAME=#{projectname}
+			WHERE CATALOGID=#{catalogid}
+	</update>
+	<update id="updateRESUDP_CatalogGroup" flushCache="true">
+		UPDATE RESUDP_CATALOGS A SET A.PARENTCATALOGID=(SELECT C.CATALOGID
+                                 FROM (SELECT CATALOGID,SUBSTR(FULLCATALOGNAME,0,LENGTH(FULLCATALOGNAME)-LENGTH(CATALOGNAME)-1) AS F From RESUDP_CATALOGS) B,
+                                      RESUDP_CATALOGS C
+                                      WHERE A.CATALOGID=B.CATALOGID AND B.F=C.FULLCATALOGNAME)
+	</update>
+	<update id="updateRESUDP_CatalogNULL" flushCache="true">
+	    UPDATE RESUDP_CATALOGS SET PARENTCATALOGID='NONE' WHERE (PARENTCATALOGID IS NULL OR LENGTH(PARENTCATALOGID)=0)
+	</update>
+	<delete id="notinDeleteRESUDP_Catalogs" parameterType="hashmap" flushCache="true">
+		DELETE FROM RESUDP_CATALOGS WHERE ${catalogid}
+	</delete>
+	<delete id="deleteRESUDP_Catalog" parameterType="String" flushCache="true">
+		DELETE FROM RESUDP_CATALOGS WHERE CATALOGID=#{catalogid}
+	</delete>
+	<insert id="addRESUDP_CatalogFullTree" parameterType="RESUDP_CatalogFullTree" useGeneratedKeys="false" flushCache="true">
+	    <selectKey keyProperty="catalognodeid" resultType="String" order="BEFORE">
+	        select CONCAT('LC',substr('0000'||cast(substr(MAX(CATALOGNODEID),3,5)+1 as varchar2(10)),length('0000'||cast(substr(MAX(CATALOGNODEID),3,5)+1 as varchar2(10)))-5+1,5)) from RESUDP_CATALOGFULLTREE
+	    </selectKey>
+	    insert into RESUDP_CATALOGFULLTREE(CATALOGNODEID,CATALOGNODENAME,CATALOGID,NODETYPE,VIEWRESOURCE,EDITRESOURCE,SAVERESOURCE,TRANSMITRESOURCE,CANCATALOGSEARCH,CANFULLTEXTSEARCH,FULLTEXTSEARCHRESOURCE,CANSHOWEXTENSIONS,INDEXNO,EXTENSIONFIELD1,EXTENSIONFIELD2,PROJECTNAME)
+	    values(#{catalognodeid},#{catalognodename},#{catalogid},#{nodetype},#{viewresource},#{editresource},#{saveresource},#{transmitresource},#{cancatalogsearch},#{canfulltextsearch},#{fulltextsearchresource,jdbcType=VARCHAR},#{canshowextensions},#{indexno},#{extensionfield1,jdbcType=VARCHAR},#{extensionfield2,jdbcType=VARCHAR},#{projectname})
+	</insert>
+	<update id="updateRESUDP_CatalogFullTree" parameterType="RESUDP_CatalogFullTree" flushCache="true">
+		UPDATE RESUDP_CatalogFullTree
+			SET CATALOGNODENAME=#{catalognodename},CATALOGID=#{catalogid},NODETYPE=#{nodetype},VIEWRESOURCE=#{viewresource},EDITRESOURCE=#{editresource},SAVERESOURCE=#{saveresource},TRANSMITRESOURCE=#{transmitresource},CANCATALOGSEARCH=#{cancatalogsearch},CANFULLTEXTSEARCH=#{canfulltextsearch},FULLTEXTSEARCHRESOURCE=#{fulltextsearchresource,jdbcType=VARCHAR},
+				CANSHOWEXTENSIONS=#{canshowextensions},INDEXNO=#{indexno},EXTENSIONFIELD1=#{extensionfield1,jdbcType=VARCHAR},EXTENSIONFIELD2=#{extensionfield2,jdbcType=VARCHAR},PROJECTNAME=#{projectname}
+			WHERE CATALOGNODEID=#{catalognodeid}
+	</update>
+	<delete id="deleteRESUDP_CatalogFullTree" parameterType="String" flushCache="true">
+		DELETE FROM RESUDP_CATALOGFULLTREE WHERE CATALOGNODEID=#{catalognodeid}
+	</delete>
+	<insert id="addRESUDP_DocumentInfo" parameterType="RESUDP_DocumentInfo" useGeneratedKeys="false" flushCache="true">
+	    <selectKey keyProperty="documentid" resultType="String" order="BEFORE">
+	        select CONCAT('RD',substr('00000'||cast(substr(MAX(DOCUMENTID),3,6)+1 as varchar2(10)),length('00000'||cast(substr(MAX(DOCUMENTID),3,6)+1 as varchar2(10)))-6+1,6)) from RESUDP_DOCUMENTINFOS
+	    </selectKey>
+	    insert into RESUDP_DOCUMENTINFOS(DOCUMENTID,TITLE,CREATOR,SUBJECT,DESCRIPTION,PUBLISHER,CONTRIBUTOR,DOCUMENTDATE,TYPE,FORMAT,SOURCE,IDENTIFIER,LANGUAGE,RELATION,COVERAGE,RIGHTS,MD5,VERSION,LOCATION,FILEEXTENSION,DELETESTATUS,PROJECTNAME)
+	    	values(#{documentid},#{title},#{creator},#{subject},#{description,jdbcType=VARCHAR},#{publisher},#{contributor},#{documentdate},#{type,jdbcType=VARCHAR},#{format},#{source,jdbcType=VARCHAR},#{identifier,jdbcType=VARCHAR},#{language},#{relation,jdbcType=VARCHAR},#{coverage,jdbcType=VARCHAR},#{rights},
+	    		#{md5,jdbcType=VARCHAR},#{version},'Resource\'||#{documentid},#{fileextension},#{deletestatus},#{projectname})
+	</insert>
+	<update id="updateRESUDP_DocumentInfo" parameterType="RESUDP_DocumentInfo" flushCache="true">
+		UPDATE RESUDP_DOCUMENTINFOS
+			SET TITLE=#{title},CREATOR=#{creator},SUBJECT=#{subject},DESCRIPTION=#{description,jdbcType=VARCHAR},PUBLISHER=#{publisher},CONTRIBUTOR=#{contributor},DOCUMENTDATE=#{documentdate},TYPE=#{type,jdbcType=VARCHAR},FORMAT=#{format},SOURCE=#{source,jdbcType=VARCHAR},IDENTIFIER=#{identifier,jdbcType=VARCHAR},LANGUAGE=#{language},RELATION=#{relation,jdbcType=VARCHAR},
+				COVERAGE=#{coverage,jdbcType=VARCHAR},RIGHTS=#{rights},MD5=#{md5,jdbcType=VARCHAR},VERSION=#{version},LOCATION=#{location},FILEEXTENSION=#{fileextension},DELETESTATUS=#{deletestatus},PROJECTNAME=#{projectname}
+			WHERE DOCUMENTID=#{documentid}
+	</update>
+	<delete id="deleteRESUDP_DocumentInfo" parameterType="String" flushCache="true">
+		DELETE FROM RESUDP_DOCUMENTINFOS WHERE DOCUMENTID=#{documentid}
+	</delete>
+	<insert id="addRESUDP_SystemInfo" parameterType="RESUDP_SystemInfo" useGeneratedKeys="false" flushCache="true">
+	    <selectKey keyProperty="documentid" resultType="String" order="BEFORE">
+	        select CONCAT('SD',substr('00000'||cast(substr(MAX(DOCUMENTID),3,6)+1 as varchar2(10)),length('00000'||cast(substr(MAX(DOCUMENTID),3,6)+1 as varchar2(10)))-6+1,6)) from RESUDP_SYSTEMINFOS
+	    </selectKey>
+	    insert into RESUDP_SYSTEMINFOS(DOCUMENTID,TITLE,CREATOR,SUBJECT,DESCRIPTION,PUBLISHER,CONTRIBUTOR,DOCUMENTDATE,TYPE,FORMAT,SOURCE,IDENTIFIER,LANGUAGE,RELATION,COVERAGE,RIGHTS,MD5,VERSION,LOCATION,FILEEXTENSION,DELETESTATUS,PROJECTNAME)
+	    values(#{documentid},#{title},#{creator},#{subject,jdbcType=VARCHAR},#{description,jdbcType=VARCHAR},#{publisher},#{contributor,jdbcType=VARCHAR},#{documentdate},#{type,jdbcType=VARCHAR},#{format},#{source,jdbcType=VARCHAR},#{identifier,jdbcType=VARCHAR},#{language},#{relation,jdbcType=VARCHAR},#{coverage,jdbcType=VARCHAR},#{rights},#{md5,jdbcType=VARCHAR},#{version},#{documentid},#{fileextension},#{deletestatus},#{projectname})
+	</insert>
+	<update id="updateRESUDP_SystemInfo" parameterType="RESUDP_SystemInfo" flushCache="true">
+		UPDATE RESUDP_SYSTEMINFOS
+			SET TITLE=#{title},CREATOR=#{creator},SUBJECT=#{subject,jdbcType=VARCHAR},DESCRIPTION=#{description,jdbcType=VARCHAR},PUBLISHER=#{publisher},CONTRIBUTOR=#{contributor,jdbcType=VARCHAR},DOCUMENTDATE=#{documentdate},TYPE=#{type,jdbcType=VARCHAR},FORMAT=#{format},SOURCE=#{source},IDENTIFIER=#{identifier,jdbcType=VARCHAR},LANGUAGE=#{language},
+				RELATION=#{relation,jdbcType=VARCHAR},COVERAGE=#{coverage,jdbcType=VARCHAR},RIGHTS=#{rights},MD5=#{md5,jdbcType=VARCHAR},VERSION=#{version},LOCATION=#{location},FILEEXTENSION=#{fileextension},DELETESTATUS=#{deletestatus},PROJECTNAME=#{projectname}
+			WHERE DOCUMENTID=#{documentid}
+	</update>
+	<delete id="deleteRESUDP_SystemInfo" parameterType="String" flushCache="true">
+		DELETE FROM RESUDP_SYSTEMINFOS WHERE DOCUMENTID=#{documentid}
+	</delete>
+	<insert id="addRESUDP_Question" parameterType="RESUDP_Question" useGeneratedKeys="false" flushCache="true">
+	    <selectKey keyProperty="questionid" resultType="String" order="BEFORE">
+	        select CONCAT('LQ',substr('000000'||cast(substr(nvl(MAX(QUESTIONID),'LQ0000000'),3,7)+1 as varchar2(10)),length('000000'||cast(substr(MAX(QUESTIONID),3,7)+1 as varchar2(10)))-7+1,7)) from RESUDP_QUESTIONS
+	    </selectKey>
+	    insert into RESUDP_QUESTIONS(QUESTIONID,SUBJECT,TITLE,DESCRIPTION,ANSWER,REFERENCENOTES,EXAMPLE,INTERPRETATION,NOTES,EXTENSIONFIELD1,EXTENSIONFIELD2,PROJECTNAME)
+	    	values(#{questionid},#{subject},#{title},#{description},#{answer},#{referencenotes,jdbcType=VARCHAR},#{example},#{interpretation},#{notes,jdbcType=VARCHAR},#{extensionfield1,jdbcType=VARCHAR},#{extensionfield2,jdbcType=VARCHAR},#{projectname})   					
+	</insert>
+	<update id="updateRESUDP_Question" parameterType="RESUDP_Question" flushCache="true">
+		UPDATE RESUDP_QUESTIONS
+			SET SUBJECT=#{subject},TITLE=#{title},DESCRIPTION=#{description},ANSWER=#{answer},REFERENCENOTES=#{referencenotes,jdbcType=VARCHAR},EXAMPLE=#{example},INTERPRETATION=#{interpretation},NOTES=#{notes,jdbcType=VARCHAR},
+				EXTENSIONFIELD1=#{extensionfield1,jdbcType=VARCHAR},EXTENSIONFIELD2=#{extensionfield2,jdbcType=VARCHAR},PROJECTNAME=#{projectname}
+			WHERE QUESTIONID=#{questionid}
+	</update>
+	<delete id="deleteRESUDP_Question" parameterType="String" flushCache="true">
+		DELETE FROM RESUDP_QUESTIONS WHERE QUESTIONID = #{questionID}
+	</delete>
+	<insert id="addRESUDP_QuestionLawRef" parameterType="RESUDP_QuestionLawRef" useGeneratedKeys="true" flushCache="true">
+		<selectKey resultType="int" order="BEFORE" keyProperty="tid">
+			SELECT SEQ_RESUDP_QUESTIONLAWREFS.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO RESUDP_QUESTIONLAWREFS (TID,QUESTIONID,DOCUMENTID,DOCUMENTNAME,ENTITYNO,DESCRIPTION,EXTENSIONFIELD1,EXTENSIONFIELD2,PROJECTNAME)
+			VALUES (#{tid},#{questionid},#{documentid},#{documentname},#{entityno,jdbcType=VARCHAR},#{description,jdbcType=VARCHAR},#{extensionfield1,jdbcType=VARCHAR},#{extensionfield2,jdbcType=VARCHAR},#{projectname})
+	</insert>
+	<delete id="deleteRESUDP_QuestionLawRef" parameterType="String" flushCache="true">
+		DELETE FROM RESUDP_QUESTIONLAWREFS WHERE QUESTIONID = #{questionID}
+	</delete>
+	<insert id="addRESUDP_QuestionExample" parameterType="RESUDP_QuestionExample" useGeneratedKeys="true" flushCache="true">
+		<selectKey resultType="int" order="BEFORE" keyProperty="tid">
+			SELECT SEQ_RESUDP_QUESTIONEXAMPLES.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO RESUDP_QUESTIONEXAMPLES (TID,QUESTIONID,CATALOGNODEID,CATALOGNODENAME,NODETYPE,PROJECTNAME)
+			VALUES (#{tid},#{questionid},#{catalognodeid},#{catalognodename},#{nodetype},#{projectname})
+	</insert>
+	<delete id="deleteRESUDP_QuestionExample" parameterType="String" flushCache="true">
+		DELETE FROM RESUDP_QUESTIONEXAMPLES WHERE QUESTIONID = #{questionid}
+	</delete>
+	<insert id="addRESUDP_LawExample" parameterType="RESUDP_Question" useGeneratedKeys="false" flushCache="true">
+	    <selectKey keyProperty="exampleid" resultType="String" order="BEFORE">
+	        SELECT CONCAT('EI',TO_CHAR(CAST(SUBSTR(NVL(MAX(EXAMPLEID),'EI0000000'),3,7)+1 AS VARCHAR2(10)),'FM0000000')) FROM RESUDP_LAWEXAMPLES
+	    </selectKey>
+	    insert into RESUDP_LAWEXAMPLES(EXAMPLEID,SUBJECT,TITLE,EXAMPLE,INTERPRETATION,NOTES,PROJECTNAME)
+	    	values(#{exampleid},#{subject},#{title},#{example},#{interpretation},#{notes,jdbcType=VARCHAR},#{projectname})   					
+	</insert>
+	<update id="updateRESUDP_LawExample" parameterType="RESUDP_Question" flushCache="true">
+		UPDATE RESUDP_LAWEXAMPLES
+			SET SUBJECT=#{subject},TITLE=#{title},EXAMPLE=#{example},INTERPRETATION=#{interpretation},NOTES=#{notes,jdbcType=VARCHAR},PROJECTNAME=#{projectname}
+			WHERE EXAMPLEID=#{exampleid}
+	</update>
+	<delete id="deleteRESUDP_LawExample" parameterType="String" flushCache="true">
+		DELETE FROM RESUDP_LAWEXAMPLES WHERE EXAMPLEID = #{exampleID}
+	</delete>
+	
+	<!-- 发布更新操作 -->
+	<delete id="truncateRES_CATALOGFULLTREE" flushCache="true">
+		TRUNCATE TABLE RES_CATALOGFULLTREE
+	</delete>
+	<insert id="batchInsertRES_CATALOGFULLTREE" flushCache="true">
+		INSERT INTO RES_CATALOGFULLTREE
+	       SELECT CATALOGNODEID,CATALOGNODENAME,CATALOGID,NODETYPE,VIEWRESOURCE,EDITRESOURCE,SAVERESOURCE,TRANSMITRESOURCE,CANCATALOGSEARCH,CANFULLTEXTSEARCH,FULLTEXTSEARCHRESOURCE,CANSHOWEXTENSIONS,INDEXNO,EXTENSIONFIELD1,EXTENSIONFIELD2,PROJECTNAME
+	       FROM RESUDP_CATALOGFULLTREE
+	</insert>
+	<delete id="truncateRES_CATALOGS" flushCache="true">
+		TRUNCATE TABLE RES_CATALOGS
+	</delete>
+	<insert id="batchInsertRES_CATALOGS" flushCache="true">
+		INSERT INTO RES_CATALOGS
+	       SELECT CATALOGID,CATALOGNAME,FULLCATALOGNAME,PARENTCATALOGID,INPARENTINDEXNO,LEVELNAME,NODETYPE,EXTENSIONFIELD1,EXTENSIONFIELD2,PROJECTNAME
+	       FROM RESUDP_CATALOGS
+	</insert>
+	<delete id="truncateSYS_DOCUMENTINFOS" flushCache="true">
+		TRUNCATE TABLE SYS_DOCUMENTINFOS
+	</delete>
+	<insert id="batchInsertSYS_DOCUMENTINFOS" flushCache="true">
+		INSERT INTO SYS_DOCUMENTINFOS
+	       SELECT DOCUMENTID,TITLE,CREATOR,SUBJECT,DESCRIPTION,PUBLISHER,CONTRIBUTOR,DOCUMENTDATE,TYPE,FORMAT,SOURCE,IDENTIFIER,LANGUAGE,RELATION,COVERAGE,RIGHTS,MD5,VERSION,LOCATION,FILEEXTENSION,DELETESTATUS,PROJECTNAME
+	       FROM RESUDP_DOCUMENTINFOS
+	</insert>
+	<delete id="truncateRES_QUESTIONLAWREFS" flushCache="true">
+		TRUNCATE TABLE RES_QUESTIONLAWREFS
+	</delete>
+	<insert id="batchInsertRES_QUESTIONLAWREFS" flushCache="true">
+		INSERT INTO RES_QUESTIONLAWREFS
+		    SELECT TID,QUESTIONID,DOCUMENTID,DOCUMENTNAME,ENTITYNO,DESCRIPTION,EXTENSIONFIELD1,EXTENSIONFIELD2,PROJECTNAME
+		    FROM RESUDP_QUESTIONLAWREFS
+	</insert>
+	<delete id="truncateRES_QUESTIONS" flushCache="true">
+		TRUNCATE TABLE RES_QUESTIONS
+	</delete>
+	<insert id="batchInsertRES_QUESTIONS" flushCache="true">
+		INSERT INTO RES_QUESTIONS
+		    SELECT QUESTIONID,SUBJECT,TITLE,DESCRIPTION,ANSWER,REFERENCENOTES,EXAMPLE,INTERPRETATION,NOTES,EXTENSIONFIELD1,EXTENSIONFIELD2,PROJECTNAME
+		    FROM RESUDP_QUESTIONS
+	</insert>
+	<delete id="truncateSYS_SYSTEMINFOS" flushCache="true">
+		TRUNCATE TABLE SYS_SYSTEMINFOS
+	</delete>
+	<insert id="batchInsertSYS_SYSTEMINFOS" flushCache="true">
+		INSERT INTO SYS_SYSTEMINFOS
+		    SELECT DOCUMENTID,TITLE,CREATOR,SUBJECT,DESCRIPTION,PUBLISHER,CONTRIBUTOR,DOCUMENTDATE,TYPE,FORMAT,IDENTIFIER,SOURCE,LANGUAGE,RELATION,COVERAGE,RIGHTS,MD5,VERSION,PROJECTNAME,LOCATION,FILEEXTENSION,DELETESTATUS,EXTENSIONFIELD1,EXTENSIONFIELD2
+		    FROM RESUDP_SYSTEMINFOS
+	</insert>
+	<delete id="truncateRES_QUESTIONEXAMPLES" flushCache="true">
+		TRUNCATE TABLE RES_QUESTIONEXAMPLES
+	</delete>
+	<insert id="batchInsertRES_QUESTIONEXAMPLES" flushCache="true">
+		INSERT INTO RES_QUESTIONEXAMPLES
+		    SELECT TID,QUESTIONID,CATALOGNODEID,CATALOGNODENAME,NODETYPE,PROJECTNAME
+		    FROM RESUDP_QUESTIONEXAMPLES
+	</insert>
+	<delete id="truncateRES_LAWEXAMPLES" flushCache="true">
+		TRUNCATE TABLE RES_LAWEXAMPLES
+	</delete>
+	<insert id="batchInsertRES_LAWEXAMPLES" flushCache="true">
+		INSERT INTO RES_LAWEXAMPLES
+			SELECT EXAMPLEID,SUBJECT,TITLE,EXAMPLE,INTERPRETATION,NOTES,PROJECTNAME
+			FROM RESUDP_LAWEXAMPLES
+	</insert>
+	
+</mapper>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.izhong.expert.dao.HyperDao">
+	
+	<cache/>
+	
+	<!--##########################################HyperLinkText sql######################################## -->
+	<select id="getAllHyperRecord" resultType="hashmap">
+	 select * from res_hypertextlinkextends
+	</select>
+	<insert id="addHyperRecord"  parameterType="hashmap" flushCache="true">
+	 insert into res_hypertextlinkextends(TID,HypertextName,ViewText,ExtendAddress,MustLogin,ProjectName)
+	                               values(SEQ_RES_HYPERTEXTLINKEXTENDS.NEXTVAL,#{hypertextName},#{viewText},#{extendAddress},#{mustLogin},#{projectName})
+	</insert>
+	<delete id="deleteHyperRecord" parameterType="long" flushCache="true">
+	 delete from res_hypertextlinkextends where TID = #{tid}
+	</delete>
+	<update id="updateHyperRecord" parameterType="hashmap" flushCache="true">
+	 update res_hypertextlinkextends set ViewText = #{viewText},ExtendAddress = #{extendAddress},MustLogin = #{mustLong}
+	                                         where TID = #{tid}
+	</update>
+	
+	<!-- 新闻速递的增删改查 -->
+	<select id="getAllHyper" resultType="HypertextLinkExtends">
+		SELECT * FROM RES_HYPERTEXTLINKEXTENDS
+	</select>
+	<insert id="addHyper" parameterType="HypertextLinkExtends" flushCache="true">
+		INSERT INTO RES_HYPERTEXTLINKEXTENDS
+			(TID,HYPERTEXTNAME,VIEWTEXT,EXTENDADDRESS,MUSTLOGIN,PROJECTNAME)
+		VALUES
+			(SEQ_RES_HYPERTEXTLINKEXTENDS.NEXTVAL,#{hypertextName},#{viewText},#{extendAddress},#{mustLogin},#{projectName})
+	</insert>
+	<update id="modHyper" parameterType="HypertextLinkExtends" flushCache="true">
+		UPDATE RES_HYPERTEXTLINKEXTENDS SET 
+			VIEWTEXT=#{viewText},
+			EXTENDADDRESS=#{extendAddress},
+			MUSTLOGIN=#{mustLogin} 
+		WHERE TID=#{tid}
+	</update>
+	<delete id="delHyper" parameterType="int" flushCache="true">
+		DELETE RES_HYPERTEXTLINKEXTENDS WHERE TID=#{#tid}
+	</delete>
+</mapper>

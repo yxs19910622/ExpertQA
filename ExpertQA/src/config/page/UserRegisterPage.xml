@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="userRegister" extends="struts-default">
+		<action name="initRegister" class="userRegister" method="initRegister">
+			<result name="success">/webpages/user/user_register.jsp</result>
+		</action>
+		<action name="userRegister" class="userRegister">
+			<!-- <result name="success" type="redirect">index</result> -->
+			<result name="success">/haufe/user/email.jsp</result>
+		</action>
+		<action name="password_email" class="userRegister" method="password_email">
+			<result name="success">/haufe/user/password1_1.jsp</result>
+		</action>
+		<action name="password_page" class="userRegister" method="password_page">
+			<result name="input">/haufe/user/password2_1.jsp</result>
+			<result name="success">/haufe/user/error_code.jsp</result>
+		</action>
+		<action name="email_reg" class="userRegister" method="email_reg">
+			<result name="error_code">/haufe/user/error_code.jsp</result>
+			<result name="error_reg">/haufe/user/error_email.jsp</result>
+			<result name="success">/haufe/user/email_reg.jsp</result>
+		</action>
+		<action name="terms" class="userRegister" method="terms">
+			<result name="success">/webpages/user/user_terms.jsp</result>
+		</action>
+		<action name="email_ag" class="userRegister" method="email_ag">
+			<result name="success">/haufe/user/email.jsp</result>
+		</action>
+	</package>
+</struts>

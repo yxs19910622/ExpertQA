@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.izhong.expert.dao.ReplyDao">
+
+	<cache/>
+	
+	<insert id="addReply" parameterType="Replys" >
+		INSERT INTO LABQA_REPLYS
+			(REPLYID,QUESTIONID,REPLYCONTENT,USERID,REPLYTIME)
+		VALUE
+			(#{replyID},#{questionID},#{replyContent},#{userID},#{replyTime})
+	</insert>
+	<update id="modReply" parameterType="Replys">
+		UPDATE LABQA_REPLYS SET	REPLYCONTENT=#{replyContent} WHERE REPLYID=#{replyID}
+	</update>
+	<update id="delRReply" parameterType="String" >
+		UPDATE LABQA_REPLYS SET ISALREADYDELETED = 0 WHERE REPLYID=#{replyID}
+	</update>
+	<update id="verifyReply" parameterType="String" >
+		UPDATE LABQA_REPLYS SET ISALREADYCHECKED = #{0} WHERE REPLYID=#{1}
+	</update>
+	
+	<select id="qryNewReplys" parameterType="String" resultType="Replys">
+		SELECT R.* FROM LABQA_QUESTIONS Q,LABQA_REPLYS R 
+		WHERE Q.QUESTIONID=R.QUESTIONID AND Q.USERID=#{userID} AND R.REPLYTIME>#{lastTime}
+	</select>
+	<!-- fanweiying add sql -->
+	<select id="getAllReplysByQuestionId" parameterType="hashmap" resultType="hashmap">
+	    select reply.*,report.*,us.aliasname as ALIASNAME,us.userpicture as USERPICTURE,company.companyname as COMPANYNAME 
+	    from labqa_replys reply, labqa_expertreport report,labqa_users us,labqa_companys company
+	    where reply.userid=report.userid
+	     and us.COMPANYID = company.COMPANYID
+	     and reply.userid = us.userid
+	     and (reply.isalreadychecked in(1,4) or reply.userid = #{userId})
+	     and reply.questionid = #{questionId}
+	</select>
+	<select id="getOneReply" parameterType="String" resultType="hashmap">
+	     select * from labqa_replys reply,labqa_questions question ,labqa_users us ,labqa_qatypes qa
+	     where reply.questionid = question.questionid
+	     and reply.userid = us.userid
+	     and qa.qatypeid = question.qatypeid
+	     and reply.replyid = #{replyId}
+	</select>
+	<insert id="addReplyContent" parameterType="hashmap" >
+		INSERT INTO LABQA_REPLYS
+			(REPLYID,QUESTIONID,REPLYCONTENT,USERID,REPLYTIME,POLLCOUNT,ISALREADYCHECKED,ISALREADYDELETED,ISTOP)
+		VALUES
+			(#{replyId},#{questionId},#{replyContent},#{userId},#{replyTime},#{pollCount},#{isAlreadyChecked},#{isalreadyDeleted},#{istop})
+		<!-- UPDATE LABQA_QUESTIONS
+		SET REPLYCOUNT=REPLYCOUNT+1 WHERE QUESTIONID=#{questionId} -->
+	</insert>
+	<update id="updatePollCount" parameterType = "String" >
+	    update LABQA_REPLYS set POLLCOUNT = (POLLCOUNT+1) where REPLYID = #{replyId}
+	</update>
+	<select id="getUserNameByQuestionId"  resultType="hashmap">
+	    select reply.questionid as QUESTIONID,min(us.ALIASNAME) as ALIASNAME,max(reply.replytime) from labqa_replys reply,labqa_users us 
+      where reply.userid = us.userid group by reply.questionid
+	</select>
+	<select id="getReplyContentByUserIdAndQuestionId" parameterType="hashmap" resultType="hashmap">
+	    select * from labqa_replys where USERID = #{userId} 
+	    and QUESTIONID = #{questionId}
+	    and ISALREADYCHECKED = '2'
+	</select>
+	<select id="qryReplysByUserId" resultType="Replys" parameterType="string">
+		SELECT * FROM LABQA_REPLYS WHERE USERID=#{userId}
+	</select>
+	<select id="qryReplysUnaudited" resultType="Replys">
+		SELECT * FROM LABQA_REPLYS WHERE ISALREADYCHECKED=4
+	</select>
+	<select id="qryReplysByQuestionId" resultType="Replys">
+		SELECT * FROM LABQA_REPLYS WHERE ISALREADYCHECKED in(1,4) AND QUESTIONID=#{questionId}
+	</select>
+	<select id="qryReplysAll" resultType="Replys">
+		SELECT * FROM LABQA_REPLYS WHERE ISALREADYCHECKED!=2 AND QUESTIONID=#{questionId}
+	</select>
+	<update id="optimalAnswer" parameterType="string" >
+		UPDATE LABQA_REPLYS SET ISTOP=1 WHERE REPLYID=#{replyId}
+	</update>
+	<update id="updateReply" parameterType="hashmap">
+	    UPDATE LABQA_REPLYS SET ISALREADYCHECKED=#{isAlreadyChecked},
+	      REPLYCONTENT = #{replyContent}
+	     WHERE REPLYID=#{replyId}
+	</update>
+	<update id="modReplyForContent" parameterType="Replys">
+		UPDATE LABQA_REPLYS SET REPLYCONTENT = #{replyContent} WHERE REPLYID = #{replyID}
+	</update>
+	<update id="modReplyCount" parameterType="string">
+		UPDATE LABQA_QUESTIONS
+		SET REPLYCOUNT=REPLYCOUNT+1 WHERE QUESTIONID=#{questionId}
+	</update>
+</mapper>

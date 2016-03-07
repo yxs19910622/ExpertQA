@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="index" extends="struts-default">
+		<action name="index" class="index">
+			<result name="success">index.jsp</result>
+		</action>
+		<action name="index_mirror" class="index" method="index_mirror">
+			<result name="success">index_1.jsp</result>
+		</action>
+		<action name="activeUser" class="index" method="activeUser">
+			<result name="success">/common/static/activeUser.jsp</result>
+		</action>
+	</package>
+</struts>

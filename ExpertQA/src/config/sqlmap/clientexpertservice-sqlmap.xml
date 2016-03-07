@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.izhong.expert.dao.ClientExpertServiceDao">
+	
+	<!--<cache/>-->
+		
+	<!-- 添加操作 -->
+	<insert id="addClientAccessLogs" parameterType="ClientAccessLogs" flushCache="true">
+		INSERT INTO SYS_CLIENTACCESSLOGS
+			(TID,DEVICESERIALNUMBER,USERID,CREATETIME,DESCRIPTION,STATUS,PROJECTNAME)
+		VALUES
+			(SEQ_SYS_CLIENTACCESSLOGS.NEXTVAL,#{deviceSerialNumber},#{userID},#{createTime},#{description},1,#{projectName})
+	</insert>
+		
+	<!-- 查询系统文件 -->
+	<select id="qrySystemInfoAll" resultType="SystemInfos">
+		SELECT * FROM SYS_SYSTEMINFOS
+	</select>
+	
+	<select id="qrySystemInfoListByProjectName" parameterType="String" resultType="SystemInfos">
+		SELECT * FROM SYS_SYSTEMINFOS WHERE PROJECTNAME=#{ProjectName}
+	</select>
+	
+	<select id="qrySystemInfoListByIDs" resultType="SystemInfos">
+		SELECT * FROM SYS_SystemInfos WHERE DocumentID IN 
+		<foreach collection="list" item="documentIds" open="(" separator="," close=")">
+			#{documentIds}
+		</foreach>
+	</select>
+		
+	<!-- 查询资源文档文件 -->
+	<select id="qryDocumentInfoAll" resultType="DocumentInfos" parameterType="String">
+		SELECT * FROM SYS_DOCUMENTINFOS
+	</select>
+	
+	<select id="qryDocumentInfoListByProjectName" resultType="DocumentInfos" parameterType="String">
+		SELECT * FROM SYS_DOCUMENTINFOS WHERE PROJECTNAME=#{projectName} OR (PROJECTNAME='劳动法V11' AND #{projectName}='劳动法USBV11')
+	</select>
+	
+	<select id="qryDocumentInfoListByIDs" resultType="DocumentInfos">
+		SELECT * FROM SYS_DOCUMENTINFOS WHERE DocumentID IN 
+		<foreach collection="list" item="documentIds" open="(" separator="," close=")">
+			#{documentIds}
+		</foreach>
+	</select>
+	
+	<select id="qryDocumentInfoListByCatalogNodeID" parameterType="String" resultType="DocumentInfos">
+		SELECT * FROM RESUDP_DOCUMENTINFOS WHERE DOCUMENTID IN (
+			SELECT DECODE(N,1,VIEWRESOURCE,2,EDITRESOURCE,3,SAVERESOURCE,4,TRANSMITRESOURCE) AS DOCUMENTID
+			  FROM RESUDP_CATALOGFULLTREE,(SELECT ROWNUM N FROM DUAL CONNECT BY ROWNUM &lt;=2)
+			  WHERE CATALOGNODEID=#{catalogNodeID})
+	</select>
+	
+	<select id="qryDocumentInfoListByCatalogNodeIDs" resultType="DocumentInfos">
+		SELECT * FROM RESUDP_DOCUMENTINFOS WHERE DOCUMENTID IN (
+			SELECT DECODE(N,1,VIEWRESOURCE,2,EDITRESOURCE,3,SAVERESOURCE,4,TRANSMITRESOURCE) AS DOCUMENTID
+			  FROM RESUDP_CATALOGFULLTREE,(SELECT ROWNUM N FROM DUAL CONNECT BY ROWNUM &lt;=2)
+			  WHERE CATALOGNODEID IN
+	         <foreach collection="list" item="cid" index="index" open="(" close=")" separator=",">
+	             #{cid}
+	         </foreach>)
+	         ORDER BY Title
+	</select>
+
+	<select id="qryDocumentInfoListByLawXmlDocuments" parameterType="String" resultType="DocumentInfos">
+		SELECT * FROM SYS_DOCUMENTINFOS WHERE FORMAT='XmlDocument' ORDER BY TITLE
+	</select>	
+	
+ 	<!--SELECT * FROM RESUDP_DOCUMENTINFOS WHERE DOCUMENTID IN (
+	      SELECT DECODE(N,1,VIEWRESOURCE,2,EDITRESOURCE,3,SAVERESOURCE,4,TRANSMITRESOURCE) AS DOCUMENTID
+	        FROM RESUDP_CATALOGFULLTREE,(SELECT ROWNUM N FROM DUAL CONNECT BY ROWNUM &lt;=2)
+	        WHERE CATALOGNODEID IN (SELECT CATALOGNODEID FROM SYS_TRYDOCUMENTS A WHERE A.CATALOGNODEID NOT IN 
+	                                       (SELECT CATALOGNODEID FROM SYS_TRYUSERDOCUMENTS B WHERE B.DEVICESERIALNUMBER=#{deviceserialnumber} AND B.CATALOGNODEID=A.CATALOGNODEID)))
+	        ORDER BY TITLE -->
+	<select id="qryDocumentInfoListByTryDocuments" parameterType="String" resultType="DocumentInfos">
+	SELECT * FROM RESUDP_DOCUMENTINFOS WHERE DOCUMENTID IN (
+	      SELECT DECODE(N,1,VIEWRESOURCE,2,EDITRESOURCE,3,SAVERESOURCE,4,TRANSMITRESOURCE) AS DOCUMENTID
+	        FROM RESUDP_CATALOGFULLTREE,(SELECT ROWNUM N FROM DUAL CONNECT BY ROWNUM &lt;=2)
+	        WHERE CATALOGNODEID IN (SELECT CATALOGNODEID FROM SYS_TRYDOCUMENTS A WHERE A.CATALOGNODEID=CATALOGNODEID)
+	              OR CATALOGNODEID IN (SELECT B.CATALOGNODEID FROM SYS_TRYUSERDOCUMENTS B WHERE B.DEVICESERIALNUMBER=#{deviceserialnumber} AND B.CATALOGNODEID=CATALOGNODEID))
+	        ORDER BY TITLE
+	 </select>	
+		
+	<!-- 功能上已经作废部分，不可删除 -->	
+	<select id="qryUserTechniqueInfosAll" resultType="UseTechniqueInfos" parameterType="String">
+		SELECT * FROM RES_UseTechniqueInfos
+	</select>		
+		
+	<select id="qryHypertextLinkExtendsAll" resultType="HypertextLinkExtends" parameterType="String">
+		SELECT * FROM RES_HypertextLinkExtends ORDER BY cast(extensionField1 as int)
+	</select>
+	
+	<select id="qryHypertextLinksAll" resultType="HypertextLinks" parameterType="String">
+		SELECT * FROM RES_HypertextLinks
+	</select>
+	
+	<!-- 其他表内容  -->	
+	<select id="qryCatalogsAll" resultType="Catalogs" parameterType="String">
+		SELECT * FROM RES_Catalogs WHERE PROJECTNAME=#{ProjectName} OR (PROJECTNAME='劳动法V11' AND #{ProjectName}='劳动法USBV11')
+	</select>
+		
+	<select id="qryCatalogFullTreeAll" resultType="CatalogFullTree" parameterType="String">
+		SELECT * FROM RES_CatalogFullTree WHERE PROJECTNAME=#{ProjectName} OR (PROJECTNAME='劳动法V11' AND #{ProjectName}='劳动法USBV11')
+	</select>
+		
+	<select id="qryResQuestionsAll" resultType="ResQuestions" parameterType="String">
+		SELECT * FROM RES_Questions WHERE PROJECTNAME=#{ProjectName} OR (PROJECTNAME='劳动法V11' AND #{ProjectName}='劳动法USBV11')
+	</select>
+	
+	<select id="qryResQuestionsByIDs" resultType="ResQuestions" parameterType="String">
+		SELECT * FROM RES_Questions WHERE QUESTIONID IN (#{questionIDs})
+	</select>
+	
+	<select id="qryQuestionLawRefsAll" resultType="QuestionLawRefs" parameterType="String">
+		SELECT * FROM RES_QuestionLawRefs WHERE PROJECTNAME=#{ProjectName} OR (PROJECTNAME='劳动法V11' AND #{ProjectName}='劳动法USBV11')
+	</select>
+	
+	<select id="qryRES_LawExamplesAll" resultType="RES_LawExample" parameterType="String">
+		SELECT * FROM RES_LAWEXAMPLES WHERE PROJECTNAME=#{ProjectName} OR (PROJECTNAME='劳动法V11' AND #{ProjectName}='劳动法USBV11')
+	</select>	
+		
+	<select id="qryRES_QuestionExamplesAll" resultType="RES_QuestionExample" parameterType="String">
+		SELECT * FROM RES_QUESTIONEXAMPLES WHERE PROJECTNAME=#{ProjectName} OR (PROJECTNAME='劳动法V11' AND #{ProjectName}='劳动法USBV11')
+	</select>
+
+	
+	<!-- 查询更新列表列表 -->
+	<select id="qryUpdateTableInfosAll" resultType="UpdateTableInfos" parameterType="String">
+		SELECT * FROM RES_UpdateTableInfos WHERE PROJECTNAME=#{ProjectName}
+	</select>
+	
+	
+	<!-- 查询操作 -->
+	<select id="qryOnlineQuestions" resultType="QuestionQueryResultObj" parameterType="String">
+		SELECT QUESTIONID,CAPTIONTEXT FROM LABQA_QUESTIONS WHERE CAPTIONTEXT LIKE '%'||#{questionkey}||'%' OR QUESTIONCONTENT LIKE '%'||#{questionkey}||'%' ORDER BY CREATETIME DESC
+	</select>
+	
+</mapper>

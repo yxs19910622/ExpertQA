@@ -1,0 +1,59 @@
+/*wbg _search by @wangbaoguo2011-08-08*/
+body{font-size: 12px;color: #333;line-height: 1.6;font-family: Tahoma,Verdana,Simsun,Microsoft YaHei,Arial Unicode MS,Mingliu,Arial,Helvetica;border-top-width: 0px;padding-right: 0px;	padding-left: 0px;border-left-width: 0px;border-bottom-width: 0px;padding-bottom: 0px;margin: 0px;padding-top: 0px;font-style: normal;border-right-width: 0px;text-decoration: none;outline: 0;}
+span{border-top-width: 0px;padding-right: 0px;padding-left: 0px;border-left-width: 0px;font-size: 100%;border-bottom-width: 0px;padding-bottom: 0px;margin: 0px;padding-top: 0px;font-style: normal;border-right-width: 0px;text-decoration: none;outline: 0;}
+em{	border-top-width: 0px;padding-right: 0px;padding-left: 0px;border-left-width: 0px;	font-size: 100%;border-bottom-width: 0px;padding-bottom: 0px;margin: 0px;padding-top: 0px;font-style: normal;border-right-width: 0px;text-decoration: none;outline: 0;}
+a{text-decoration: none; outline:none; cursor:pointer; outline:0; color:#4AA2E7}
+a:hover{color: #ff7700; text-decoration:underline}
+a img{border: 0;}
+dl,dt,dd,ul,li{padding:0; margin:0; list-style:none}
+.wbglines{display: block;background: #e0e0e0;float: right;margin: 3px 10px 0px;width: 1px;height: 12px;}
+.wbgclear{ clear:both}
+/*wbg Top Begin*/
+.wbgTop{height: 28px;width: 100%;background: url(../images/bgimg/tbgwbg.png) repeat-x scroll 0 -768px transparent;}
+.wbgTop a{color: #555;}
+.wbgTop a:hover{color: #ff7700;}
+.wbgTopMiddle{width: 960px;	margin: 0 auto;	padding-top: 6px;}
+.wbgTopMiddle ul{float: right;width: 480px;}
+.wbgTopMiddle ul li{float: right;display: block;}
+.wbgTopLeft{float: left;width: 330px;}
+.wbgTopLeft span{color: #666666;}
+.wbgTopLeft a{color: #4AA2E7;padding-right: 5px;}
+/*wbg Top  End*/
+/*wbgHeader Begin*/
+.wbgHeader{width:960px; margin:0 auto; text-align:left; margin-bottom:-10px; margin-top:8px;}
+.wbgHeaderLogo{background-image: url(../images/bgimg/logo.png); float: left; height: 55px; overflow: hidden; width:228px;}
+/*wbgHeader End*/
+/*wbgHeaderNav Begin*/
+.wbgHeaderNav{width:732px; float:left; height:55px;}
+.wbgHeaderNav ul {padding:0 0 0 12px;font-size:14px;font-weight:bold; margin-top:27px}
+.wbgHeaderNav ul a {color:#666;background:#FFF url(../images/bgimg/bg_nav_1101.png) no-repeat right -150px;}
+.wbgHeaderNav ul a:hover {color:#F60;text-decoration:none;}
+.wbgHeaderNav li {float:left;padding:0 4px 0 2px;}
+.wbgHeaderNav li a {display:block;float:left;padding-right:12px;height:28px;line-height:28px;cursor:pointer;*line-height:32px;_line-height:28px;}
+.wbgHeaderNav li a em {display:block;float:left;padding-left:12px;background:url(../images/bgimg/bg_nav_1101.png) no-repeat 0 -150px;}
+.wbgHeaderNav li a:hover {color:#FFF;background:#FC8602 url(../images/bgimg/bg_nav_1101.png) no-repeat right -100px;}
+.wbgHeaderNav li a:hover em {background:url(../images/bgimg/bg_nav_1101.png) no-repeat 0 -100px;}
+.wbgHeaderNav li.current a {color:#FFF;background:#FC8602 url(../images/bgimg/bg_nav_1101.png) no-repeat right -100px;}
+.wbgHeaderNav li.current a em {background:url(../images/bgimg/bg_nav_1101.png) no-repeat 0 -100px;}
+.wbgHeaderNav li.current a:hover {background:#FC8602 url(../images/bgimg/bg_nav_1101.png) no-repeat right -100px;}
+.wbgHeaderNav li.current a:hover em {background:url(../images/bgimg/bg_nav_1101.png) no-repeat 0 -100px;}
+/*wbgHeaderNav End*/
+/*wbgSearch Begin*/
+.wbgSearch{width:960px; margin:0 auto;background-image: url(../images/bgimg/navbg.png); height:40px;}
+.wbgSearchLeft{float: left;height: 26px;margin-top: 6px;width: 306px;border: 1px solid #55A0E3;margin-left:26px;margin-right:8px;_margin-right:6px;_margin-left:13px;display: inline-block;position: relative;vertical-align: middle;background-image: url(../images/bgimg/textbg.jpg);z-index: 2;}
+.wbgSearchType{float: left;height: 26px;margin-left: -1px; position: relative; text-align: left;width: 70px;}
+.wbgSearchType_div{position: absolute;width: 100%;}
+.wbgSearchType_Line{ border-right: 1px solid #DDDDDD;cursor: pointer;height: 20px;margin-top: 3px;padding-left: 9px;}
+.wbgSearchType_Line a{display: block; color:#666666;height: 21px;line-height: 21px;}
+.wbgSearchType_List{background-color: #FFFFFF;border: 1px solid #999999;margin-top: 3px;padding: 5px 0;}
+.wbgSearchType_List  a{display: block; color:#666666;height: 21px;line-height: 21px;padding-left: 9px;}
+.wbgangel{border-color: #666666 transparent transparent; border-style: solid dashed dashed;border-width: 4px;clear: both;display: inline-block;font-size: 0;height: 0;overflow: hidden;position: absolute;right: 8px;top: 11px;width: 0;}
+.wbgtext{border: 0 none; float: left;line-height: 14px; padding: 6px 3px 5px;width: 230px; font: 12px/1.5 arial;background-image: url(../images/bgimg/textbg.jpg); color:#666666}
+.wbgSearchType_List li a:hover{ background:#f1f1f1; color:#ff7700}
+.wbgSearchBtnDiv{ padding-top:7px; float:left}
+.wbgsearchBtn{background:url(../images/bgimg/wbgSearch_btn.png) no-repeat scroll 0 0 transparent;  border: 0 none;  cursor: pointer;  width:80px;height:26px;  padding: 0;  font-size:14px}
+.wbgHotwords{width:500px;position: relative; float:left; color:#ffffff; padding-top:10px; padding-left:12px;}
+.wbgHotwords a{color:#ffffff; margin-right:12px}
+.wbgHotwords a:hover{color:#ff7700;}
+.wbgSearchType_Line a:hover{ text-decoration:none}
+/*wbgSearch End*/

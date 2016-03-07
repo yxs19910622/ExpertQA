@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<import resource="classpath:config/springstruts/UserLoginAction.xml"/>
+	<import resource="classpath:config/springstruts/UserRegisterAction.xml"/>
+	<import resource="classpath:config/springstruts/RoleAction.xml"/>
+	<import resource="classpath:config/springstruts/QAAction.xml"/>
+	<import resource="classpath:config/springstruts/SearchAction.xml"/>
+	<import resource="classpath:config/springstruts/MemberAction.xml"/>
+	<import resource="classpath:config/springstruts/IndexAction.xml"/>
+	<import resource="classpath:config/springstruts/UserAction.xml"/>
+	<import resource="classpath:config/springstruts/FreeOrderAction.xml"/>
+	<import resource="classpath:config/springstruts/OnlinePaymentAction.xml"/>
+	<import resource="classpath:config/springstruts/BuyOnlineAction.xml"/>
+</beans>

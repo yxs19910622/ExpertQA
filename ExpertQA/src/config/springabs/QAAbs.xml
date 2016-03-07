@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean name="qaAbs" class="org.izhong.expert.abs.QAAbsImpl">
+		<property name="questionService" ref="questionService"/>
+		<property name="replysService" ref="replysService"/>
+		<property name="keyWordService" ref="keyWordService"/>
+		<property name="qatypeService" ref="qatypeService"/>
+	</bean>
+</beans>

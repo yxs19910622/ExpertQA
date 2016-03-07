@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="userLogin" extends="struts-default">
+		<action name="toUserEdit" class="userLogin" method="toUserEdit">
+			<interceptor-ref name="createSession"/>
+    		<interceptor-ref name="defaultStack"/>
+			<result name="success" type="redirect">member</result>
+		</action>
+		<action name="init_buyonline" class="userLogin" method="init_buyonline">
+			<interceptor-ref name="createSession"/>
+    		<interceptor-ref name="defaultStack"/>
+			<result name="success" type="redirect">BuyOnline?kehu</result>
+		</action>
+		<action name="init_qustion" class="userLogin" method="init_qustion">
+			<interceptor-ref name="createSession"/>
+    		<interceptor-ref name="defaultStack"/>
+			<result name="success" type="redirect">question</result>
+		</action>
+		<action name="userLogin" class="userLogin" method="toLogin">
+			<interceptor-ref name="createSession"/>
+    		<interceptor-ref name="defaultStack"/>
+			<result name="success" type="redirect">index</result>
+			<result name="error" type="redirect">login</result>
+		</action>
+		<action name="init_login" class="userLogin" method="init_login">
+			<interceptor-ref name="createSession"/>
+    		<interceptor-ref name="defaultStack"/>
+			<result name="success" type="redirect">index</result>
+			<result name="input" type="redirect">index</result>
+		</action>
+		<action name="clientLogin" class="userLogin" method="clientLogin">
+			<result name="success" type="redirect">index</result>
+			<result name="error" type="redirect">login</result>
+		</action>
+		<action name="logout" class="userLogin" method="logout">
+			<result name="success" type="redirect">index</result>
+		</action>
+		<action name="toMail" class="userLogin" method="toMail">
+			<result name="success">/haufe/user/email_1.jsp</result>
+		</action>
+	</package>
+</struts>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.izhong.expert.dao.UserService2Dao">
+   	<cache />
+	
+	<!-- 获取用户相关公告信息 -->
+	<select id="qryRES_UserAnnouncements" parameterType="hashmap" resultType="RES_UserAnnouncement">
+		SELECT * FROM RES_USERANNOUNCEMENTS WHERE (USERID=#{userid} OR USERID IS NULL) AND (PROJECTNAME=#{projectname} OR (PROJECTNAME='劳动法V11' AND #{projectname}='劳动法USBV11'))
+	</select>
+	
+	<!-- 添加、修改、查询SYS_KeyData表 -->
+	<insert id="addSYS_KeyData" parameterType="SYS_KeyData" useGeneratedKeys="true" flushCache="true">
+		<selectKey resultType="int" order="BEFORE" keyProperty="tid">
+			SELECT SEQ_SYS_KEYDATA.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO SYS_KEYDATA (TID,KEY,VALUE)
+			VALUES (#{tid},#{key,jdbcType=VARCHAR},#{value,jdbcType=VARCHAR})
+	</insert>
+	<update id="updateSYS_KeyData" parameterType="SYS_KeyData" flushCache="true">
+		UPDATE SYS_KEYDATA
+			SET KEY=#{key,jdbcType=VARCHAR},VALUE=#{value,jdbcType=VARCHAR}
+			WHERE TID=#{tid}
+	</update>
+	<select id="qrySYS_KeyDatas" parameterType="hashmap" resultType="SYS_KeyData">
+		SELECT TID,KEY,VALUE FROM SYS_KEYDATA
+	    <if test="whereClause != null and whereClause != ''">WHERE ${whereClause}</if>
+	    <if test="orderbyClause != null and orderbyClause != ''">ORDER BY ${orderbyClause}</if>
+	</select>
+
+	<!-- 添加、修改、查询SYS_TRYDOCUMENTS表 -->
+	<insert id="addSYS_TryDocument" parameterType="SYS_TryDocument" useGeneratedKeys="true" flushCache="true">
+		<selectKey resultType="int" order="BEFORE" keyProperty="tid">
+			SELECT SEQ_SYS_TRYDOCUMENTS.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO SYS_TRYDOCUMENTS (TID,CATALOGNODEID,PROJECTNAME)
+			VALUES (#{tid},#{catalognodeid,jdbcType=VARCHAR},#{projectname,jdbcType=VARCHAR})
+	</insert>
+	<update id="updateSYS_TryDocument" parameterType="SYS_TryDocument" flushCache="true">
+		UPDATE SYS_TRYDOCUMENTS
+			SET CATALOGNODEID=#{catalognodeid,jdbcType=VARCHAR},PROJECTNAME=#{projectname,jdbcType=VARCHAR}
+			WHERE TID=#{tid}
+	</update>
+	<select id="qrySYS_TryDocuments" parameterType="hashmap" resultType="SYS_TryDocument">
+		SELECT TID,CATALOGNODEID,PROJECTNAME FROM SYS_TRYDOCUMENTS
+	    <if test="whereClause != null and whereClause != ''">WHERE ${whereClause}</if>
+	    <if test="orderbyClause != null and orderbyClause != ''">ORDER BY ${orderbyClause}</if>
+	</select>
+	<select id="qrySYS_TryDocumentAll" parameterType="String" resultType="SYS_TryDocument">
+		SELECT ROWNUM,CATALOGNODEID,PROJECTNAME FROM(
+		    SELECT CATALOGNODEID,PROJECTNAME FROM SYS_TRYDOCUMENTS
+		    UNION
+		    SELECT CATALOGNODEID,PROJECTNAME FROM SYS_TRYUSERDOCUMENTS WHERE DEVICESERIALNUMBER=#{deviceserialnumber,jdbcType=VARCHAR})
+	</select>	
+
+	<!-- 添加、修改、查询用户SYS_TRYUSERDOCUMENTS表 -->
+	<insert id="addSYS_TryUserDocument" parameterType="SYS_TryUserDocument" useGeneratedKeys="true" flushCache="true">
+		<selectKey resultType="int" order="BEFORE" keyProperty="tid">
+			SELECT SEQ_SYS_TRYUSERDOCUMENTS.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO SYS_TRYUSERDOCUMENTS (TID,DEVICESERIALNUMBER,CATALOGNODEID,DOWNLOADTIME,PROJECTNAME)
+			VALUES (#{tid},#{deviceserialnumber,jdbcType=VARCHAR},#{catalognodeid,jdbcType=VARCHAR},#{downloadtime,jdbcType=TIMESTAMP},#{projectname,jdbcType=VARCHAR})
+	</insert>
+	<select id="qrySYS_TryUserDocumentAll" resultType="SYS_TryUserDocument">
+		SELECT TID,DEVICESERIALNUMBER,CATALOGNODEID,DOWNLOADTIME,PROJECTNAME FROM SYS_TRYUSERDOCUMENTS
+	</select>
+	<select id="qrySYS_TryUserDocuments" parameterType="hashmap" resultType="SYS_TryUserDocument">
+		SELECT TID,DEVICESERIALNUMBER,CATALOGNODEID,DOWNLOADTIME,PROJECTNAME FROM SYS_TRYUSERDOCUMENTS
+	    <if test="whereClause != null and whereClause != ''">WHERE ${whereClause}</if>
+	    <if test="orderbyClause != null and orderbyClause != ''">ORDER BY ${orderbyClause}</if>
+	</select>
+	<select id="countTryDocumentCount" parameterType="hashmap" resultType="int">
+		SELECT COUNT(1) AS TRYCOUNT FROM SYS_TRYUSERDOCUMENTS WHERE DEVICESERIALNUMBER=#{deviceserialnumber,jdbcType=VARCHAR}
+		<!-- AND PROJECTNAME=#{projectname,jdbcType=VARCHAR} -->
+	</select>
+
+	<!-- 用户登录状态记录 -->
+	<insert id="addSYS_UserLoginRecord" parameterType="SYS_UserLoginRecord" useGeneratedKeys="true" flushCache="true">
+		INSERT INTO SYS_USERLOGINRECORDS (USERID,DEVICESERIALNUMBER,LOGINTIME,ENDTIME)
+			VALUES(#{userid},#{deviceserialnumber},#{logintime},#{endtime})
+	</insert>
+	<update id="updateSYS_UserLoginRecord" parameterType="SYS_UserLoginRecord" flushCache="true">
+		UPDATE SYS_USERLOGINRECORDS
+			SET DEVICESERIALNUMBER=#{deviceserialnumber},LOGINTIME=#{logintime,jdbcType=TIMESTAMP},ENDTIME=#{endtime,jdbcType=TIMESTAMP}
+			WHERE USERID=#{userid}
+	</update>
+	<delete id="deleteSYS_UserLoginRecord" parameterType="String" flushCache="true">
+		DELETE FROM SYS_USERLOGINRECORDS WHERE USERID=#{userid}
+	</delete>
+	<select id="qrySYS_UserLoginRecords" parameterType="String" resultType="SYS_UserLoginRecord" >
+		SELECT * FROM SYS_USERLOGINRECORDS WHERE USERID=#{userid}
+	</select>
+	
+</mapper>

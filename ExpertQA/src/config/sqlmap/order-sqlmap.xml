@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.izhong.expert.dao.OrderDao">
+	
+	<!-- <cache/> -->
+	
+	<select id="getOrderProductByNo" parameterType="String" resultType="OrderProducts">
+		SELECT * FROM ORDER_PRODUCTS WHERE ProductNo = #{productNo}
+	</select>
+	
+	<select id="getOrderByNo" parameterType="String" resultType="org.izhong.expert.model.order.Order">
+		SELECT * FROM ORDER_ORDERS WHERE ORDERMASTERNO=#{0} AND LINKID=#{1}
+	</select>
+	
+	<select id="getOrderByTransactionId" parameterType="String" resultType="org.izhong.expert.model.order.Order">
+		SELECT * FROM ORDER_ORDERS WHERE TRANSACTIONNO=#{transactionId}
+	</select>
+	
+	<select id="getPayRecordByTransactionId" parameterType="String" resultType="org.izhong.expert.model.order.OrderPayRecord">
+		SELECT * FROM ORDER_TRANSACTIONS WHERE TRANSACTIONNO=#{transactionId}
+	</select>
+	
+	<insert id="addOrder" parameterType="org.izhong.expert.model.order.Order">
+		INSERT INTO ORDER_ORDERS 
+			(OrderMasterNo,ProductMoney,ActualMoney,PayStatus,OrderStatus,LinkID,FareMoney,TotalPayMoney,CreateTime)
+		VALUES
+			(#{orderMasterNo},#{productMoney},#{actualMoney},0,0,#{linkId},0,#{totalPayMoney},#{createTime})
+	</insert>
+	
+	<update id="updateOrder" parameterType="org.izhong.expert.model.order.Order">
+		UPDATE ORDER_ORDERS SET 
+			ISNEEDINVOICE=#{isNeedInvoice},
+			NOTES=#{notes},
+			PAYTYPE=#{payType},
+			PAYBANK=#{payBank},
+			PAYSTATUS=#{payStatus},
+			TITLETYPE=#{titleType},
+			INVOICETITLE=#{invoiceTitle},
+			TRANSACTIONNO=#{transactionNo}
+		WHERE ORDERMASTERNO=#{orderMasterNo} <!-- AND LINKID=#{linkId} -->
+	</update>
+	
+	<update id="updateOrderStatus" parameterType="org.izhong.expert.model.order.Order">
+		UPDATE ORDER_ORDERS SET 
+			PAYSTATUS=#{payStatus}
+		WHERE ORDERMASTERNO=#{orderMasterNo} AND LINKID=#{linkId}
+	</update>
+	
+	<insert id="addOrderDetail" parameterType="org.izhong.expert.model.order.OrderDetails">
+		INSERT INTO ORDER_ORDERDETAILS 
+			(OrderMasterNo,OrderDetailNo,ProductNo,ProductPrice,ActualPrice,OrderAmount,OrderMoney,FareMoney,SubTotal,State,Tid)
+		VALUES
+			(#{orderMasterNo},#{orderDetailNo},#{productNo},#{productPrice},#{actualPrice},#{orderAmount},#{orderMoney},0,#{subTotal},#{state},#{tid})
+	</insert>
+	
+	<insert id="addOrderPayRecord" parameterType="org.izhong.expert.model.order.OrderPayRecord">
+		INSERT INTO ORDER_TRANSACTIONS 
+			(TID,ORDERMASTERNO,TRANSACTIONMONEY,TRANSACTIONSTATUS,SUBMITDATA,CREATETIME,TRANSACTIONNO)
+		VALUES
+			(#{tid},#{orderMasterNo},#{transactionMoney},#{transactionStatus},#{submitData},#{createTime},#{transactionNo})
+	</insert>
+	
+	<update id="updateOrderPayRecord" parameterType="org.izhong.expert.model.order.OrderPayRecord">
+		UPDATE ORDER_TRANSACTIONS SET 
+			TRANSACTIONMONEY=#{transactionMoney},
+			SUBMITDATA=#{submitData},
+			TRANSACTIONSTATUS=#{transactionStatus}
+		WHERE TRANSACTIONNO=#{transactionNo} 
+	</update>
+	
+	<select id="getOrderByUserId" resultType="org.izhong.expert.model.order.Order">
+		SELECT * FROM ORDER_ORDERS WHERE LINKID=#{userId}	
+	</select>
+	
+	<select id="getOrderByOrderMasterNo" parameterType="String" resultType="org.izhong.expert.model.order.Order">
+		SELECT * FROM ORDER_ORDERS WHERE LINKID=#{0} AND ORDERMASTERNO = #{1}
+	</select>
+	
+	<select id="getOrderDetailsByNo" resultType="org.izhong.expert.model.order.OrderDetails">
+		SELECT 
+			d.*,p.productname as "productName",p.productimagepath as "productUrl" 
+		FROM ORDER_ORDERDETAILS d,ORDER_PRODUCTS p 
+		WHERE d.Productno=p.Productno AND ORDERMASTERNO = #{orderMasterNo}
+	</select>
+	
+	<select id="getPayHistory" resultType="org.izhong.expert.model.order.OrderDetails">
+		<!-- SELECT o.transactionno as "transactionNo",d.ordermasterno,d.orderdetailno,p.productname as "productName",d.orderamount,d.actualprice,o.totalpaymoney as "totalPayMoney",u.email as "email",o.createtime,u.username,o.paytype,o.paybank FROM ORDER_ORDERDETAILS d,ORDER_PRODUCTS p,ORDER_ORDERS o,SYS_USERS u WHERE o.paystatus=2 AND o.ordermasterno=d.ordermasterno AND d.Productno=p.Productno AND o.Linkid=u.Userid
+	 -->
+	 	SELECT O.TRANSACTIONNO AS "TRANSACTIONNO",D.ORDERMASTERNO,D.ORDERDETAILNO,
+		P.PRODUCTNAME AS "PRODUCTNAME",D.ORDERAMOUNT,D.ACTUALPRICE,O.TOTALPAYMONEY AS "TOTALPAYMONEY",
+		U.EMAIL AS "EMAIL",O.CREATETIME,U.USERNAME,O.PAYTYPE,O.PAYBANK,
+		C.PROVINCE,C.PREFECTURELEVELCITY,C.AREA,C.STREET,U.MOBILE,O.TITLETYPE,O.INVOICETITLE
+		FROM ORDER_ORDERDETAILS D,ORDER_PRODUCTS P,ORDER_ORDERS O,SYS_USERS U ,LABQA_USERS L ,LABQA_COMPANYS C
+		WHERE O.PAYSTATUS=2 
+		AND O.ORDERMASTERNO=D.ORDERMASTERNO 
+		AND D.PRODUCTNO=P.PRODUCTNO 
+		AND O.LINKID=U.USERID AND U.USERID=L.USERID
+		AND L.COMPANYID=C.COMPANYID
+	</select>
+	
+	<select id="getMessage4Email" resultType="org.izhong.expert.model.order.OrderDetails" parameterType="string">
+	 	SELECT O.TRANSACTIONNO AS "TRANSACTIONNO",D.ORDERMASTERNO,D.ORDERDETAILNO,
+		P.PRODUCTNAME AS "PRODUCTNAME",D.ORDERAMOUNT,D.ACTUALPRICE,O.TOTALPAYMONEY AS "TOTALPAYMONEY",
+		U.EMAIL AS "EMAIL",O.CREATETIME,U.USERNAME,O.PAYTYPE,O.PAYBANK,
+		C.PROVINCE,C.PREFECTURELEVELCITY,C.AREA,C.STREET,U.MOBILE,O.TITLETYPE,O.INVOICETITLE
+		FROM ORDER_ORDERDETAILS D,ORDER_PRODUCTS P,ORDER_ORDERS O,SYS_USERS U ,LABQA_USERS L ,LABQA_COMPANYS C
+		WHERE O.PAYSTATUS=2 
+		AND O.ORDERMASTERNO=D.ORDERMASTERNO 
+		AND D.PRODUCTNO=P.PRODUCTNO 
+		AND O.LINKID=U.USERID AND U.USERID=L.USERID
+		AND L.COMPANYID=C.COMPANYID
+		and o.ORDERMASTERNO=#{orderMasterNo}
+	</select>
+	
+	<!-- <select id="getPayHistory" resultType="org.izhong.expert.model.order.OrderDetails">
+		SELECT o.transactionno as "transactionNo",d.ordermasterno,d.orderdetailno,p.productname as "productName",d.orderamount,d.actualprice,o.totalpaymoney as "totalPayMoney",u.email as "email" FROM ORDER_ORDERDETAILS d,ORDER_PRODUCTS p,ORDER_ORDERS o,SYS_USERS u WHERE o.paystatus=2 AND o.ordermasterno=d.ordermasterno AND d.Productno=p.Productno AND o.Linkid=u.Userid
+	</select> -->
+	
+	<select id="getOrderDetailsInfo" resultType="org.izhong.expert.model.order.OrderDetails">
+		SELECT o.Linkid as "userId",d.productno,P.PRODUCTALIAS as "productAlias" FROM ORDER_ORDERS o, ORDER_ORDERDETAILS d,ORDER_PRODUCTS p WHERE o.ordermasterno = d.ordermasterno AND d.productno=p.productno AND o.paystatus=2 AND o.Linkid = #{0} AND o.transactionno=#{1}
+	</select>
+	
+	<insert id="addCode" parameterType="org.izhong.expert.model.Code">
+		INSERT INTO ORDER_USERPREFERENTIALS
+			(PREFERENTIALNO,DISCOUNTMONEY,APPLICABLEPRODUCT,STARTDATE,ENDDATE)
+		VALUES
+			(#{preferentialno},#{discountmoney},#{applicableproduct},#{startdate},#{enddate})
+	</insert>
+	<select id="allCode" resultType="org.izhong.expert.model.Code">
+		SELECT * FROM ORDER_USERPREFERENTIALS
+	</select>
+	<select id="verifiCode" resultType="int" parameterType="string">
+		SELECT COUNT(*) FROM ORDER_USERPREFERENTIALS WHERE PREFERENTIALNO = #{preferentialno}
+	</select>
+</mapper>

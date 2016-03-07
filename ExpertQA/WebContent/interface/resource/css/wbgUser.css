@@ -1,0 +1,38 @@
+.wbgUserDh{height:32px; line-height:32px; width:auto}
+.wbgUserDh a.wbgUserDha_now{color:#f70; font-weight:bold}
+.wbgLeft_user{width:190px; float:left; border:1px solid #C5DDF6;border-top:none}
+.wbgUser_menu h3{ background:url(../images/bgimg/menuTit.png) repeat-x; margin:0; padding:0; height:28px; line-height:28px; border-top:1px solid #C5DDF6;border-bottom:1px solid #C5DDF6;padding-left:8px; color:#666666; font-size:12px; font-family: "ËÎÌו",Arial,Lucida,Verdana,Helvetica,sans-serif; cursor:pointer}
+.wbgUser_menu h3 span{background: url("../images/bgimg/smallPic.png") no-repeat 0 -110px transparent; display: inline-block; float: right;  height: 15px;  width: 10px; padding-right: 12px; margin-top:5px}
+.wbgUser_menu ul li{display: block; line-height: 25px; margin: 0 3px 0 18px; padding: 0 0 0 23px; color:#cdcdcd}
+.wbgUser_menu ul li a{color:#434343; text-decoration:none}
+.wbgUser_menu ul li a:hover{color:#434343; text-decoration:none}
+.wbgUser_menu ul{ margin:6px 0px;}
+.wbgUser_menu ul li.menu_nowUser{background: url("../images/bgimg/smallPic.png") no-repeat -29px -120px transparent;}
+.wbgUser_menu ul li.hovered{background: url("../images/bgimg/smallPic.png") no-repeat -29px -120px transparent;}
+.wbgRight_user{width:755px; float:right}
+.new_user{background: url("../images/bgimg/msg_bg.png") no-repeat 5px -292px #FFFFE3; border: 1px solid #FAE2B9; color:#FC6210;line-height: 24px;padding: 1px 0 0 23px;text-align:left; margin-bottom:12px;}
+.lesson_tit{border: 1px solid #FAE2B9;  height: 24px; line-height: 24px; text-align: center; width: 128px; background:#FCEACF; color:#f70; font-weight:bold}
+.user_lesson{overflow:hidden; border:1px solid #e6e6e6; padding:0 36px; height:205px; position:relative;}
+.wbgRight_user .prolist {position:relative; height: 220px;overflow:hidden;background:#FFFFFF;}
+.wbgRight_user .prolist .prolist_content{position:absolute;width:2000px;top:26px;left:0px;}
+.wbgRight_user .prolist ul{float:left;height: 220px;}
+.wbgRight_user .prolist ul li { float:left;width:171px;	display:inline;text-align:center;}
+.wbgRight_user .prolist ul li img { border:1px solid #e6e6e6; padding:5px;width:94px; height:115px;}
+.goLeft{background: url("../images/bgimg/indexuser.png") no-repeat;height: 116px; top: 37px; width: 21px; left:10px; cursor:pointer;position:absolute; }
+.goRight{background: url("../images/bgimg/indexuser.png") no-repeat right 0 transparent;height: 116px; top: 37px; width: 21px;cursor:pointer; left: 722px;position:absolute;}
+.user_divPub{width:100%; border:1px solid #e6e6e6}
+.user_search{width:100%; margin:28px 0px;}
+.user_search td{ text-align:left; height:35px;}
+.text_user{ width:128px;border-color: #AAA #DDD #DDD #AAA; border-style: solid; border-width: 1px;  margin-right: 5px; padding: 4px;}
+.user_search span{ font-weight:bold;color:#f70; font-size:14px;}
+.wbg_userBtn {background: url("../images/bgimg/btn_gay.gif") no-repeat scroll 0 0 transparent;border: 0 none;color: #505050;cursor: pointer;font-size: 14px;font-weight: bold; height: 33px;padding-bottom: 1px; vertical-align: middle; width: 88px; margin-left:8px}
+.wbg_userBtn:hover{background: url("../images/bgimg/btn_gar_a.gif") no-repeat scroll 0 0 transparent;border: 0 none; color: #505050;cursor: pointer; font-size: 14px;font-weight: bold;  height: 33px;padding-bottom: 1px;  vertical-align: middle;width: 88px; margin-left:8px}
+
+
+.card_list{width:100%;}
+.card_list h3{ padding-left:20px; font-size:12px;color:#666;}
+.card_list span{color:#f70;}
+.card_list th { background: url("../images/bgimg/tb-th.2011.gif") repeat-x scroll 0 0 #F7F7F7; color:#666;height: 28px; border-top:1px solid #e6e6e6}
+.card_list td{ border-color: #E6E6E6;border-style: solid; border-width: 1px 0 0 1px; padding: 5px 4px;text-align: center;}
+.show_user1{ display:none}
+.show_user3,.show_user2{ display:none;margin-top:18px; border:1px solid #e6e6e6;}

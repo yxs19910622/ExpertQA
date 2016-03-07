@@ -1,0 +1,728 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.izhong.expert.dao.OnlinePaymentDao">
+
+  <select id="getCustomerIdByEmailAndPasswd" resultType="string" parameterType="hashmap">
+        select us.customerid from sys_users us where 
+         us.email = #{email} 
+        <if test="deviceNo != null">
+          and us.DEVICESERIALNUMBER = #{deviceNo} 
+        </if>
+        <if test="password != null">
+          and us.PASSWORD = #{passWord}
+        </if>
+        
+  </select>
+  <select id="getUserIdByEmailAndPasswd" resultType="string" parameterType="hashmap">
+        select us.userid from sys_users us where 
+         us.email = #{email} 
+        <if test="deviceNo != null">
+          and us.DEVICESERIALNUMBER = #{deviceNo} 
+        </if>
+        <if test="password != null">
+          and us.PASSWORD = #{passWord}
+        </if>
+        
+  </select>
+
+  
+  
+  
+  <!--
+  =========================================================================== 
+  							LandingPage基本信息操作DML START 
+  ===========================================================================
+  -->
+  
+  <select id="selectOrderInfoById" resultType="org.izhong.expert.model.online.OrderInfo" parameterType="string" >
+    select  orderMasterno,customerId,productMoney,payMoney,actualMoney,isNeedInvoice,notes,payType,payBank,payStatus,	     
+            orderStatus,linkId,fareMoney,totalPayMoney,createTime,titleType,invoiceTitle,invoiceNotes,postType,	     
+            postTime,invoiceCode,invoiceNo,lateFee,transactionNo,employeeId
+    from ORDER_ORDERS where ORDERMASTERNO = #{orderMasterno}
+  </select>
+  <select id="selectOrderInfoByTransactionId" resultType="org.izhong.expert.model.online.OrderInfo" parameterType="string" >
+    select  orderMasterno,customerId,productMoney,payMoney,actualMoney,isNeedInvoice,notes,payType,payBank,payStatus,	     
+            orderStatus,linkId,fareMoney,totalPayMoney,createTime,titleType,invoiceTitle,invoiceNotes,postType,	     
+            postTime,invoiceCode,invoiceNo,lateFee,transactionNo,employeeId
+    from ORDER_ORDERS where transactionNo = #{transactionNo}
+   </select>
+
+  <insert id="addOrderInfo" parameterType="org.izhong.expert.model.online.OrderInfo" >
+    insert into ORDER_ORDERS(
+    <if test="orderMasterno != null and orderMasterno != ''">
+     ORDERMASTERNO,
+    </if>
+    <if test="customerId != null and customerId != ''">
+     CUSTOMERID,
+    </if>   
+    <if test="productMoney != null and productMoney != ''">
+     PRODUCTMONEY,
+    </if>
+    <if test="payMoney != null and payMoney != ''">
+     PAYMONEY,
+    </if>        
+    <if test="actualMoney != null and actualMoney != ''">
+     ACTUALMONEY,
+    </if>   
+    <if test="isNeedInvoice != null and isNeedInvoice != ''">
+     ISNEEDINVOICE,
+    </if>         
+    <if test="notes != null and notes != ''">
+     NOTES,
+    </if>     
+    <if test="payType != null and payType != ''">
+     PAYTYPE,
+    </if>   
+    <if test="payBank != null and payBank != ''">
+     PAYBANK,
+    </if>             
+    <if test="payStatus != null and payStatus != ''">
+     PAYSTATUS,
+    </if>          
+    <if test="orderStatus != null and orderStatus != ''">
+     ORDERSTATUS,
+    </if>    
+     <if test="employeeId != null and employeeId != ''">
+     EMPLOYEEID,
+    </if>        
+    <if test="linkId != null and linkId != ''">
+     LINKID,
+    </if>         
+    <if test="fareMoney != null and fareMoney != ''">
+     FAREMONEY,
+    </if>       
+    <if test="totalPayMoney != null and totalPayMoney != ''">
+     TOTALPAYMONEY,
+    </if>                      
+    <if test="titleType != null and titleType != ''">
+     TITLETYPE,
+    </if>   
+    <if test="invoiceTitle != null and invoiceTitle != ''">
+     INVOICETITLE,
+    </if>     
+    <if test="invoiceNotes != null and invoiceNotes != ''">
+     INVOICENOTES,
+    </if>        
+    <if test="postType != null and postType != ''">
+     POSTTYPE,
+    </if>      
+    <if test="postTime != null and postTime != ''">
+     POSTTIME,
+    </if>      
+    <if test="invoiceCode != null and invoiceCode != ''">
+     INVOICECODE,
+    </if>         
+     <if test="invoiceNo != null and invoiceNo != ''">
+     INVOICENO,
+    </if>  
+    <if test="lateFee != null and lateFee != ''">
+     LATEFEE,
+    </if>     
+    <if test="transactionNo != null and transactionNo != ''">
+     transactionNo,
+    </if>    
+    <if test="createTime != null and createTime != ''">
+     CREATETIME
+    </if>  
+       
+    )VALUES(
+    <if test="orderMasterno != null and orderMasterno != ''">
+    #{orderMasterno},
+    </if>
+    <if test="customerId != null and customerId != ''">
+    #{customerId},
+    </if>   
+    <if test="productMoney != null and productMoney != ''">
+    #{productMoney},
+    </if> 
+    <if test="payMoney != null and payMoney != ''">
+    #{payMoney},
+    </if>	     
+    <if test="actualMoney != null and actualMoney != ''">
+    #{actualMoney},
+    </if>	   
+    <if test="isNeedInvoice != null and isNeedInvoice != ''">
+    #{isNeedInvoice},
+    </if>  
+    <if test="notes != null and notes != ''">
+    #{notes},
+    </if>	         
+    <if test="payType != null and payType != ''">
+    #{payType},
+    </if>	       
+    <if test="payBank != null and payBank != ''">
+    #{payBank},
+    </if>	       
+    <if test="payStatus != null and payStatus != ''">
+    #{payStatus},
+    </if>	     
+    <if test="orderStatus != null and orderStatus != ''">
+    #{orderStatus},
+    </if>	
+     <if test="employeeId != null and employeeId != ''">
+    #{employeeId},
+    </if>	   
+    <if test="linkId != null and linkId != ''">
+    #{linkId},
+    </if>         
+    <if test="fareMoney != null and fareMoney != ''">
+    #{fareMoney},
+    </if>      
+    <if test="totalPayMoney != null and totalPayMoney != ''">
+    #{totalPayMoney},
+    </if>          
+    <if test="titleType != null and titleType != ''">
+    #{titleType},
+    </if>	     
+    <if test="invoiceTitle != null and invoiceTitle != ''">
+    #{invoiceTitle},
+    </if>	 
+    <if test="invoiceNotes != null and invoiceNotes != ''">
+    #{invoiceNotes},
+    </if>	 
+    <if test="postType != null and postType != ''">
+    #{postType},
+    </if>	     
+    <if test="postTime != null and postTime != ''">
+    #{postTime},
+    </if>       
+    <if test="invoiceCode != null and invoiceCode != ''">
+    #{invoiceCode},
+    </if>	   
+    <if test="invoiceNo != null and invoiceNo != ''">
+    #{invoiceNo},
+    </if>	
+    <if test="lateFee != null and lateFee != ''">
+    #{lateFee},
+    </if>     
+    <if test="transactionNo != null and transactionNo != ''">
+     #{transactionNo},
+    </if>   
+    <if test="createTime != null and createTime != ''">
+    #{createTime}
+    </if>   
+    )
+  </insert>
+ 
+  <update id="editOrderInfo" parameterType="org.izhong.expert.model.online.OrderInfo" >
+    update ORDER_ORDERS set
+    <if test="customerId != null and customerId != ''">
+    customerId = #{customerId},
+    </if>   
+    <if test="productMoney != null and productMoney != ''">
+    productMoney = #{productMoney},
+    </if> 
+    <if test="payMoney != null and payMoney != ''">
+    payMoney = #{payMoney},
+    </if>	     
+    <if test="actualMoney != null and actualMoney != ''">
+    actualMoney = #{actualMoney},
+    </if>	   
+    <if test="isNeedInvoice != null and isNeedInvoice != ''">
+    isNeedInvoice = #{isNeedInvoice},
+    </if>  
+    <if test="notes != null and notes != ''">
+    notes = #{notes},
+    </if>	         
+    <if test="payType != null and payType != ''">
+    payType = #{payType},
+    </if>	       
+    <if test="payBank != null and payBank != ''">
+    payBank = #{payBank},
+    </if>	       
+    <if test="payStatus != null and payStatus != ''">
+    payStatus = #{payStatus},
+    </if>	     
+    <if test="orderStatus != null and orderStatus != ''">
+    orderStatus = #{orderStatus},
+    </if>	   
+    <if test="linkId != null and linkId != ''">
+    linkId = #{linkId},
+    </if>         
+    <if test="fareMoney != null and fareMoney != ''">
+    fareMoney = #{fareMoney},
+    </if>      
+    <if test="totalPayMoney != null and totalPayMoney != ''">
+    totalPayMoney = #{totalPayMoney},
+    </if>          
+    <if test="titleType != null and titleType != ''">
+    titleType = #{titleType},
+    </if>	     
+    <if test="invoiceTitle != null and invoiceTitle != ''">
+    invoiceTitle = #{invoiceTitle},
+    </if>	 
+    <if test="invoiceNotes != null and invoiceNotes != ''">
+    invoiceNotes = #{invoiceNotes},
+    </if>	 
+    <if test="postType != null and postType != ''">
+    postType = #{postType},
+    </if>	     
+    <if test="postTime != null and postTime != ''">
+    postTime = #{postTime},
+    </if>       
+    <if test="invoiceCode != null and invoiceCode != ''">
+    invoiceCode = #{invoiceCode},
+    </if>	   
+    <if test="invoiceNo != null and invoiceNo != ''">
+    invoiceNo = #{invoiceNo},
+    </if>	 
+    <if test="lateFee != null and lateFee != ''">
+      lateFee = #{lateFee},
+    </if>      
+    <if test="transactionNo != null and transactionNo != ''">
+    transactionNo = #{transactionNo},
+    </if> 
+    <if test="createTime != null and createTime != ''">
+    createTime = #{createTime}
+    </if>   
+    where orderMasterno = #{orderMasterno}
+  </update>
+ 
+  <!--
+  =========================================================================== 
+  							订单产品操作DML START 
+  ===========================================================================
+   -->
+  <select id="selectOrderProductionsByOrderId" resultType="org.izhong.expert.model.online.OrderProduction" parameterType="string" >
+    select ORDERMASTERNO,ORDERDETAILNO,PRODUCTNO,PRODUCTPRICE,ACTUALPRICE,ORDERAMOUNT,ORDERMONEY,FAREMONEY,LATEFEE,SUBTOTAL,PAYPRICE,STATE,TID
+    from ORDER_ORDERDETAILS
+    where ORDERMASTERNO = #{orderMasterNo}
+  </select>
+ 
+  <insert id="addOrderProduction" parameterType="org.izhong.expert.model.online.OrderProduction" >
+    insert into ORDER_ORDERDETAILS(
+    <if test="tid != null">
+      TID,
+    </if>
+    <if test="orderMasterno != null">
+      ORDERMASTERNO,
+    </if>
+    <if test="orderDetailno != null">
+      ORDERDETAILNO,
+    </if> 
+    <if test="productNo != null">
+      PRODUCTNO,
+    </if>
+    <if test="productPrice != 0">
+      PRODUCTPRICE,
+    </if>     
+    <if test="payPrice != 0">
+      PAYPRICE,
+    </if>     
+    <if test="actualPrice != 0">
+      ACTUALPRICE,
+    </if>       
+    <if test="orderAmount != 0">
+      ORDERAMOUNT,
+    </if>    
+    <if test="orderMoney != 0">
+      ORDERMONEY,
+    </if>   
+    <if test="fareMoney != 0">
+      FAREMONEY,
+    </if>    
+     <if test="latefee != 0">
+      LATEFEE,
+    </if>  
+    <if test="state != null">
+      STATE,
+    </if>     
+    <if test="subTotal != 0">
+      SUBTOTAL
+    </if>        
+    )VALUES (
+    <if test="tid != null">
+      #{tid},
+    </if> 
+    <if test="orderMasterno != null">
+      #{orderMasterno},
+    </if>  
+    <if test="orderDetailno != null">
+      #{orderDetailno},
+    </if>  	
+    <if test="productNo != null">
+      #{productNo},
+    </if>  	     
+    <if test="productPrice != 0">
+      #{productPrice},
+    </if>    
+    <if test="payPrice != 0">
+      #{payPrice},
+    </if>  	      
+    <if test="actualPrice != 0">
+      #{actualPrice},
+    </if>      
+    <if test="orderAmount != 0">
+      #{orderAmount},
+    </if>  	 
+    <if test="orderMoney != 0">
+      #{orderMoney},
+    </if>         
+    <if test="fareMoney != 0">
+      #{fareMoney},
+    </if>  	   	
+    <if test="latefee != 0">
+      #{latefee},
+    </if>     
+    <if test="state != null">
+      #{state},
+    </if>   	
+     <if test="subTotal != 0">
+      #{subTotal}
+    </if>          
+    )
+  </insert>
+  
+  <update id="updateOrderProduction" parameterType="org.izhong.expert.model.online.OrderProduction" >
+    update ORDER_ORDERDETAILS set
+    <if test="tid != null">
+     tid = #{tid},
+    </if> 
+     <if test="orderMasterno != null">
+     orderMasterno = #{orderMasterno},
+    </if>  
+    <if test="productNo != null">
+      productNo = #{productNo},
+    </if>  	     
+    <if test="productPrice != 0">
+      productPrice = #{productPrice},
+    </if>    
+    <if test="payPrice != 0">
+      payPrice = #{payPrice},
+    </if>  	      
+    <if test="actualPrice != 0">
+      actualPrice = #{actualPrice},
+    </if>      
+    <if test="orderAmount != 0">
+     orderAmount = #{orderAmount},
+    </if>  	 
+    <if test="orderMoney != 0">
+      orderMoney = #{orderMoney},
+    </if>         
+    <if test="fareMoney != 0">
+      fareMoney = #{fareMoney},
+    </if>  	   	
+    <if test="latefee != 0">
+      latefee = #{latefee},
+    </if>     
+    <if test="state != null">
+      state = #{state},
+    </if>   	
+     <if test="subTotal != 0">
+      subTotal = #{subTotal}
+    </if> 
+    where ORDERDETAILNO = #{orderDetailno}
+  </update>
+  <delete id="deleteOrderDetails" parameterType="string">
+    delete from ORDER_ORDERDETAILS where ORDERMASTERNO = #{orderMasterNo}
+  </delete>
+  
+  <!--
+  =========================================================================== 
+  							订单在线支付交易记录操作DML START
+  ===========================================================================
+ -->
+  <select id="selectOrderOnlinePayRecordById" resultType="org.izhong.expert.model.online.OrderOnlinePayRecord" parameterType="string" >
+    select tid,orderMasterno,transactionMoney,transactionStatus,submitData,exceptionInfo,synchronousDatano,createTime,transactionNo
+    from ORDER_TRANSACTIONS
+    where orderMasterno = #{orderMasterno}
+  </select>
+  <select id="selectOrderOnlinePayRecordByTransactionId" resultType="org.izhong.expert.model.online.OrderOnlinePayRecord" parameterType="string" >
+    select tid,orderMasterno,transactionMoney,transactionStatus,submitData,exceptionInfo,synchronousDatano,createTime,transactionNo
+    from ORDER_TRANSACTIONS
+    where transactionNo = #{transactionNo}
+  </select>
+
+  <select id="selectOrderOnlinePayRecord" resultType="org.izhong.expert.model.online.OrderOnlinePayRecord" parameterType="hashmap" >
+    select tid,orderMasterno,transactionMoney,transactionStatus,submitData,exceptionInfo,synchronousDatano,createTime,transactionNo
+    from ORDER_TRANSACTIONS
+  </select>
+ 
+  <insert id="insertOrderOnlinePayRecord" parameterType="org.izhong.expert.model.online.OrderOnlinePayRecord" >
+    insert into ORDER_TRANSACTIONS(
+     <if test="tid!=null and tid!=''">
+       tid,
+     </if>
+	 <if test="orderMasterno!=null and orderMasterno!=''">
+       orderMasterno,
+     </if>
+	 <if test="transactionMoney!=null and transactionMoney!=''">
+       transactionMoney,
+     </if>
+	 <if test="transactionStatus!=null and transactionStatus!=''">
+       transactionStatus,
+     </if>
+	 <if test="submitData!=null and submitData!=''">
+        submitData,
+     </if>
+	 <if test="exceptionInfo!=null and exceptionInfo!=''">
+      exceptionInfo,
+     </if>
+	 <if test="synchronousDatano!=null and synchronousDatano!=''">
+       synchronousDatano,
+     </if>
+     <if test="transactionNo != null and transactionNo != ''">
+       transactionNo,
+    </if>
+	 <if test="createTime!=null and createTime!=''">
+       createTime
+     </if>
+    )values(
+     <if test="tid!=null and tid!=''">
+       #{tid},
+     </if>
+	 <if test="orderMasterno!=null and orderMasterno!=''">
+       #{orderMasterno},
+     </if>
+	 <if test="transactionMoney!=null and transactionMoney!=''">
+       #{transactionMoney},
+     </if>
+	 <if test="transactionStatus!=null and transactionStatus!=''">
+       #{transactionStatus},
+     </if>
+	 <if test="submitData!=null and submitData!=''">
+        #{submitData},
+     </if>
+	 <if test="exceptionInfo!=null and exceptionInfo!=''">
+        #{exceptionInfo},
+     </if>
+	 <if test="synchronousDatano!=null and synchronousDatano!=''">
+        #{synchronousDatano},
+     </if>
+     <if test="transactionNo != null and transactionNo != ''">
+        #{transactionNo},
+    </if>
+	 <if test="createTime!=null and createTime!=''">
+        #{createTime}
+     </if>
+    )
+   
+  </insert>
+  
+  <update id="editOrderOnlinePaymentRecord" parameterType="org.izhong.expert.model.online.OrderOnlinePayRecord" >
+    update ORDER_TRANSACTIONS set
+	 <if test="orderMasterno!=null and orderMasterno!=''">
+      orderMasterno = #{orderMasterno},
+     </if>
+	 <if test="transactionMoney!=null and transactionMoney!=''">
+       transactionMoney = #{transactionMoney},
+     </if>
+	 <if test="transactionStatus!=null and transactionStatus!=''">
+       transactionStatus = #{transactionStatus},
+     </if>
+	 <if test="submitData!=null and submitData!=''">
+        submitData = #{submitData},
+     </if>
+	 <if test="exceptionInfo!=null and exceptionInfo!=''">
+      exceptionInfo = #{exceptionInfo},
+     </if>
+	 <if test="synchronousDatano!=null and synchronousDatano!=''">
+       synchronousDatano = #{synchronousDatano},
+     </if>
+     <if test="transactionNo != null and transactionNo != ''">
+      transactionNo = #{transactionNo},
+     </if>
+	 <if test="createTime!=null and createTime!=''">
+       createTime = #{createTime}
+     </if>
+    where TID = #{tid}
+  </update>
+ 
+  <!--
+  =========================================================================== 
+  							订单联系方式操作DML START
+  ===========================================================================
+  -->
+  <select id="selectOrderContactByLinkId" resultType="org.izhong.expert.model.online.OrderContact" parameterType="string" >
+    select LINKID,LINKNAME,PROVINCE,PREFECTURELEVELCITY,AREA,STREET,POSTCODE,TELEPHONE,FAX,QQ,MSN,DEPARTMENT,POSITION,NOTES,CUSTOMERID,USERID,CREATETIME,FULLADDRESS,MOBILE 
+    from ORDER_COMPANYLINKS where linkId = #{linkId}
+  </select>
+  <insert id="insertOrderContact" parameterType="org.izhong.expert.model.online.OrderContact" >
+    insert into ORDER_COMPANYLINKS (
+    <if test="linkId != null and linkId != ''">
+      linkId,
+    </if>
+    <if test="linkName != null and linkName != ''">
+      linkName,
+    </if>
+    <if test="province != null and province != ''">
+      province,
+    </if>
+    <if test="prefeCtureLevelCity != null and prefeCtureLevelCity != ''">
+      prefeCtureLevelCity,
+    </if>
+    <if test="area != null and area != ''">
+      area,
+    </if>
+    <if test="street != null and street != ''">
+      street,
+    </if>
+    <if test="postCode != null and postCode != ''">
+      postCode,
+    </if>
+    <if test="telephone != null and telephone != ''">
+      telephone,
+    </if>
+    <if test="fax != null and fax != ''">
+      fax,
+    </if>
+    <if test="qq != null and qq != ''">
+      qq,
+    </if>
+    <if test="msn != null and msn != ''">
+      msn,
+    </if>
+    <if test="department != null and department != ''">
+      department,
+    </if>
+    <if test="position != null and position != ''">
+      position,
+    </if>
+    <if test="notes != null and notes != ''">
+      notes,
+    </if>
+    <if test="customerId != null and customerId != ''">
+      customerId,
+    </if>
+    <if test="userId != null and userId != ''">
+      userId,
+    </if>
+    <if test="createTime != null and createTime != ''">
+      createTime,
+    </if>
+    <if test="mobile != null and mobile != ''">
+      mobile,
+    </if>
+    <if test="fullAddress != null and fullAddress != ''">
+      fullAddress
+    </if>
+    ) values(
+    <if test="linkId != null and linkId != ''">
+      #{linkId},
+    </if>
+    <if test="linkName != null and linkName != ''">
+      #{linkName},
+    </if>
+    <if test="province != null and province != ''">
+      #{province},
+    </if>
+    <if test="prefeCtureLevelCity != null and prefeCtureLevelCity != ''">
+      #{prefeCtureLevelCity},
+    </if>
+    <if test="area != null and area != ''">
+      #{area},
+    </if>
+    <if test="street != null and street != ''">
+      #{street},
+    </if>
+    <if test="postCode != null and postCode != ''">
+      #{postCode},
+    </if>
+    <if test="telephone != null and telephone != ''">
+      #{telephone},
+    </if>
+    <if test="fax != null and fax != ''">
+      #{fax},
+    </if>
+    <if test="qq != null and qq != ''">
+      #{qq}, 
+    </if>
+    <if test="msn != null and msn != ''">
+      #{msn},
+    </if>
+    <if test="department != null and department != ''">
+      #{department},
+    </if>
+    <if test="position != null and position != ''">
+      #{position},
+    </if>
+    <if test="notes != null and notes != ''">
+      #{notes},
+    </if>
+    <if test="customerId != null and customerId != ''">
+      #{customerId},
+    </if>
+    <if test="userId != null and userId != ''">
+      #{userId},
+    </if>
+    <if test="createTime != null and createTime != ''">
+      #{createTime},
+    </if>
+     <if test="mobile != null and mobile != ''">
+      #{mobile},
+    </if>
+    <if test="fullAddress != null and fullAddress != ''">
+      #{fullAddress}
+    </if>
+    )
+  </insert>
+  <update id="updateOrderContact"  parameterType="org.izhong.expert.model.online.OrderContact" >
+      update ORDER_COMPANYLINKS set 
+    <if test="linkName != null and linkName != ''">
+      linkname = #{linkName},
+    </if>
+    <if test="province != null and province != ''">
+      province = #{province},
+    </if>
+    <if test="prefeCtureLevelCity != null and prefeCtureLevelCity != ''">
+      prefeCtureLevelCity = #{prefeCtureLevelCity},
+    </if>
+    <if test="area != null and area != ''">
+     area = #{area},
+    </if>
+    <if test="street != null and street != ''">
+      street = #{street},
+    </if>
+    <if test="postCode != null and postCode != ''">
+     postCode = #{postCode},
+    </if>
+    <if test="telephone != null and telephone != ''">
+      telephone = #{telephone},
+    </if>
+    <if test="fax != null and fax != ''">
+     fax = #{fax},
+    </if>
+    <if test="qq != null and qq != ''">
+     qq = #{qq}, 
+    </if>
+    <if test="msn != null and msn != ''">
+     msn = #{msn},
+    </if>
+    <if test="department != null and department != ''">
+     department = #{department},
+    </if>
+    <if test="position != null and position != ''">
+     position = #{position},
+    </if>
+    <if test="notes != null and notes != ''">
+      notes = #{notes},
+    </if>
+    <if test="customerId != null and customerId != ''">
+      customerId = #{customerId},
+    </if>
+    <if test="userId != null and userId != ''">
+      userId = #{userId},
+    </if>
+    <if test="createTime != null and createTime != ''">
+      createTime = #{createTime},
+    </if>
+     <if test="mobile != null and mobile != ''">
+      mobile = #{mobile},
+    </if>
+    <if test="fullAddress != null and fullAddress != ''">
+      fullAddress = #{fullAddress}
+    </if>
+    where LINKID = #{linkId}
+  </update>   
+  <select id="getProductFareMoney" resultType="hashmap">
+     select PRODUCTNO,PRODUCTNAME,PRODUCTPRICE,PRODUCTTYPE,PAYPRICE,ACTUALPRICE,LOCALFAREMONEY,OTHERFAREMONEY  
+     from TMP_PRODUCTS where PRODUCTNO = 'LDPUTZ' or PRODUCTNO = 'LDSUTZ'
+     or PRODUCTNO = 'LDPBTZ'
+     or PRODUCTNO = 'LDSBTZ'
+       </select>
+      <select id="getTempProductList" resultType="org.izhong.expert.model.online.TempProduction">
+      select productNo,productName,productPrice,productType,payPrice,actualPrice,localFareMoney,otherFareMoney,lateFee,productImagePath,productVersion,productService
+      from TMP_PRODUCTS
+      </select>
+</mapper>

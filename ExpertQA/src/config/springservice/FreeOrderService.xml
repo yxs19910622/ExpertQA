@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id="freeOrderDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="org.izhong.expert.dao.FreeOrderDao"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<bean name="freeOrderService" class="org.izhong.expert.service.FreeOrderServiceImpl">
+		<property name="freeOrderDao" ref="freeOrderDao"/>
+	</bean>
+</beans>

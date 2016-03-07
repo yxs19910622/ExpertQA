@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean name="userRegisterAbs" class="org.izhong.expert.abs.UserRegisterAbsImpl">
+		<property name="userRegisterService" ref="userRegisterService" />
+		<property name="keyWordService" ref="keyWordService"/>
+		<property name="roleService" ref="roleService"/>
+		<property name="userInfoService" ref="userInfoService"/>
+		<property name="syncCustomerService" ref="syncCustomerService"/>
+	</bean>
+</beans>

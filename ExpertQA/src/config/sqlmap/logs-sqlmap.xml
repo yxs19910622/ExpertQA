@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.izhong.expert.dao.LogsDao">
+
+	<cache/>
+	
+	<select id="qryUseLastInfo" parameterType="String" resultType="UseAccessLogs">
+		SELECT * FROM LABQA_USEACCESSLOGS WHERE USERID=#{userID} AND ROWNUM <![CDATA[<]]>=1 ORDER BY ACCESSTIME DESC
+	</select>
+	
+	<insert id="addOperation" parameterType="OperationLogs" flushCache="true">
+		INSERT INTO SYS_OPERATIONLOGS
+			(TID,OPERATIONTEXT,OPERATOR,OPERATIONTIME,OPERATIONNOTES,IPADDRESS)
+		VALUES
+			(SEQ_SYS_OPERATIONLOGS.NEXTVAL,#{operationText,jdbcType=VARCHAR},#{operator,jdbcType=VARCHAR},#{operationTime},#{operationNotes},#{ipAddress,jdbcType=VARCHAR})
+	</insert>
+</mapper>

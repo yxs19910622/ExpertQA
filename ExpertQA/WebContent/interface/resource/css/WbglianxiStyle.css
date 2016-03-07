@@ -1,0 +1,38 @@
+﻿.wbgAboutwarp{ width:960px; margin:0 auto; overflow:hidden; margin-top:10px; font-family:Tahoma,Verdana,Simsun,Microsoft YaHei,Arial Unicode MS,Mingliu,Arial,Helvetica; position:relative;}
+.wbgAboutwarp .FeiLieMune{border:1px solid #dddddd; line-height:28px; height:28px; margin-bottom:10px; padding-left:5px;}
+.wbgPublicDiv_lx{ overflow:hidden;padding:0; margin:0; margin-top:10px; margin-bottom:0px;}
+.wbgPublicTitle_lx{ background:url(../images/bgimg/Publictitbg.png) repeat-x scroll 0 0 #E6E6E6; height:30px; overflow:hidden;}
+.wbgPublicTitle_lx h2 {background: url(../images/bgimg/PublicH2.png) no-repeat scroll 0 0 transparent;color: #666666;float: left;height: 30px;line-height: 30px;padding: 0 10px;width: 188px; font-size:14px; margin:0}    
+.divRight{background: url(../images/bgimg/PublicRight.png) no-repeat scroll 0 0 transparent;float: right;height: 30px;line-height: 30px;text-align: right;  width: 71px; }
+.wbgPublicListTit_lx{padding:68px 10px;border:1px solid #D3D3D3; border-top:0; overflow:hidden; width:auto; padding-bottom:10px;}
+.wbgPublicListTit_lx table td{ height:32px; color:#444444}
+.wbgPublicListTit_lx table td input {width: 194px;background-image: url("../images/bgimg/inputbg.gif");border: 1px solid #B1B1B1; height: 23px;line-height: 23px; padding: 0 3px;}
+.wbgbtn1{background: url("../images/bgimg/btn_red.gif") no-repeat scroll 0 0 transparent;border: 0 none;color: #FFFFFF;cursor: pointer; font-size: 14px; font-weight: bold;height: 37px; padding-bottom: 1px;vertical-align: middle;width: 147px;}
+.wbgbtn1:hover{background: url("../images/bgimg/btn_red_a.gif") no-repeat scroll 0 0 transparent;border: 0 none;color: #FFFFFF; cursor: pointer; font-size: 14px;font-weight: bold;height: 37px; padding-bottom: 1px; vertical-align: middle; width: 147px;}
+.selectwbg {width: 194px;background-image: url("../images/bgimg/inputbg.gif");border: 1px solid #B1B1B1; height: 24px;line-height: 24px; padding:0px;}
+.wbgPublicTitle{top:10px;position:absolute;left:28px; color:#ffffff; font-size:24px; font-family:"微软雅黑"; font-weight:bold; background:url("../images/bgimg/bgtitle.png"); width:234px; height:76px; text-align:center; line-height:76px;}
+.wbgXgClass{border:1px solid #cdcdcd; padding-left:40px; border-top:0}
+
+.Left_g{width:484px; float:left}
+.right_g{width:445px; float:right; padding-top:10px;}
+.wbgPublicDiv_lx input.wbgbtn_2{background:transparent url(../images/bgimg/btn_02over.png) no-repeat scroll 0 0;border:medium none;cursor:pointer;height:23px;width:86px;font-size:12px;line-height:24px;color:#ffffff; margin-top:12px; margin-left:28px}
+.wbgPublicDiv_lx input.wbgbtn_2:hover{background:transparent url(../images/bgimg/btn_02down.png) no-repeat scroll 0 0;border:medium none;cursor:pointer;height:23px;width:86px;font-size:12px;line-height:24px}
+
+.wbgPublicListTit_lx .wbgtdH tr td{height:38px; border-bottom:1px dashed #efefef}
+
+/*Login css by@wangbaoguo 2011-09-13*/
+.regist{color:#363636; font-size:14px; font-weight:bold; line-height:30px; padding-left:278px;}
+.Ltd td{font-size:14px;}
+.Ltd tr td input{ width:168px;}
+.Ltd tr td.w_wrong{color:#ff7700; font-size:12px; font-weight:700}
+.Ltd tr td.w_wrong a{ font-weight:200;}
+.Ltd tr td.w_wrong span{color:#ff7700; font-weight:bold}
+.Ltd tr td .wbgbtn1{background: url("../images/bgimg/btn_red.gif") no-repeat scroll 0 0 transparent;border: 0 none;color: #FFFFFF;cursor: pointer; font-size: 14px; font-weight: bold;height: 37px; padding-bottom: 1px;vertical-align: middle;width: 147px;}
+.Ltd tr td .wbgbtn1:hover{background: url("../images/bgimg/btn_red_a.gif") no-repeat scroll 0 0 transparent;border: 0 none;color: #FFFFFF; cursor: pointer; font-size: 14px;font-weight: bold;height: 37px; padding-bottom: 1px; vertical-align: middle; width: 147px;}
+.Ltd tr td .botn_gary {background: url("../images/bgimg/btn_gay.gif") no-repeat scroll 0 0 transparent;border: 0 none;color: #505050;cursor: pointer;font-size: 14px;font-weight: bold; height: 33px;padding-bottom: 1px; vertical-align: middle; width: 88px;}
+.Ltd tr td .botn_gary:hover {background: url("../images/bgimg/btn_gar_a.gif") no-repeat scroll 0 0 transparent;border: 0 none; color: #505050;cursor: pointer; font-size: 14px;font-weight: bold;  height: 33px;padding-bottom: 1px;  vertical-align: middle;width: 88px;}
+span.fPwd a{font-size:12px; color:#ff7700; margin-left:8px;}
+.wbgPublicListTit_lx .Ltd1 tr td input{ width:248px;}
+.Ltd1 tr td.sbtn .wbgbtn1{background: url("../images/bgimg/btn_red.gif") no-repeat scroll 0 0 transparent;border: 0 none;color: #FFFFFF;cursor: pointer; font-size: 14px; font-weight: bold;height: 37px; padding-bottom: 1px;vertical-align: middle;width: 147px;}
+.Ltd1 tr td.sbtn .wbgbtn1:hover{background: url("../images/bgimg/btn_red_a.gif") no-repeat scroll 0 0 transparent;border: 0 none;color: #FFFFFF; cursor: pointer; font-size: 14px;font-weight: bold;height: 37px; padding-bottom: 1px; vertical-align: middle; width: 147px;}
+.Ltd1 tr td span{ color:red}

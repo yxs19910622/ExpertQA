@@ -1,0 +1,644 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://core.freemarker" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://core.freemarker" xmlns:intf="http://core.freemarker" xmlns:tns1="http://template.freemarker" xmlns:tns2="http://lang.java" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://core.freemarker" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="http://template.freemarker"/>
+   <import namespace="http://lang.java"/>
+   <element name="getCanonicalForm">
+    <complexType/>
+   </element>
+   <element name="getCanonicalFormResponse">
+    <complexType>
+     <sequence>
+      <element name="getCanonicalFormReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getAsTemplateModel">
+    <complexType>
+     <sequence>
+      <element name="env" type="xsd:anyType"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getAsTemplateModelResponse">
+    <complexType>
+     <sequence>
+      <element name="getAsTemplateModelReturn" type="xsd:anyType"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="fault" type="tns1:TemplateException"/>
+   <element name="getTemplate">
+    <complexType/>
+   </element>
+   <element name="getTemplateResponse">
+    <complexType>
+     <sequence>
+      <element name="getTemplateReturn" type="xsd:anyType"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getEndLine">
+    <complexType/>
+   </element>
+   <element name="getEndLineResponse">
+    <complexType>
+     <sequence>
+      <element name="getEndLineReturn" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getEndColumn">
+    <complexType/>
+   </element>
+   <element name="getEndColumnResponse">
+    <complexType>
+     <sequence>
+      <element name="getEndColumnReturn" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getBeginColumn">
+    <complexType/>
+   </element>
+   <element name="getBeginColumnResponse">
+    <complexType>
+     <sequence>
+      <element name="getBeginColumnReturn" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getBeginLine">
+    <complexType/>
+   </element>
+   <element name="getBeginLineResponse">
+    <complexType>
+     <sequence>
+      <element name="getBeginLineReturn" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getStartLocation">
+    <complexType/>
+   </element>
+   <element name="getStartLocationResponse">
+    <complexType>
+     <sequence>
+      <element name="getStartLocationReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getEndLocation">
+    <complexType/>
+   </element>
+   <element name="getEndLocationResponse">
+    <complexType>
+     <sequence>
+      <element name="getEndLocationReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="toString">
+    <complexType/>
+   </element>
+   <element name="toStringResponse">
+    <complexType>
+     <sequence>
+      <element name="toStringReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="contains">
+    <complexType>
+     <sequence>
+      <element name="column" type="xsd:int"/>
+      <element name="line" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="containsResponse">
+    <complexType>
+     <sequence>
+      <element name="containsReturn" type="xsd:boolean"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getSource">
+    <complexType/>
+   </element>
+   <element name="getSourceResponse">
+    <complexType>
+     <sequence>
+      <element name="getSourceReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+  </schema>
+  <schema elementFormDefault="qualified" targetNamespace="http://template.freemarker" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="http://core.freemarker"/>
+   <import namespace="http://lang.java"/>
+   <complexType name="TemplateException">
+    <sequence>
+     <element name="FTLInstructionStack" nillable="true" type="xsd:string"/>
+     <element name="cause" nillable="true" type="xsd:anyType"/>
+     <element name="causeException" nillable="true" type="xsd:anyType"/>
+
+    </sequence>
+   </complexType>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="getEndColumnResponse">
+
+      <wsdl:part element="impl:getEndColumnResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="toStringRequest">
+
+      <wsdl:part element="impl:toString" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getBeginLineResponse">
+
+      <wsdl:part element="impl:getBeginLineResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getTemplateRequest">
+
+      <wsdl:part element="impl:getTemplate" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getStartLocationRequest">
+
+      <wsdl:part element="impl:getStartLocation" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getStartLocationResponse">
+
+      <wsdl:part element="impl:getStartLocationResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getTemplateResponse">
+
+      <wsdl:part element="impl:getTemplateResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getEndColumnRequest">
+
+      <wsdl:part element="impl:getEndColumn" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getCanonicalFormRequest">
+
+      <wsdl:part element="impl:getCanonicalForm" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getEndLocationRequest">
+
+      <wsdl:part element="impl:getEndLocation" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getBeginColumnResponse">
+
+      <wsdl:part element="impl:getBeginColumnResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getCanonicalFormResponse">
+
+      <wsdl:part element="impl:getCanonicalFormResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getAsTemplateModelResponse">
+
+      <wsdl:part element="impl:getAsTemplateModelResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getEndLocationResponse">
+
+      <wsdl:part element="impl:getEndLocationResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getSourceRequest">
+
+      <wsdl:part element="impl:getSource" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="containsRequest">
+
+      <wsdl:part element="impl:contains" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getEndLineResponse">
+
+      <wsdl:part element="impl:getEndLineResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getSourceResponse">
+
+      <wsdl:part element="impl:getSourceResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getAsTemplateModelRequest">
+
+      <wsdl:part element="impl:getAsTemplateModel" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="toStringResponse">
+
+      <wsdl:part element="impl:toStringResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="TemplateException">
+
+      <wsdl:part element="impl:fault" name="fault"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="containsResponse">
+
+      <wsdl:part element="impl:containsResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getBeginLineRequest">
+
+      <wsdl:part element="impl:getBeginLine" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getEndLineRequest">
+
+      <wsdl:part element="impl:getEndLine" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getBeginColumnRequest">
+
+      <wsdl:part element="impl:getBeginColumn" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:portType name="AddConcatExpression">
+
+      <wsdl:operation name="getCanonicalForm">
+
+         <wsdl:input message="impl:getCanonicalFormRequest" name="getCanonicalFormRequest"/>
+
+         <wsdl:output message="impl:getCanonicalFormResponse" name="getCanonicalFormResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getAsTemplateModel">
+
+         <wsdl:input message="impl:getAsTemplateModelRequest" name="getAsTemplateModelRequest"/>
+
+         <wsdl:output message="impl:getAsTemplateModelResponse" name="getAsTemplateModelResponse"/>
+
+         <wsdl:fault message="impl:TemplateException" name="TemplateException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getTemplate">
+
+         <wsdl:input message="impl:getTemplateRequest" name="getTemplateRequest"/>
+
+         <wsdl:output message="impl:getTemplateResponse" name="getTemplateResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getEndLine">
+
+         <wsdl:input message="impl:getEndLineRequest" name="getEndLineRequest"/>
+
+         <wsdl:output message="impl:getEndLineResponse" name="getEndLineResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getEndColumn">
+
+         <wsdl:input message="impl:getEndColumnRequest" name="getEndColumnRequest"/>
+
+         <wsdl:output message="impl:getEndColumnResponse" name="getEndColumnResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getBeginColumn">
+
+         <wsdl:input message="impl:getBeginColumnRequest" name="getBeginColumnRequest"/>
+
+         <wsdl:output message="impl:getBeginColumnResponse" name="getBeginColumnResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getBeginLine">
+
+         <wsdl:input message="impl:getBeginLineRequest" name="getBeginLineRequest"/>
+
+         <wsdl:output message="impl:getBeginLineResponse" name="getBeginLineResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getStartLocation">
+
+         <wsdl:input message="impl:getStartLocationRequest" name="getStartLocationRequest"/>
+
+         <wsdl:output message="impl:getStartLocationResponse" name="getStartLocationResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getEndLocation">
+
+         <wsdl:input message="impl:getEndLocationRequest" name="getEndLocationRequest"/>
+
+         <wsdl:output message="impl:getEndLocationResponse" name="getEndLocationResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="toString">
+
+         <wsdl:input message="impl:toStringRequest" name="toStringRequest"/>
+
+         <wsdl:output message="impl:toStringResponse" name="toStringResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="contains">
+
+         <wsdl:input message="impl:containsRequest" name="containsRequest"/>
+
+         <wsdl:output message="impl:containsResponse" name="containsResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getSource">
+
+         <wsdl:input message="impl:getSourceRequest" name="getSourceRequest"/>
+
+         <wsdl:output message="impl:getSourceResponse" name="getSourceResponse"/>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="AddConcatExpressionSoapBinding" type="impl:AddConcatExpression">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="getCanonicalForm">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getCanonicalFormRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getCanonicalFormResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getAsTemplateModel">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getAsTemplateModelRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getAsTemplateModelResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="TemplateException">
+
+            <wsdlsoap:fault name="TemplateException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getTemplate">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getTemplateRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getTemplateResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getEndLine">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getEndLineRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getEndLineResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getEndColumn">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getEndColumnRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getEndColumnResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getBeginColumn">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getBeginColumnRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getBeginColumnResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getBeginLine">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getBeginLineRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getBeginLineResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getStartLocation">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getStartLocationRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getStartLocationResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getEndLocation">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getEndLocationRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getEndLocationResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="toString">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="toStringRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="toStringResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="contains">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="containsRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="containsResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getSource">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getSourceRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getSourceResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="AddConcatExpressionService">
+
+      <wsdl:port binding="impl:AddConcatExpressionSoapBinding" name="AddConcatExpression">
+
+         <wsdlsoap:address location="http://localhost:8080/ExpertQA/services/AddConcatExpression"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

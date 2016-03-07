@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.izhong.expert.dao.SyncCustomerDao">
+	
+	<cache/>
+	
+	<insert id="ADDUpdateCompany" parameterType="TMPCompanys" useGeneratedKeys="true" flushCache="true">
+		merge into TMP_COMPANYS his
+			using
+			(
+			  select #{companyID} as COMPANYID,#{companyName} as COMPANYNAME,#{incorporator} as INCORPORATOR,#{province} as PROVINCE,#{prefecturelevelCity} as PREFECTURELEVELCITY,#{area} as AREA,#{street} as STREET,#{postcode} as POSTCODE,#{telephone} as TELEPHONE,#{fax} as FAX,#{notes} as NOTES,#{summary} as SUMMARY,'' as IMPORTDATE from dual
+			) src
+			on (his.COMPANYID=src.COMPANYID)
+			when matched then
+			  update set his.COMPANYNAME=src.COMPANYNAME,his.INCORPORATOR=src.INCORPORATOR,his.PROVINCE=src.PROVINCE,
+			             his.PREFECTURELEVELCITY=src.PREFECTURELEVELCITY,his.AREA=src.AREA,his.STREET=src.STREET,his.POSTCODE=src.POSTCODE,
+			             his.TELEPHONE=src.TELEPHONE,his.FAX=src.FAX,his.NOTES=src.NOTES,his.SUMMARY=src.SUMMARY,his.IMPORTDATE=src.IMPORTDATE
+			   where his.COMPANYID=src.COMPANYID
+			when not matched then
+			  insert values(src.COMPANYID,src.COMPANYNAME,src.INCORPORATOR,src.PROVINCE,src.PREFECTURELEVELCITY,src.AREA,src.STREET,
+			src.POSTCODE,src.TELEPHONE,src.FAX,src.NOTES,src.SUMMARY,src.IMPORTDATE);
+	</insert>
+	
+	<insert id="ADDUpdateOrder" parameterType="TMPOrders" useGeneratedKeys="true" flushCache="true">
+		merge into TMP_ORDERS his
+			using
+			(
+			  select #{orderDetailNo} as ORDERDETAILNO,#{orderMasterNo} AS ORDERMASTERNO,#{userID} AS USERID,#{productNo} AS PRODUCTNO,#{distributeDate,jdbcType=DATE} AS DISTRIBUTEDATE,
+			         #{paymentDate,jdbcType=DATE} AS PAYMENTDATE,#{serviceStartDate,jdbcType=DATE} AS serviceStartDate,#{serviceEndDate,jdbcType=DATE} as serviceEndDate,#{orderStatus} as orderStatus from dual
+			) src
+			on (his.orderDetailNo=src.orderDetailNo)
+			when matched then
+			  update set his.ORDERMASTERNO=src.ORDERMASTERNO,his.USERID=src.USERID,his.PRODUCTNO=src.PRODUCTNO,his.DISTRIBUTEDATE=src.DISTRIBUTEDATE,
+			  his.PAYMENTDATE=src.PAYMENTDATE,his.SERVICESTARTDATE=src.SERVICESTARTDATE,his.SERVICEENDDATE=src.SERVICEENDDATE,his.ORDERSTATUS=src.ORDERSTATUS,his.IMPORTDATE=src.IMPORTDATE
+			   where his.ORDERDETAILNO=src.ORDERDETAILNO
+			when not matched then
+			  insert values(src.ORDERDETAILNO,src.ORDERMASTERNO,src.USERID,src.PRODUCTNO,
+			                 src.DISTRIBUTEDATE,src.PAYMENTDATE,src.SERVICESTARTDATE,src.SERVICEENDDATE,src.ORDERSTATUS,src.IMPORTDATE);
+	</insert>
+	
+	<insert id="ADDUpdateUser" parameterType="TMPUsers" useGeneratedKeys="true" flushCache="true">
+		merge into TMP_USERS his
+			using
+			(
+			  select #{userID} as userID,#{companyID} as companyID,#{userName} as userName,#{position} as position,#{mobile} as mobile,#{ImportDate} as ImportDate from dual
+			) src
+			on (his.USERID=src.USERID)
+			when matched then
+			  update set his.companyID=src.companyID,his.userName=src.userName,his.position=src.position,his.mobile=src.mobile,his.ImportDate=src.ImportDate
+			   where his.userID=src.userID
+			when not matched then
+			  insert values(src.USERID,src.COMPANYID,src.USERNAME,src.POSITION,src.MOBILE,src.IMPORTDATE);
+	</insert>
+	
+	
+	<insert id="addCompanys" parameterType="TMPCompanys" useGeneratedKeys="true" flushCache="true">
+		INSERT INTO TMP_COMPANYS
+			(COMPANYID,COMPANYNAME,INCORPORATOR,PROVINCE,PREFECTURELEVELCITY,AREA,STREET,POSTCODE,TELEPHONE,FAX,NOTES,SUMMARY)
+		VALUES
+			(#{companyID},#{companyName},#{incorporator},#{province},#{prefecturelevelCity},#{area},#{street},#{postcode},#{telephone},#{fax},#{notes},#{summary})
+	</insert>
+	
+	<insert id="addOrders" parameterType="TMPOrders" useGeneratedKeys="true" flushCache="true">
+		INSERT INTO TMP_ORDERS
+			(ORDERDETAILNO,ORDERMASTERNO,USERID,PRODUCTNO,DISTRIBUTEDATE,PAYMENTDATE,SERVICESTARTDATE,SERVICEENDDATE,ORDERSTATUS,IMPORTDATE,INVOICENO)
+		VALUES(#{orderDetailNo},#{orderMasterNo},#{userID},#{productNo},#{distributeDate,jdbcType=DATE},#{paymentDate,jdbcType=DATE},#{serviceStartDate,jdbcType=DATE},#{serviceEndDate,jdbcType=DATE},#{orderStatus},#{importDate},#{invoiceNo,jdbcType=VARCHAR})
+	</insert>
+
+	<insert id="addProducts" parameterType="TMPProducts" useGeneratedKeys="true" flushCache="true">
+		INSERT INTO TMP_PRODUCTS
+			(PRODUCTNO,PRODUCTNAME)
+		VALUES
+			(#{productNo},#{productName})
+	</insert>
+	
+	<insert id="addUsers" parameterType="TMPUsers" useGeneratedKeys="true" flushCache="true">
+		INSERT INTO TMP_USERS
+			(USERID,COMPANYID,USERNAME,POSITION,MOBILE)
+		VALUES(#{userID},#{companyID},#{userName},#{position},#{mobile})
+	</insert>
+	
+	<insert id="updateCompanys" parameterType="TMPCompanys" useGeneratedKeys="true" flushCache="true">
+		UPDATE TMP_COMPANYS SET 
+			COMPANYNAME=#{companyName},
+			INCORPORATOR=#{incorporator},
+			PROVINCE=#{province},
+			PREFECTURELEVELCITY=#{prefecturelevelCity},
+			AREA=#{area},
+			STREET=#{street},
+			POSTCODE=#{postcode},
+			TELEPHONE=#{telephone},
+			FAX=#{fax},
+			NOTES=#{notes},
+			SUMMARY=#{summary}
+		WHERE COMPANYID=#{companyID}
+	</insert>
+	<insert id="updateOrders" parameterType="TMPOrders" useGeneratedKeys="true" flushCache="true">
+		UPDATE TMP_ORDERS SET 
+			ORDERMASTERNO=#{orderMasterNo},
+			USERID=#{userID},
+			PRODUCTNO=#{productNo},
+			DISTRIBUTEDATE=#{distributeDate,jdbcType=DATE},
+			PAYMENTDATE=#{paymentDate,jdbcType=DATE},
+			SERVICESTARTDATE=#{serviceStartDate,jdbcType=DATE},
+			SERVICEENDDATE=#{serviceEndDate,jdbcType=DATE},
+			ORDERSTATUS=#{orderStatus},
+			IMPORTDATE=#{importDate},
+			INVOICENO=#{invoiceNo,jdbcType=VARCHAR}
+		WHERE ORDERDETAILNO=#{orderDetailNo}
+	</insert>
+	<insert id="updateProducts" parameterType="TMPProducts" useGeneratedKeys="true" flushCache="true">
+		UPDATE TMP_PRODUCTS SET PRODUCTNAME=#{productName} WHERE PRODUCTNO=#{productNo}
+	</insert>
+	<insert id="updateUsers" parameterType="TMPUsers" useGeneratedKeys="true" flushCache="true">
+		UPDATE TMP_USERS SET 
+			COMPANYID=#{companyID},
+			USERNAME=#{userName},
+			POSITION=#{position},
+			MOBILE=#{mobile} 
+		WHERE USERID=#{userID}
+	</insert>
+	
+	<select id="getCompanyByCompanyId" resultType="int" parameterType="string">
+		SELECT COUNT(COMPANYID) FROM TMP_COMPANYS WHERE COMPANYID=#{companyId}	
+	</select>
+	<select id="getOrderByDetailOrderNo" resultType="int" parameterType="string">
+		SELECT COUNT(ORDERDETAILNO) FROM TMP_ORDERS WHERE ORDERDETAILNO=#{detailOrderNo}
+	</select>
+	<select id="getProductByProductNo" resultType="int" parameterType="string">
+		SELECT COUNT(PRODUCTNO) FROM TMP_PRODUCTS WHERE PRODUCTNO = #{productNo}
+	</select>
+	<select id="getUserByUserId" resultType="int" parameterType="string">
+		SELECT COUNT(USERID) FROM TMP_USERS WHERE USERID=#{userId}
+	</select>
+	
+	<select id="getOrderByUserId" resultType="TMPOrders" parameterType="string">
+	SELECT O.*
+  		FROM (SELECT *
+          FROM TMP_ORDERS
+         WHERE PRODUCTNO IN ('LDPBTZ', 'LDPUTZ','LDPTZ')
+           AND ORDERSTATUS IN ('H', 'J', 'I', 'E', 'F', 'L')
+           AND USERID = #{userId}
+         ORDER BY CAST(ORDERDETAILNO AS number)) O
+ 		WHERE ROWNUM <![CDATA[<]]>=1
+	</select>
+	
+	<select id="getOrderByImportDate" resultType="TMPOrders" parameterType="string">
+		SELECT * FROM TMP_ORDERS 
+			WHERE IMPORTDATE BETWEEN to_date(#{0},'yyyy-mm-dd hh24:mi:ss') AND to_date(#{1},'yyyy-mm-dd hh24:mi:ss')
+		<!-- WHERE IMPORTDATE BETWEEN to_date('#{ctime} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') AND to_date('#{ctime} 23:59:59', 'yyyy-mm-dd hh24:mi:ss')
+		 -->
+	</select>
+</mapper>

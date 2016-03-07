@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.izhong.expert.dao.UserInfoDao">
+	
+	<!-- <cache/> -->
+	<!-- 添加 & 修改操作 -->
+	<update id="modSysUsers" parameterType="SysUsers" flushCache="true">
+		UPDATE SYS_USERS SET 
+			USERNAME=#{userName},
+			EMAIL=#{email},
+			MOBILE=#{mobile}
+		WHERE USERID=#{userID}
+	</update> 
+	
+	<update id="modSysUserName" parameterType="SysUsers" flushCache="true">
+		UPDATE SYS_USERS SET 
+			USERNAME=#{userName},
+			MOBILE=#{mobile}
+		WHERE USERID=#{userID}
+	</update>
+	
+	<update id="modLabUsers" parameterType="LabUsers" flushCache="true">
+		UPDATE LABQA_USERS SET 
+			POSITION=#{position},
+			ALIASNAME=#{aliasName}, 
+			TELEPHONE=#{telephone}
+		WHERE USERID=#{userID}
+	</update>
+	
+	<update id="modCompanys" parameterType="Companys" flushCache="true">
+		UPDATE LABQA_COMPANYS SET 
+			COMPANYNAME=#{companyName},
+			PROVINCE=#{province},
+			PREFECTURELEVELCITY=#{prefecturelevelCity},
+			AREA=#{area},
+			STREET=#{street},
+			POSTCODE=#{postcode},
+			FAX=#{fax},
+			<if test="incorporator != null">
+			INCORPORATOR=#{incorporator},
+			</if>
+			<if test="notes != null">
+			NOTES=#{notes},
+			</if>
+			TELEPHONE=#{telephone}
+		WHERE COMPANYID=#{companyID}
+	</update>
+	
+	<update id="modPassWord" parameterType="SysUsers" flushCache="true">
+		UPDATE SYS_USERS SET PASSWORD=#{password},PASSWORDSALT=#{passwordSalt} WHERE USERID=#{userID}
+	</update>
+	
+	<insert id="addUserFavorite" parameterType="UserFavorites" flushCache="true">
+		INSERT INTO LABQA_USERFAVORITES
+			(TID,USERID,DESCRIPTION,URL)
+		VALUES
+			(SEQ_LABQA_USERFAVORITES.NEXTVAL,#{userID},#{description},#{url})
+	</insert>
+	
+	<delete id="delUserFavorite" parameterType="int" flushCache="true">
+		DELETE FROM LABQA_USERFAVORITES WHERE TID=#{tid}
+	</delete>
+	
+	<update id="modDevice" parameterType="SysUsers" flushCache="true">
+		UPDATE SYS_USERS SET 
+			DEVICETYPE=#{deviceType,jdbcType=VARCHAR},
+			DEVICESERIALNUMBER=#{deviceSerialNumber} 
+		WHERE USERID=#{userID}
+	</update>
+		
+	<update id="modAuditUser" parameterType="string" flushCache="true">
+		UPDATE SYS_USERS SET ACTIVESTATUS = 1 WHERE USERID=#{userId}
+	</update>
+
+	<update id="modSysUserServiceDate" parameterType="SysUsers" flushCache="true">
+		UPDATE SYS_USERS SET 
+			SERVICESTARTDATE=#{serviceStartDate},
+			SERVICEENDDATE=#{serviceEndDate},
+			CUSTOMERID=#{customerID,jdbcType=VARCHAR} 
+		WHERE USERID=#{userID}
+	</update>
+	
+	<update id="modSysUserTryDate" parameterType="SysUsers" flushCache="true">
+		UPDATE SYS_USERS SET 
+			TRYSTARTDATE=#{tryStartDate},
+			TRYENDDATE=#{tryEndDate},
+			CUSTOMERID=#{customerID,jdbcType=VARCHAR} 
+		WHERE USERID=#{userID}
+	</update>
+
+	<update id="modSysUserCustomerID" parameterType="string" flushCache="true">
+		UPDATE SYS_USERS SET CUSTOMERID=#{1} WHERE USERID=#{0}
+	</update>
+	
+	<update id="resetPassword" parameterType="Sysusers" flushCache="true">
+		UPDATE SYS_USERS SET PASSWORD=#{password},PASSWORDSALT=#{passwordSalt} WHERE USERID=#{userID}
+	</update>
+		
+	<!-- 查询操作 -->
+	<select id="qryLabUserList" resultType="LabUsers" parameterType="int">
+		SELECT 
+      		U.USERID,
+      		S.USERNAME,
+      		U.POSITION,
+      		U.PROVINCE,
+      		U.PREFECTURELEVELCITY,
+      		U.AREA,
+      		U.STREET,
+      		U.POSTCODE,
+      		U.MOBILE,
+      		U.TELEPHONE,
+      		U.EMAIL,
+      		U.ALIASNAME,
+      		U.REGISTERDATE,
+      		C.COMPANYID AS "company.companyID",
+      		C.COMPANYNAME AS "company.companyName",
+      		C.INCORPORATOR AS "company.incorporator",
+      		C.PROVINCE AS "company.province",
+      		C.PREFECTURELEVELCITY AS "company.prefecturelevelCity",
+      		C.AREA AS "company.area",
+      		C.STREET AS "company.street",
+      		C.POSTCODE AS "company.postcode",
+      		C.TELEPHONE AS "company.telephone",
+      		C.FAX AS "company.fax",
+      		C.NOTES AS "company.notes"
+      		FROM LABQA_USERS U,LABQA_COMPANYS C,SYS_USERS S
+      		WHERE U.COMPANYID=C.COMPANYID 
+      		AND S.USERID=U.USERID
+      		AND S.ACTIVESTATUS=#{status}
+	</select>
+	
+	<select id="qryLabUserInfo" resultType="LabUsers" parameterType="string">
+		SELECT U.USERID,
+		S.USERNAME,
+		U.POSITION,
+		U.PROVINCE,
+		U.PREFECTURELEVELCITY,
+		U.AREA,
+		U.STREET,
+		U.POSTCODE,
+		U.MOBILE,
+		U.TELEPHONE,
+		U.EMAIL,
+		U.ALIASNAME,
+		C.COMPANYID AS "company.companyID",
+		C.COMPANYNAME AS "company.companyName",
+		C.INCORPORATOR AS "company.incorporator",
+		C.PROVINCE AS "company.province",
+		C.PREFECTURELEVELCITY AS "company.prefecturelevelCity",
+		C.AREA AS "company.area",
+		C.STREET AS "company.street",
+		C.POSTCODE AS "company.postcode",
+		C.TELEPHONE AS "company.telephone",
+		C.FAX AS "company.fax",
+		C.NOTES AS "company.notes"
+		FROM LABQA_USERS U
+		LEFT JOIN LABQA_COMPANYS C
+		ON U.COMPANYID = C.COMPANYID
+		LEFT JOIN SYS_USERS S
+		ON U.USERID = S.USERID
+		WHERE U.USERID = #{userId}
+	</select>
+	
+	<select id="qrySysUserInfo" resultType="SysUsers" parameterType="string">
+		SELECT S.*,L.ALIASNAME AS "aliasName" FROM SYS_USERS S,LABQA_USERS L WHERE S.USERID=L.USERID AND S.USERID=#{userId}
+	</select>
+	
+	<select id="qryLabUsersAll" resultType="LabUsers">
+		SELECT 
+			L.USERID,
+			S.USERNAME,
+			S.MOBILE,
+			S.ACTIVESTATUS,
+			L.USERTYPENAME 
+			FROM SYS_USERS S,LABQA_USERS L 
+			WHERE S.USERID=L.USERID
+	</select>
+	
+	<select id="getDeviceInfo" resultType="DeviceRegisters" parameterType="string">
+		SELECT * FROM SYS_DeviceRegisters WHERE DEVICESERIALNUMBER = #{device}
+	</select>
+	
+	<select id="qrySysUserByCustomerId" resultType="SysUsers" parameterType="string">
+		SELECT * FROM SYS_USERS WHERE CUSTOMERID=#{customerId}
+	</select>
+		
+	<select id="qrySysUsersAll" resultType="SysUsers" parameterType="hashmap">
+		SELECT S.USERID,
+			S.USERNAME,
+			S.EMAIL,
+			S.ACTIVESTATUS,
+			S.CUSTOMERID,
+			S.TRYSTARTDATE,
+	    	S.TRYENDDATE,
+	    	S.SERVICESTARTDATE,
+	    	S.SERVICEENDDATE,
+			L.ALIASNAME as "aliasName",
+			L.REGISTERDATE as "registerDate",
+			R.ROLENAME as "roleName"
+		FROM SYS_USERS S, LABQA_USERS L, SYS_USERROLES UR, SYS_ROLES R
+		WHERE S.USERID = L.USERID
+			AND S.USERID = UR.USERID
+			AND UR.ROLEID = R.ROLEID
+		
+		<if test="email!=null and !''.equals(email)">
+			AND S.EMAIL LIKE '%${email}%'
+		</if>
+		<if test="alias!=null and !''.equals(alias)">
+			AND L.ALIASNAME LIKE '%${alias}%'
+		</if>
+		<if test="id!=null and !''.equals(id)">
+			AND S.CUSTOMERID = #{id}
+		</if>
+		<if test="role!=null and !''.equals(role)">
+			AND R.ROLEID = #{role}
+		</if>
+	</select>
+
+	<select id="qryActiveUser" resultType="LabUsers">
+		SELECT A.USERID,B.ALIASNAME
+		FROM (SELECT USERID,COUNT(1) AS COU FROM LABQA_QUESTIONS
+		WHERE USERID IN (SELECT X.USERID FROM SYS_USERROLES X WHERE X.ROLEID='8' AND
+		X.USERID=USERID)
+		GROUP BY USERID ORDER BY COUNT(1) DESC
+		) A LEFT JOIN LABQA_USERS B ON B.USERID=A.USERID
+		WHERE B.EMAIL NOT LIKE '%izhong.com%' AND ROWNUM<![CDATA[<]]>=10
+	</select>
+	
+	<select id="getSysUserByLogName" parameterType="string" resultType="SysUsers">
+		SELECT S.*,L.ALIASNAME as "aliasName" FROM SYS_USERS S,LABQA_USERS L WHERE S.USERID=L.USERID AND (S.EMAIL=#{userName} OR S.MOBILE=#{userName}) AND ROWNUM <![CDATA[<]]>=1
+	</select>
+	
+	<select id="getCasual" parameterType="string" resultType="SYS_CasualUser">
+		SELECT * FROM SYS_CASUALUSER WHERE email=#{email} AND ROWNUM <![CDATA[<]]>=1
+	</select>
+	
+	<select id="getSysUserByDevice" parameterType="string" resultType="SysUsers">
+		SELECT * FROM SYS_USERS WHERE (DEVICESERIALNUMBER=#{deviceSN} OR DEVICETYPE=#{deviceSN}) AND ROWNUM <![CDATA[<]]>=1
+	</select>
+	
+	<insert id="addUserProduct" parameterType="UserProducts" flushCache="true">
+		INSERT INTO SYS_UserProducts
+			(TID,OWNERUSERID,PRODUCTNO,PRODUCTALIAS,ACTIVECODE)
+		VALUES
+			(SEQ_SYS_UserProducts.NEXTVAL,#{ownerUserId},#{productNo},#{productAlias},#{activeCode})
+	</insert>
+	
+	<select id="getUserProductByUserId" parameterType="String" resultType="UserProducts">
+		SELECT o.productname as "productName",p.serviceStartDate,p.serviceEndDate,p.ActiveCode,p.ActiveUser,p.ActiveDate FROM SYS_USERPRODUCTS p,ORDER_PRODUCTS o WHERE p.productno=o.productno AND p.OwnerUserID=#{userId}
+	</select>
+	
+	<update id="updateUserProduct" parameterType="UserProducts" flushCache="true">
+		UPDATE SYS_USERPRODUCTS SET SERVICESTARTDATE=#{serviceStartDate},SERVICEENDDATE=#{serviceEndDate},ACTIVEUSER=#{activeUser},ACTIVEDATE=#{activeDate} WHERE ACTIVECODE=#{activeCode}
+	</update>
+	
+	<select id="getUserProductByCode" parameterType="String" resultType="UserProducts">
+		SELECT * FROM SYS_USERPRODUCTS WHERE ACTIVECODE=#{activateCode}
+	</select>
+	
+	<select id="getUserProductsByProNo" parameterType="String" resultType="UserProducts">
+		SELECT * FROM SYS_USERPRODUCTS WHERE (PRODUCTNO=#{0} OR PRODUCTALIAS=#{0} OR ('劳动法USBV11'=#{0} AND PRODUCTALIAS='劳动法V11')) AND ACTIVEUSER=#{1} ORDER BY ServiceEndDate DESC
+	</select>
+	
+	<select id="getUserProductsByUserName" parameterType="String" resultType="UserProducts">
+		SELECT * FROM SYS_USERPRODUCTS WHERE ACTIVEUSER IN (SELECT USERID FROM SYS_USERS WHERE EMAIL=#{userName} OR MOBILE=#{userName})
+	</select>
+	
+	<delete id="delUserAnnouncement" parameterType="String" flushCache="true">
+		DELETE FROM RES_USERANNOUNCEMENTS WHERE UserId=#{0} AND MESSAGETYPE=#{1}
+	</delete>
+</mapper>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 引用XFire预定义的Bean配置-->
+    <import resource="classpath:org/codehaus/xfire/spring/xfire.xml" /> 
+    
+    <!-- 第一步:Web服务实现类 -->
+    <bean id="userService" class="org.izhong.web.expert.UserServiceImpl"/>
+    <bean id="expertQAService" class="org.izhong.web.expert.ExpertQAServiceImpl"/>
+    <bean id="updateService" class="org.izhong.web.expert.UpdateServiceImpl"/>
+    <bean id="userService2" class="org.izhong.web.expert.UserService2Impl"/>
+    
+    <!-- SOAP12 binding -->
+    <bean id="UserSoap12BindingBean"
+        class="org.codehaus.xfire.spring.config.Soap12BindingBean">
+        <property name="endpoints">
+            <list>
+                <ref bean="UserServiceWSSEndPoint" />
+            </list>
+        </property>
+        <property name="allowUndefinedEndpoints" value="true" />
+        <property name="transport"
+            value="http://www.w3.org/2003/05/soap/bindings/HTTP/" /> <!--WSDL1.1 http://schemas.xmlsoap.org/soap/http -->
+    </bean>
+    
+    <!-- SOAP12 binding for WSS-->
+    <bean id="UserServiceWSSEndPoint" class="org.codehaus.xfire.spring.config.EndpointBean">
+			<property name="name" ref="UserServiceWSSQName" />
+			<!--
+			<property name="url" value="http://192.168.50.131:3290/ReadyESB/UserServiceWSS" />
+			 -->
+			<property name="url" value="http://zhuanjia.izhong.com/ReadyESB/UserServiceWSS" />
+			
+	</bean>
+	<bean id="UserServiceWSSQName" class="javax.xml.namespace.QName">
+		<constructor-arg>
+			<value>http://interfaces.service.web.readyesb</value>
+		</constructor-arg>
+	</bean>
+    
+    <!-- 第二步:对外提供的Web服务的接口 -->
+    <bean id="strExporter" class="org.codehaus.xfire.spring.remoting.XFireExporter">
+    	<!-- 对外提供的Web服务的接口 -->
+        <property name="serviceClass" value="org.izhong.web.expert.UserService" />
+        <!-- 实现Web服务的Bean-->
+        <property name="serviceBean" ref="userService" />
+        <property name="serviceFactory" ref="xfire.serviceFactory" />
+        <property name="xfire" ref="xfire" />
+        <property name="bindings" ref="UserSoap12BindingBean" />
+    </bean>
+    
+    <bean id="expertExporter" class="org.codehaus.xfire.spring.remoting.XFireExporter">
+        <property name="serviceClass" value="org.izhong.web.expert.ExpertQAService" />
+        <property name="serviceBean" ref="expertQAService" />
+        <property name="serviceFactory" ref="xfire.serviceFactory" />
+        <property name="xfire" ref="xfire" />
+    </bean>
+    
+    <bean id="updateExporter" class="org.codehaus.xfire.spring.remoting.XFireExporter">
+        <property name="serviceClass" value="org.izhong.web.expert.UpdateService" />
+        <property name="serviceBean" ref="updateService" />
+        <property name="serviceFactory" ref="xfire.serviceFactory" />
+        <property name="xfire" ref="xfire" />
+    </bean> 
+    
+   <bean id="userservice2Exporter" class="org.codehaus.xfire.spring.remoting.XFireExporter">
+        <property name="serviceClass" value="org.izhong.web.expert.UserService2" />
+        <property name="serviceBean" ref="userService2" />
+        <property name="serviceFactory" ref="xfire.serviceFactory" />
+        <property name="xfire" ref="xfire" />
+    </bean>
+    
+    <!-- 第三步:定义URL映射 -->
+    <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="urlMap">
+            <map>
+                <entry key="/UserService" value="strExporter"/>
+                <entry key="/ExpertQAService" value="expertExporter"/>
+                <entry key="/UpdateService" value="updateExporter"/>  
+               <entry key="/UserService2" value="userservice2Exporter"/>            
+            </map>
+        </property>
+    </bean>    
+</beans>

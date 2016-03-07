@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="buyOnline" extends="struts-default">
+		<action name="addCart" class="buyOnline" method="addCart">
+			<result name="success">/haufe/online/cartlist.jsp</result>
+		</action>
+		<action name="removeCart" class="buyOnline" method="removeCart">
+			<result name="success">/haufe/online/cartlist.jsp</result>
+		</action>
+		<action name="submitCart" class="buyOnline" method="submitCart">
+			<result name="success">/haufe/online/order_confirm.jsp</result>
+		</action>
+		<action name="orderPayment" class="buyOnline" method="orderPayment">
+			<result name="error" type="redirect">BuyOnline</result>
+		</action>
+		
+		<!-- <action name="snakeTest" class="buyOnline" method="snakeTest">
+			<result name="success">/haufe/online/success.jsp</result>
+		</action> -->
+		
+		<action name="buyOnlineCallback" class="buyOnline" method="buyOnlineCallback">
+			<!-- <result name="success" type= "redirect">snakeTest</result>  -->
+			<result name="success">/haufe/online/success.jsp</result>
+			<result name="error01" type="redirect">BuyOnline</result>
+		</action>
+		
+		<action name="orderList" class="buyOnline" method="orderList">
+			<result name="success">/haufe/online/myorders.jsp</result>
+			<result name="error">/haufe/user/login.jsp</result>
+		</action>
+		<action name="orderListPayment" class="buyOnline" method="orderListPayment">
+			<result name="success">/haufe/online/order_confirm.jsp</result>
+			<result name="error">/haufe/user/login.jsp</result>
+		</action>
+	</package>
+</struts>

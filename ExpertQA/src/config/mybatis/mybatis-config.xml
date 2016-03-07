@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<mappers>
+		<mapper resource="config/sqlmap/accesslog-sqlmap.xml"/> 
+		<mapper resource="config/sqlmap/userInfo-sqlmap.xml"/>
+		<mapper resource="config/sqlmap/userRegister-sqlmap.xml"/>
+		<mapper resource="config/sqlmap/role-sqlmap.xml"/>
+		<mapper resource="config/sqlmap/search-sqlmap.xml"/>
+		<mapper resource="config/sqlmap/question-sqlmap.xml"/>
+		<mapper resource="config/sqlmap/reply-sqlmap.xml"/>
+		<mapper resource="config/sqlmap/logs-sqlmap.xml"/>
+		<mapper resource="config/sqlmap/qatype-sqlmap.xml"/>
+		<mapper resource="config/sqlmap/keyword-sqlmap.xml"/>
+		<mapper resource="config/sqlmap/hyper-sqlmap.xml"/>
+		<mapper resource="config/sqlmap/message-sqlmap.xml"/>
+		<mapper resource="config/sqlmap/syncCustomer-sqlmap.xml"/>
+		<mapper resource="config/sqlmap/expert-sqlmap.xml"/>
+		<mapper resource="config/sqlmap/freeOrder-sqlmap.xml"/>
+		<mapper resource="config/sqlmap/onlinepayment-sqlmap.xml"/>
+		<mapper resource="config/sqlmap/updateService-sqlmap.xml"/>
+		<mapper resource="config/sqlmap/clientexpertservice-sqlmap.xml"/>
+		<mapper resource="config/sqlmap/userService2-sqlmap.xml"/>
+		<mapper resource="config/sqlmap/order-sqlmap.xml"/>
+	</mappers>
+</configuration>

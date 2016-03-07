@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.izhong.expert.dao.ExpertDao">
+	
+	<cache/>
+	
+	<insert id="addExpertReport" parameterType="ExpertReport" flushCache="true">
+		INSERT INTO LABQA_EXPERTREPORT
+			(TID,USERID,RECOMMENDNUMBER,ANSWERNUMBER,BESTANSWERNUMBER,APPROVALNUMBER)
+		VALUES(SEQ_LABQA_EXPERTREPORT.NEXTVAL,#{userID},#{recommendNumber},#{answerNumber},#{bestAnswerNumber},#{approvalNumber})
+	</insert>
+	
+	<select id="getTotalExpertAll" resultType="LabUsers">
+		SELECT U.*, 
+		C.COMPANYNAME as "company.companyName", 
+		E.SIMPLESUCCESSCASE as "extend.simpleSuccessCase", 
+		E.SIMPLEEXPERTAREA as "extend.simpleExpertArea"
+  		FROM LABQA_SHOWEXPERTS S
+  		LEFT JOIN LABQA_USERS U
+    	ON S.USERID = U.USERID
+  		LEFT JOIN LABQA_COMPANYS C
+    	ON C.COMPANYID = U.COMPANYID
+  		LEFT JOIN LABQA_EXPERTEXTENDS E
+    	ON U.USERID = E.USERID
+	</select>
+	
+	<select id="getTotalExpertInfo" resultType="LabUsers">
+		SELECT U.USERPICTURE,
+       U.ALIASNAME,
+       C.COMPANYNAME		as "company.companyName",
+       C.LOGOPICTURE		as "company.logoPicture",
+       C.SUMMARY			as "company.summary",
+       E.SUMMARY			as "extend.summary",
+       E.SIMPLESUCCESSCASE 	as "extend.simpleSuccessCase",
+       E.SIMPLEEXPERTAREA  	as "extend.simpleExpertArea",
+       R.RECOMMENDNUMBER	as "report.recommendNumber",
+       R.ANSWERNUMBER		as "report.answerNumber",
+       R.BESTANSWERNUMBER	as "report.bestAnswerNumber",
+       R.APPROVALNUMBER		as "report.approvalNumber"
+  FROM LABQA_SHOWEXPERTS S
+  LEFT JOIN LABQA_USERS U
+    ON S.USERID = U.USERID
+  LEFT JOIN LABQA_COMPANYS C
+    ON C.COMPANYID = U.COMPANYID
+  LEFT JOIN LABQA_EXPERTEXTENDS E
+    ON U.USERID = E.USERID
+  LEFT JOIN LABQA_EXPERTREPORT R
+    ON U.USERID = R.USERID
+    WHERE U.USERID=#{userId}
+	</select>
+</mapper>

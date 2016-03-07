@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.izhong.expert.dao.QuestionDao">
+
+	<!-- <cache /> -->
+
+	<update id="modQuestion" parameterType="Questions">
+		UPDATE LABQA_QUESTIONS
+		SET
+		QATYPEID=#{qaTypeID},
+		CAPTIONTEXT=#{captionText},
+		QUESTIONCONTENT=#{questionContent}
+		WHERE
+		QUESTIONID=#{questionID}
+	</update>
+	<update id="delQuestion" parameterType="String">
+		UPDATE LABQA_QUESTIONS 
+		SET ISALREADYDELETED=1
+		WHERE QUESTIONID=#{questionID}
+	</update>
+	<update id="verifyQuestion" parameterType="String">
+		UPDATE LABQA_QUESTIONS
+		SET ISALREADYCHECKED = #{0} WHERE QUESTIONID=#{1} AND
+		ISALREADYCHECKED in(0,4)
+	</update>
+	<update id="swithQuestion">
+		UPDATE LABQA_QUESTIONS SET ISALREADYCLOSED = #{0}
+		WHERE QUESTIONID=#{1}
+	</update>
+	<update id="replyCount" parameterType="String">
+		UPDATE LABQA_QUESTIONS SET
+		REPLYCOUNT = #{replyCount} WHERE QUESTIONID=#{questionID}
+	</update>
+	<!--
+		fwy add and question.CAPTIONTEXT||question.QUESTIONCONTENT like
+		'%'||#{captionText}||'%'
+	-->
+	<select id="getQuestionsList" parameterType="hashmap"
+		resultType="hashmap">
+		select * from(select t.*,rownum rn from(select
+		question.*,type.qatypename as QATYPENAME,us.aliasname as ALIASNAME
+		from LABQA_QUESTIONS question,LABQA_QATYPES type,labqa_users us
+		where question.qatypeid = type.qatypeid and question.userid = us.userid and
+		question.ISALREADYCHECKED in(1,4) and (question.ISALREADYCLOSED =
+		#{isAlreadyClosed})
+		${captionText} AND question.ISALREADYDELETED IS NULL
+		order by question.questionid desc) t where rownum <![CDATA[<=]]> <!-- question.replycount desc, -->
+		#{pagesize}) where rn <![CDATA[>]]>
+		#{seek}
+	</select>
+
+	<select id="getQuestionsListCount" parameterType="hashmap"
+		resultType="long">
+		select count(*) from LABQA_QUESTIONS question where ISALREADYCHECKED in(1,4)
+		${captionText}
+		and (ISALREADYCLOSED = ${isAlreadyClosed}) AND question.ISALREADYDELETED IS NULL
+	</select>
+	<insert id="addQuestion" parameterType="Questions">
+		INSERT INTO
+		LABQA_QUESTIONS
+		(QUESTIONID,QATYPEID,CAPTIONTEXT,QUESTIONCONTENT,USERID,ISEXIGENTQUESTION,CREATETIME,REPLYCOUNT,STATUS,ISALREADYCHECKED,ISALREADYCLOSED)
+		VALUES
+		(#{questionID},#{qaTypeID},#{captionText},#{questionContent},#{userID},#{isExigentQuestion},#{createTime},#{replyCount},#{status},'1','0')
+	</insert>
+	<!-- and question.isalreadychecked = '1' -->
+	<select id="getOneQuestion" parameterType="String" resultType="hashmap">
+		<!--
+			select question.*,us.aliasname as ALIASNAME,us.userpicture as
+			USERPICTURE,type.QATYPENAME as QATYPENAME from LABQA_QUESTIONS
+			question,labqa_users us ,labqa_qatypes type where question.userid =
+			us.userid and question.qatypeid = type.qatypeid and QUESTIONID =
+			#{questionId}
+		-->
+		<!-- 不带地址的查询 -->
+		<!-- select question.*,us.aliasname as ALIASNAME,us.userpicture as
+		USERPICTURE,type.QATYPENAME as QATYPENAME
+		from LABQA_QUESTIONS question left join labqa_users us on question.userid
+		= us.userid
+		left join labqa_qatypes type on question.qatypeid = type.qatypeid
+		where QUESTIONID = #{questionId} AND question.ISALREADYDELETED IS NULL -->
+		<!-- 带地址的查询 -->
+		select question.*,us.aliasname as ALIASNAME,us.userpicture as
+	    USERPICTURE,type.QATYPENAME as QATYPENAME,
+	    com.province as PROVINCE,com.prefecturelevelcity as CITY
+	    from LABQA_QUESTIONS question left join labqa_users us on question.userid
+	    = us.userid
+	    left join labqa_qatypes type on question.qatypeid = type.qatypeid
+	    left join labqa_companys com on  question.userid = us.userid and us.companyid = com.companyid
+	    where QUESTIONID =#{questionId} AND question.ISALREADYDELETED IS NULL
+	</select>
+	<select id="getFavoritesCountByQuestionId" parameterType="String"
+		resultType="long">
+		select count(*) from LABQA_USERFAVORITES where ITEMID = #{questionId}
+	</select>
+	<select id="getQuestionListByTypeId" parameterType="hashmap"
+		resultType="hashmap">
+		select * from (select question.*,us.aliasname as
+		ALIASNAME,type.QATYPENAME as QATYPENAME
+		from LABQA_QUESTIONS question left join labqa_users us on question.userid
+		= us.userid
+		left join labqa_qatypes type on question.qatypeid = type.qatypeid
+		where question.createtime>=add_months(SYSDATE, -6) and
+		question.isalreadychecked in(1,4)
+		and question.isalreadyclosed = #{isAlreadyClosed}
+		AND question.ISALREADYDELETED IS NULL
+		<if test="typeId != ''">
+			and (question.qatypeid = #{typeId} or question.qatypeid in (select
+			qatypeid from labqa_qatypes where parenttypeid = #{typeId}))
+		     </if>
+		order by question.questionid desc <!-- question.replycount desc, -->
+		) f where ROWNUM<![CDATA[<]]>=15
+	</select>
+	
+	<insert id="addFavorite" parameterType="hashmap">
+		insert into LABQA_USERFAVORITES(TID,USERID,ITEMTYPE,ITEMID)
+		values(SEQ_LABQA_USERFAVORITES.NEXTVAL,#{userId},#{qaTypeId},#{questionId})
+	</insert>
+	<select id="checkFavorite" parameterType="hashmap" resultType="long">
+		select count(*) from LABQA_USERFAVORITES where USERID=#{userId} and
+		ITEMID = #{questionId}
+	</select>
+	<select id="getActiveUser" resultType="hashmap">
+	SELECT A.USERID,B.ALIASNAME
+	FROM (SELECT USERID,COUNT(1) AS COU FROM LABQA_QUESTIONS
+	WHERE USERID IN (SELECT X.USERID FROM SYS_USERROLES X WHERE X.ROLEID='8' AND
+	X.USERID=USERID)
+	GROUP BY USERID ORDER BY COUNT(1) DESC
+	) A LEFT JOIN LABQA_USERS B ON B.USERID=A.USERID
+	WHERE B.EMAIL NOT LIKE '%izhong.com%' AND ROWNUM<![CDATA[<]]>=10
+
+	</select>
+	<update id="upateQuestion" parameterType="hashmap">
+		UPDATE LABQA_QUESTIONS SET
+		CAPTIONTEXT=#{captionText},
+		QUESTIONCONTENT=#{questionContent},
+		ISALREADYCHECKED =
+		#{isAlreadyChecked},
+		QATYPEID = #{qaTypeId}
+		WHERE
+		QUESTIONID=#{questionId}
+	</update>
+	<update id="updateReplyCount" parameterType="String">
+		UPDATE
+		LABQA_QUESTIONS SET REPLYCOUNT = (REPLYCOUNT+1) WHERE
+		QUESTIONID=${questionID}
+	</update>
+	<select id="qryQuestionUnaudited" resultType="Questions">
+		SELECT
+		Q.*,U.USERNAME AS "author",T.QATYPENAME AS "typeName" FROM
+		LABQA_QUESTIONS Q LEFT JOIN SYS_USERS U ON Q.USERID=U.USERID
+		LEFT JOIN
+		LABQA_QATYPES T ON Q.QATYPEID=T.QATYPEID WHERE Q.ISALREADYCHECKED = 4 AND Q.ISALREADYDELETED IS NULL
+	</select>
+	<select id="qryQuestionByUserId" resultType="Questions"
+		parameterType="string">
+		SELECT Q.*, T.QATYPENAME AS "typeName", RY.REPLYCOUNT as
+		"replysCount"
+		FROM LABQA_QUESTIONS Q
+		LEFT JOIN SYS_USERS U
+		ON Q.USERID = U.USERID
+		LEFT JOIN LABQA_QATYPES T
+		ON Q.QATYPEID = T.QATYPEID
+		LEFT JOIN (SELECT R.QUESTIONID, COUNT(R.REPLYID) AS REPLYCOUNT
+		FROM LABQA_REPLYS R
+		GROUP BY R.QUESTIONID) RY
+		ON Q.QUESTIONID = RY.QUESTIONID
+		WHERE Q.USERID = #{userId} AND Q.ISALREADYDELETED IS NULL
+	</select>
+	<select id="qryUserFavorite" resultType="Questions"
+		parameterType="string">
+		SELECT Q.*,T.QATYPENAME AS "typeName" FROM
+		LABQA_QUESTIONS Q,SYS_USERS U,LABQA_QATYPES T,LABQA_USERFAVORITES F
+		WHERE F.ITEMID=Q.QUESTIONID AND F.USERID=U.USERID AND
+		Q.QATYPEID=T.QATYPEID AND U.USERID=#{userId} AND Q.ISALREADYDELETED IS NULL
+	</select>
+
+	<select id="qryQuestionPending" resultType="Questions">
+		<!--SELECT DISTINCT Q.*
+		FROM LABQA_QUESTIONS Q,LABQA_REPLYS R WHERE Q.QUESTIONID=R.QUESTIONID
+		 AND Q.ISALREADYCHECKED = 1 AND R.ISTOP = 0 -->
+		 SELECT * FROM LABQA_QUESTIONS Q WHERE Q.ISALREADYCHECKED!=2 AND Q.ISALREADYDELETED IS NULL ORDER BY Q.CREATETIME DESC
+	</select>
+	<select id="qryQuestionById" resultType="Questions"
+		parameterType="string">
+		SELECT Q.*,U.USERNAME AS "author" FROM LABQA_QUESTIONS
+		Q,SYS_USERS U WHERE Q.USERID=U.USERID AND Q.QUESTIONID=#{questionId} AND Q.ISALREADYDELETED IS NULL
+	</select>
+	<update id="modQuestionType" parameterType="string">
+		UPDATE
+		LABQA_QUESTIONS SET QATYPEID=#{0} WHERE QUESTIONID=#{1}
+	</update>
+
+	<update id="modReplyCount" parameterType="string">
+		UPDATE LABQA_QUESTIONS
+		SET REPLYCOUNT=REPLYCOUNT+1 WHERE QUESTIONID=#{questionId}
+	</update>
+	
+	<select id="getEmailByquestionId" parameterType="string" resultType="string">
+		SELECT U.EMAIL FROM LABQA_QUESTIONS Q,SYS_USERS U WHERE Q.QUESTIONID=#{questionId} AND Q.USERID=U.USERID
+	</select>
+	
+</mapper>

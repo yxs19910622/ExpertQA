@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.izhong.expert.dao.QATypeDao">
+	
+	<cache/>
+	
+	<select id="qryQATypeValid" resultType="QATypes">
+		SELECT * FROM LABQA_QATYPES WHERE STATUS = 1
+	</select>
+	
+	<select id="qryQATypeByParent" resultType="QATypes">
+		SELECT * FROM LABQA_QATYPES WHERE QATYPELEVEL = 1
+	</select>
+	
+	<select id="qryQATypesByChild" resultType="QATypes">
+		SELECT * FROM LABQA_QATYPES WHERE QATYPELEVEL = 2
+	</select>
+	<select id="getQATypeByParent" resultType="hashmap">
+		SELECT * FROM LABQA_QATYPES WHERE QATYPELEVEL = 1
+	</select>
+	
+	<select id="getQATypesByChild" resultType="hashmap">
+		SELECT * FROM LABQA_QATYPES WHERE QATYPELEVEL = 2
+	</select>
+	
+	<insert id="addUserProfiType" flushCache="true">
+		INSERT INTO LABQA_USERPROFICIENTS
+			(TID,USERID,QATYPEID) 
+		VALUES
+			(SEQ_LABQA_USERPROFICIENTS.NEXTVAL,#{0},#{1})
+	</insert>
+	
+	<delete id="delUserProfiType" flushCache="true">
+		DELETE LABQA_USERPROFICIENTS 
+		WHERE USERID = #{0} AND QATYPEID = #{1}
+	</delete>
+	
+	<select id="qryUserProfiByUserID" resultType="UserProficients" parameterType="string">
+		SELECT * FROM LABQA_USERPROFICIENTS WHERE USERID=#{userId}
+	</select>
+</mapper>

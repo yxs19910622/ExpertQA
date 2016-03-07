@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean name="shoppingcart" class="org.izhong.expert.action.ShoppingCartAction">
+		<property name="service" ref="onlinePaymentAbs"/>
+		<property name="userLoginAbs" ref="userLoginAbs"/>
+	</bean>
+	<bean name="onlinepay" class="org.izhong.expert.action.OnlinePayAction">
+		<property name="service" ref="onlinePaymentAbs"/>
+		<property name="userLoginAbs" ref="userLoginAbs"/>
+	</bean>
+</beans>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean name="memberAbs" class="org.izhong.expert.abs.MemberAbsImpl">
+		<property name="roleService" ref="roleService"/>
+		<property name="userInfoService" ref="userInfoService"/>
+		<property name="qatypeService" ref="qatypeService"/>
+		<property name="keyWordService" ref="keyWordService"/>
+		<property name="userRegisterService" ref="userRegisterService" />
+		<property name="questionService" ref="questionService"/>
+		<property name="replysService" ref="replysService"/>
+		<property name="expertService" ref="expertService"/>
+		<property name="syncCustomerService" ref="syncCustomerService"/>
+		<property name="messageService" ref="messageService"/>
+		<property name="hyperService" ref="hyperService"/>
+		<property name="logsService" ref="logsService"/>
+		<property name="onlineService" ref="onlinePaymentService"/>
+		<property name="orderService" ref="orderService"/>
+		<property name="accessLogService" ref="accessLogService"/>
+	</bean>
+</beans>

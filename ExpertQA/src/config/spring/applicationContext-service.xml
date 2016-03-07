@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<import resource="classpath:config/springservice/AccessLogService.xml" />
+	<import resource="classpath:config/springservice/UserRegisterService.xml" />
+	<import resource="classpath:config/springservice/RoleService.xml" />
+	<import resource="classpath:config/springservice/SearchService.xml" />
+	<import resource="classpath:config/springservice/UserInfoService.xml" />
+	<import resource="classpath:config/springservice/LogsService.xml" />
+	<import resource="classpath:config/springservice/ClientExpertService.xml" />
+	<import resource="classpath:config/springservice/ReplysService.xml"/>
+	<import resource="classpath:config/springservice/QuestionService.xml"/>
+	<import resource="classpath:config/springservice/QATypeService.xml"/>
+	<import resource="classpath:config/springservice/KeyWordService.xml"/> 
+	<import resource="classpath:config/springservice/HyperService.xml"/>
+	<import resource="classpath:config/springservice/MessageService.xml"/>
+	<import resource="classpath:config/springservice/SyncCustomerService.xml"/>
+	<import resource="classpath:config/springservice/ExpertService.xml"/>
+	<import resource="classpath:config/springservice/FreeOrderService.xml"/>
+	<import resource="classpath:config/springservice/OnlinePaymentService.xml"/>
+	<import resource="classpath:config/springservice/UpdateService.xml"/>
+	<import resource="classpath:config/springservice/UserService2.xml"/>
+	<import resource="classpath:config/springservice/OrderService.xml"/>
+</beans>
